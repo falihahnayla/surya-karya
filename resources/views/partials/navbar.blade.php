@@ -10,7 +10,7 @@
 </a>
 <!-- Desktop Navigation Menu Links -->
 <nav class="hidden md:flex items-center space-x-8 text-sm font-medium text-slate-600">
-<a class="text-slate-900 font-semibold border-b-2 border-slate-900 pb-1" href="#beranda">Beranda</a>
+<a class="text-slate-900 font-semibold  pb-1" href="{{ route('home') }}">Beranda</a>
 
 <div class="relative group">
     <button class="flex items-center gap-1 hover:text-slate-900 transition-colors" type="button">
@@ -22,11 +22,11 @@
 
     <div class="absolute left-0 top-full pt-3 hidden group-hover:block">
         <div class="w-64 bg-white rounded-xl shadow-lg border border-gray-100 py-2">
-            <a href="#pembangunan" class="block px-5 py-3 text-sm text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors">
+            <a href="{{ route('pembangunan-renovasi') }}" class="block px-5 py-3 text-sm text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors">
                 Pembangunan & Renovasi
             </a>
 
-            <a href="#spesifikasi" class="block px-5 py-3 text-sm text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors">
+            <a href="{{ route('spesifikasi-standar') }}" class="block px-5 py-3 text-sm text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors">
                 Spesifikasi Bangunan & Standar Mutu
             </a>
 
@@ -38,7 +38,7 @@
 </div>
 
 <a class="hover:text-slate-900 transition-colors" href="#portofolio">Portofolio</a>
-<a class="hover:text-slate-900 transition-colors" href="#faq">FAQ</a>
+<a class="hover:text-slate-900 transition-colors" href="{{ route('faq') }}">FAQ</a>
 <a class="hover:text-slate-900 transition-colors" href="#kontak">Kontak</a>
 
 </nav>

@@ -13,7 +13,8 @@
 <div class="absolute inset-0 bg-gradient-to-b from-[#101e33]/90 via-[#0d182b]/85 to-[#0b1424]/95 mix-blend-multiply"></div>
 </div>
 <!-- Hero Content Container -->
-<div class="relative z-10 max-w-4xl mx-auto flex flex-col items-center">
+ <div class="animate-up">
+<div class="relative z-10 max-w-4xl mx-auto flex flex-col items-center ">
 <!-- Eyebrow Tag -->
 <span class="text-[11px] sm:text-xs uppercase tracking-[0.25em] font-medium text-slate-300 mb-4 block">
   SURYA KARYA
@@ -34,6 +35,7 @@
 <a class="w-full sm:w-auto px-8 py-3.5 text-xs sm:text-sm font-semibold tracking-wide text-slate-200 border border-slate-400/50 hover:bg-white/10 hover:text-white rounded-md transition backdrop-blur-sm" href="#portofolio">
           Lihat Portofolio
         </a>
+</div>
 </div>
 </div>
 </section>
@@ -92,6 +94,7 @@
 <!-- Visi & Misi Dual Cards Container -->
 <div class="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 max-w-5xl mx-auto">
 <!-- VISI Card -->
+ <div class="animate-left">
 <div class="bg-[#0f1d30] text-white p-8 sm:p-10 rounded-2xl shadow-xl relative overflow-hidden flex flex-col justify-between group hover:shadow-2xl transition duration-300">
 <div class="relative z-10">
 <!-- Label Tag -->
@@ -106,7 +109,9 @@
 </div>
 <div class="absolute -right-10 -bottom-10 w-40 h-40 bg-blue-600/10 rounded-full blur-3xl pointer-events-none"></div>
 </div>
+</div>
 <!-- MISI Card -->
+ <div class="animate-right">
 <div class="bg-[#0f1d30] text-white p-8 sm:p-10 rounded-2xl shadow-xl relative overflow-hidden flex flex-col justify-between group hover:shadow-2xl transition duration-300">
 <div class="relative z-10">
 <!-- Label Tag -->
@@ -118,6 +123,7 @@
 <p class="text-sm text-slate-300 leading-relaxed font-light">
               Memberikan hasil karya berkualitas tinggi dengan presisi teknis, efisiensi manajemen waktu dan biaya, serta komunikasi yang jujur dan profesional pada setiap tahap.
             </p>
+</div>
 </div>
 <div class="absolute -right-10 -bottom-10 w-40 h-40 bg-blue-600/10 rounded-full blur-3xl pointer-events-none"></div>
 </div>
@@ -147,6 +153,7 @@
     <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
 
       <!-- Card 01 -->
+        <div class="animate-left">
       <div class="relative bg-white border border-slate-200 p-8 rounded-xl flex flex-col justify-between hover:border-slate-400 transition group shadow-sm hover:shadow-md">
         <span class="card-watermark group-hover:text-slate-300/60 transition-colors">01</span>
 
@@ -160,8 +167,9 @@
           </p>
         </div>
       </div>
-
+      </div>
       <!-- Card 02 -->
+        <div class="animate-up">
       <div class="relative bg-white border border-slate-200 p-8 rounded-xl flex flex-col justify-between hover:border-slate-400 transition group shadow-sm hover:shadow-md">
         <span class="card-watermark group-hover:text-slate-300/60 transition-colors">02</span>
 
@@ -175,8 +183,9 @@
           </p>
         </div>
       </div>
-
+      </div>
       <!-- Card 03 -->
+        <div class="animate-right">
       <div class="relative bg-white border border-slate-200 p-8 rounded-xl flex flex-col justify-between hover:border-slate-400 transition group shadow-sm hover:shadow-md">
         <span class="card-watermark group-hover:text-slate-300/60 transition-colors">03</span>
 
@@ -190,7 +199,7 @@
           </p>
         </div>
       </div>
-
+      </div>
     </div>
   </div>
 </section>

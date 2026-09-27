@@ -1,0 +1,54 @@
+html,
+body {
+    overflow-x: hidden;
+}
+/* SCROLL ANIMATION */
+
+.animate-up,
+.animate-left,
+.animate-right {
+    opacity: 0;
+    transition: opacity 0.8s ease, transform 0.8s ease;
+    will-change: opacity, transform;
+}
+
+/* Naik dari bawah */
+.animate-up {
+    transform: translateY(50px);
+}
+
+.animate-up.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Masuk dari kiri */
+.animate-left {
+    transform: translateX(-60px);
+}
+
+.animate-left.is-visible {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+/* Masuk dari kanan */
+.animate-right {
+    transform: translateX(60px);
+}
+
+.animate-right.is-visible {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    .animate-up,
+    .animate-left,
+    .animate-right {
+        opacity: 1;
+        transform: none;
+        transition: none;
+    }
+}
