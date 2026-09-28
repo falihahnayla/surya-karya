@@ -11,4 +11,9 @@ class PanelSpesifikasiController extends Controller
     {
         return view('frontend.spesifikasi-standar');
     }
+
+    public function spesifikasiBangunan()
+    {
+        return view('frontend.spesifikasi-bangunan');
+    }
 }

@@ -12,5 +12,6 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/faq', [FaqController::class, 'index'])->name('faq');
 Route::get('/pembangunan-renovasi', [PanelPembangunanController::class, 'index'])->name('pembangunan-renovasi');
 Route::get('/spesifikasi-standar', [PanelSpesifikasiController::class, 'index'])->name('spesifikasi-standar');
+Route::get('/spesifikasi-bangunan', [PanelSpesifikasiController::class, 'spesifikasiBangunan'])->name('spesifikasi-bangunan');
 Route::get('/alur-kerja', [AlurKerjaController::class, 'index'])->name('alur-kerja');
 Route::get('/form-pemesanan', [FormPesanController::class, 'index'])->name('frontend.form-pesanan');
