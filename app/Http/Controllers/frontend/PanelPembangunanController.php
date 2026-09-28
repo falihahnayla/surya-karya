@@ -11,4 +11,14 @@ class PanelPembangunanController extends Controller
     {
         return view('frontend.pembangunan-renovasi');
     }
+
+    public function pembangunan()
+    {
+        return view('frontend.pembangunan');
+    }
+
+    public function renovasi()
+    {
+        return view('frontend.renovasi');
+    }
 }

@@ -38,7 +38,7 @@
     </div>
 </div>
 
-<a class="hover:text-slate-900 transition-colors" href="#portofolio">Portofolio</a>
+<a class="hover:text-slate-900 transition-colors {{ request()->routeIs('portofolio') ? 'text-slate-900 font-semibold border-b-2 border-slate-900 pb-1' : '' }}" href="{{ route('portofolio') }}">Portofolio</a>
 <a class="hover:text-slate-900 transition-colors" href="{{ route('faq') }}">FAQ</a>
 <a class="hover:text-slate-900 transition-colors" href="#kontak">Kontak</a>
 

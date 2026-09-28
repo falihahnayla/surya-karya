@@ -14,6 +14,7 @@
     <section
         aria-label="Pembangunan"
         class="split-panel split-panel-left group relative flex flex-col justify-between p-8 sm:p-14 lg:p-20 xl:p-24 transition-all duration-500 overflow-hidden cursor-pointer"
+        onclick="window.location.href='{{ route('pembangunan') }}'"
     >
 
         <!-- Hover Overlay -->
@@ -30,8 +31,9 @@
         <div class="relative z-10 my-auto py-12 lg:py-20 max-w-xl">
 
             <h1 class="font-cormorant text-5xl sm:text-6xl md:text-7xl font-normal text-white leading-[1.08] tracking-tight mb-6">
-                Pembangunan
-                <span class="gold-italic-accent">Bangunan</span>
+                <a href="{{ route('pembangunan') }}" class="hover:underline">
+                    Pembangunan <span class="gold-italic-accent">Bangunan</span>
+                </a>
             </h1>
 
             <p class="text-slate-300 text-sm sm:text-base leading-relaxed font-light pr-4 max-w-lg">
@@ -47,7 +49,7 @@
             <a
                 aria-label="Lihat detail Pembangunan"
                 class="split-panel-button w-14 h-14 rounded-full bg-[#d1b181] text-[#071120] flex items-center justify-center shadow-lg shadow-black/30"
-                href="#pembangunan"
+                href="{{ route('pembangunan') }}"
             >
                 <svg
                     class="w-6 h-6 stroke-[2.2]"
@@ -75,6 +77,7 @@
     <section
         aria-label="Renovasi"
         class="split-panel split-panel-right group relative flex flex-col justify-between p-8 sm:p-14 lg:p-20 xl:p-24 transition-all duration-500 overflow-hidden cursor-pointer"
+        onclick="window.location.href='{{ route('renovasi') }}'"
     >
 
         <!-- Hover Overlay -->
@@ -91,8 +94,9 @@
         <div class="relative z-10 my-auto py-12 lg:py-20 max-w-xl">
 
             <h2 class="font-cormorant text-5xl sm:text-6xl md:text-7xl font-normal text-white leading-[1.08] tracking-tight mb-6">
-                Renovasi
-                <span class="gold-italic-accent">Bangunan</span>
+                <a href="{{ route('renovasi') }}" class="hover:underline">
+                    Renovasi <span class="gold-italic-accent">Bangunan</span>
+                </a>
             </h2>
 
             <p class="text-slate-300 text-sm sm:text-base leading-relaxed font-light pr-4 max-w-lg">
@@ -108,7 +112,7 @@
             <a
                 aria-label="Lihat detail Renovasi"
                 class="split-panel-button split-panel-button-outline w-14 h-14 rounded-full border border-white/30 text-white flex items-center justify-center shadow-lg"
-                href="#renovasi"
+                href="{{ route('renovasi') }}"
             >
                 <svg
                     class="w-6 h-6 stroke-[2.2]"

@@ -22,7 +22,6 @@
         position: relative;
     }
 
-    /* Subtle technical blueprint schematic sketch overlay effect */
     .blueprint-bg::before {
         content: "";
         position: absolute;
@@ -33,37 +32,34 @@
         pointer-events: none;
     }
 
-    /* Dreamy Floating Side Entrance Animation */
+    /* Hardware-Accelerated 3D Floating Side Entrance Animation */
     .animate-left {
         opacity: 0;
-        filter: blur(10px);
-        transform: translateX(-100px) translateY(35px) scale(0.95);
-        transition: 
-            opacity 1.4s cubic-bezier(0.16, 1, 0.3, 1), 
-            transform 1.4s cubic-bezier(0.16, 1, 0.3, 1),
-            filter 1.4s cubic-bezier(0.16, 1, 0.3, 1);
-        will-change: opacity, transform, filter;
+        transform: perspective(1000px) rotateY(-8deg) translate3d(-70px, 15px, -20px) scale(0.96);
+        transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1), 
+                    transform 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+        will-change: opacity, transform;
+        backface-visibility: hidden;
+        transform-style: preserve-3d;
     }
 
     .animate-right {
         opacity: 0;
-        filter: blur(10px);
-        transform: translateX(100px) translateY(35px) scale(0.95);
-        transition: 
-            opacity 1.4s cubic-bezier(0.16, 1, 0.3, 1), 
-            transform 1.4s cubic-bezier(0.16, 1, 0.3, 1),
-            filter 1.4s cubic-bezier(0.16, 1, 0.3, 1);
-        will-change: opacity, transform, filter;
+        transform: perspective(1000px) rotateY(8deg) translate3d(70px, 15px, -20px) scale(0.96);
+        transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1), 
+                    transform 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+        will-change: opacity, transform;
+        backface-visibility: hidden;
+        transform-style: preserve-3d;
     }
 
     .animate-left.is-visible,
     .animate-right.is-visible {
         opacity: 1;
-        filter: blur(0px);
-        transform: translateX(0) translateY(0) scale(1);
+        transform: perspective(1000px) rotateY(0deg) translate3d(0, 0, 0) scale(1);
     }
 
-    /* Spec Card Premium Micro-Interactions & Hover Animation */
+    /* Spec Card Premium Micro-Interactions & Bento Curved Corner */
     .spec-card {
         transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), 
                     box-shadow 0.5s cubic-bezier(0.16, 1, 0.3, 1),
@@ -96,6 +92,24 @@
         transform: scaleX(1);
     }
 
+    /* Bento Curved Top-Right Corner Motif */
+    .card-corner-shape {
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 8rem;
+        height: 8rem;
+        background-color: rgba(11, 25, 44, 0.035);
+        border-bottom-left-radius: 9999px;
+        pointer-events: none;
+        transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.5s ease;
+    }
+
+    .spec-card:hover .card-corner-shape {
+        transform: scale(1.18);
+        background-color: rgba(212, 175, 55, 0.08);
+    }
+
     /* Plus icon badge animation */
     .plus-badge {
         display: inline-block;
@@ -105,25 +119,6 @@
     .spec-card:hover .plus-badge {
         transform: scale(1.35) rotate(90deg);
         color: #c49a26;
-    }
-
-    /* Watermark Number Animation */
-    .card-num-watermark {
-        font-family: 'Cormorant Garamond', serif;
-        position: absolute;
-        top: -10px;
-        right: 20px;
-        font-size: 5rem;
-        font-weight: 700;
-        color: rgba(11, 25, 44, 0.03);
-        pointer-events: none;
-        user-select: none;
-        transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), color 0.6s ease;
-    }
-
-    .spec-card:hover .card-num-watermark {
-        transform: translateY(6px) scale(1.1);
-        color: rgba(212, 175, 55, 0.09);
     }
 </style>
 @endpush
@@ -151,7 +146,7 @@
         
         <!-- Spec Card 1: Pondasi (Mengambang Masuk dari Kiri) -->
         <div class="spec-card bg-white rounded-xl p-8 md:p-10 border border-gray-100 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] animate-left">
-            <span class="card-num-watermark">01</span>
+            <div class="card-corner-shape"></div>
             <div class="relative z-10">
                 <h2 class="font-serif-heading text-3xl font-semibold text-[#0b192c] mb-4 flex items-center justify-between">
                     Pondasi
@@ -179,7 +174,7 @@
 
         <!-- Spec Card 2: Struktur Bangunan (Mengambang Masuk dari Kanan) -->
         <div class="spec-card bg-white rounded-xl p-8 md:p-10 border border-gray-100 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] animate-right">
-            <span class="card-num-watermark">02</span>
+            <div class="card-corner-shape"></div>
             <div class="relative z-10">
                 <h2 class="font-serif-heading text-3xl font-semibold text-[#0b192c] mb-4">
                     Struktur Bangunan
@@ -207,7 +202,7 @@
 
         <!-- Spec Card 3: Dinding (Mengambang Masuk dari Kiri) -->
         <div class="spec-card bg-white rounded-xl p-8 md:p-10 border border-gray-100 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] animate-left">
-            <span class="card-num-watermark">03</span>
+            <div class="card-corner-shape"></div>
             <div class="relative z-10">
                 <h2 class="font-serif-heading text-3xl font-semibold text-[#0b192c] mb-4">
                     Dinding
@@ -235,7 +230,7 @@
 
         <!-- Spec Card 4: Atap (Mengambang Masuk dari Kanan) -->
         <div class="spec-card bg-white rounded-xl p-8 md:p-10 border border-gray-100 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] animate-right">
-            <span class="card-num-watermark">04</span>
+            <div class="card-corner-shape"></div>
             <div class="relative z-10">
                 <h2 class="font-serif-heading text-3xl font-semibold text-[#0b192c] mb-4">
                     Atap

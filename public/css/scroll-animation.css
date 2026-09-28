@@ -2,53 +2,67 @@ html,
 body {
     overflow-x: hidden;
 }
-/* SCROLL ANIMATION */
+
+/* ==========================================================================
+   SURYA KARYA - ULTRA SMOOTH HARDWARE-ACCELERATED 3D FLOATING ENTRANCE
+   ========================================================================== */
 
 .animate-up,
 .animate-left,
-.animate-right {
+.animate-right,
+.animate-float-3d {
     opacity: 0;
-    transition: opacity 0.8s ease, transform 0.8s ease;
+    transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1), 
+                transform 0.85s cubic-bezier(0.16, 1, 0.3, 1);
     will-change: opacity, transform;
+    backface-visibility: hidden;
+    transform-style: preserve-3d;
 }
 
-/* Naik dari bawah */
+/* Float Up 3D Entrance */
 .animate-up {
-    transform: translateY(50px);
+    transform: perspective(1000px) rotateX(6deg) translate3d(0, 45px, -20px) scale(0.97);
 }
 
 .animate-up.is-visible {
     opacity: 1;
-    transform: translateY(0);
+    transform: perspective(1000px) rotateX(0deg) translate3d(0, 0, 0) scale(1);
 }
 
-/* Masuk dari kiri */
+/* Float From Left 3D Entrance */
 .animate-left {
-    transform: translateX(-60px);
+    transform: perspective(1000px) rotateY(-8deg) translate3d(-70px, 15px, -20px) scale(0.96);
 }
 
 .animate-left.is-visible {
     opacity: 1;
-    transform: translateX(0);
+    transform: perspective(1000px) rotateY(0deg) translate3d(0, 0, 0) scale(1);
 }
 
-/* Masuk dari kanan */
+/* Float From Right 3D Entrance */
 .animate-right {
-    transform: translateX(60px);
+    transform: perspective(1000px) rotateY(8deg) translate3d(70px, 15px, -20px) scale(0.96);
 }
 
 .animate-right.is-visible {
     opacity: 1;
-    transform: translateX(0);
+    transform: perspective(1000px) rotateY(0deg) translate3d(0, 0, 0) scale(1);
 }
 
-/* Reduced motion */
+/* Staggered Delay Utilities */
+.delay-100 { transition-delay: 100ms; }
+.delay-200 { transition-delay: 200ms; }
+.delay-300 { transition-delay: 300ms; }
+.delay-400 { transition-delay: 400ms; }
+
+/* Reduced Motion Override */
 @media (prefers-reduced-motion: reduce) {
     .animate-up,
     .animate-left,
-    .animate-right {
-        opacity: 1;
-        transform: none;
-        transition: none;
+    .animate-right,
+    .animate-float-3d {
+        opacity: 1 !important;
+        transform: none !important;
+        transition: none !important;
     }
 }

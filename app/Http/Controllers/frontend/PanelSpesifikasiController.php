@@ -16,4 +16,9 @@ class PanelSpesifikasiController extends Controller
     {
         return view('frontend.spesifikasi-bangunan');
     }
+
+    public function standarMutu()
+    {
+        return view('frontend.standar-mutu');
+    }
 }
