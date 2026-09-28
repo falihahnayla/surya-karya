@@ -30,7 +30,8 @@
                 Spesifikasi Bangunan & Standar Mutu
             </a>
 
-            <a href="#alur-kerja-sama" class="block px-5 py-3 text-sm text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors">
+            <a href="{{ route('alur-kerja') }}
+            " class="block px-5 py-3 text-sm text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors">
                 Alur Kerja Sama Kontraktor
             </a>
         </div>

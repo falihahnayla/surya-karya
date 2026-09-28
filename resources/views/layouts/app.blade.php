@@ -15,13 +15,36 @@
                     colors: {
                         brand: {
                             navy: '#0B192C',
+                            navyDeep: '#06101e',
                             dark: '#071324',
-                            accent: '#1e3a8a',
-                            blue: '#0a369d',
+
+                            royalBlue: '#0a369d',
+
+                            gold: '#d4af37',
                             tan: '#D8C7A5',
+
                             cream: '#f5efe6',
+                            sand: '#e7d8c9',
+                            sandLight: '#f9f6f0',
                             bgLight: '#faf9f6',
-                            muted: '#64748b'
+
+                            charcoal: '#1f2937',
+                            muted: '#64748b',
+                            grayLight: '#f3f4f6',
+
+                            borderGold: '#d4af37',
+
+                            navy: {
+                                800: '#0F284E',
+                                900: '#0A192F',
+                                950: '#071224',
+                            },
+
+                            warm: {
+                                50: '#FAF9F6',
+                                100: '#F6F5F2',
+                                200: '#EEECE7',
+                            }
                         }
                     },
                     fontFamily: {

@@ -1,0 +1,25 @@
+/* Typography */
+body {
+    font-family: 'Inter', sans-serif;
+    color: #1f2937;
+    background-color: #ffffff;
+    overflow-x: hidden;
+}
+
+.font-serif-cormorant {
+    font-family: 'Cormorant Garamond', serif;
+}
+
+/* Timeline */
+.timeline-spine {
+    position: absolute;
+    inset-block: 0;
+    width: 2px;
+    background: linear-gradient(
+        to bottom,
+        #d6c7b2 0%,
+        #e2d9cd 80%,
+        rgba(214, 199, 178, 0.1) 100%
+    );
+}
+

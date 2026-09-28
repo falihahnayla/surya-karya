@@ -316,7 +316,7 @@
         SIAP MEMBANGUN ATAU MERENOVASI RUMAH ANDA?
       </h2>
 <div>
-<a class="inline-flex items-center justify-center px-9 py-3 bg-[#e8dfcf] hover:bg-[#dfd4c1] text-slate-900 text-xs font-bold uppercase tracking-[0.2em] rounded-full transition shadow-lg active:scale-95" href="#kontak">
+<a class="inline-flex items-center justify-center px-9 py-3 bg-[#e8dfcf] hover:bg-[#dfd4c1] text-slate-900 text-xs font-bold uppercase tracking-[0.2em] rounded-full transition shadow-lg active:scale-95" href="{{ route('frontend.form-pesanan') }}">
           GET IN TOUCH
         </a>
 </div>

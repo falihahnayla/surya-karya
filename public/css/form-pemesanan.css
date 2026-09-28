@@ -1,0 +1,35 @@
+/* Form Controls */
+
+.input-borderless {
+    width: 100%;
+    border: none !important;
+    outline: none !important;
+    background-color: #f8fafc;
+    border-radius: 0.5rem;
+    padding: 0.75rem 1rem;
+    font-size: 0.925rem;
+    color:  #1e293b;
+    transition: all 0.2s ease;
+}
+
+.input-borderless:focus {
+    background-color: #ffffff;
+    outline: none !important;
+    box-shadow: 0 0 0 1px #d4af37 !important;
+}
+
+.input-borderless::placeholder {
+    color: #94a3b8;
+    font-weight: 300;
+    font-size: 0.885rem;
+}
+
+select.input-borderless {
+    padding-right: 2.25rem;
+    background-position: right 0.75rem center;
+}
+
+textarea.input-borderless {
+    resize: vertical;
+    min-height: 90px;
+}
