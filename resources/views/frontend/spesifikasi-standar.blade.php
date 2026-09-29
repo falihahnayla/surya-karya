@@ -11,6 +11,7 @@
 <div class="split-panel-selection w-full grid grid-cols-1 lg:grid-cols-2 relative">
 
     <!-- LEFT PANEL: Spesifikasi Bangunan -->
+    <div class="animate-left">
     <section
         aria-label="Spesifikasi Bangunan"
         class="split-panel split-panel-left group relative flex flex-col justify-between p-8 sm:p-14 lg:p-20 xl:p-24 transition-all duration-500 overflow-hidden cursor-pointer"
@@ -67,13 +68,14 @@
         </div>
 
     </section>
-
+</div>
 
     <!-- CENTER DIVIDER -->
     <div class="split-panel-divider hidden lg:block"></div>
 
 
     <!-- RIGHT PANEL: Standar Mutu -->
+     <div class="animate-right">
     <section
         aria-label="Standar Mutu"
         class="split-panel split-panel-right group relative flex flex-col justify-between p-8 sm:p-14 lg:p-20 xl:p-24 transition-all duration-500 overflow-hidden cursor-pointer"

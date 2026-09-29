@@ -61,39 +61,43 @@
 </ul>
 </div>
 <!-- Consultation Promo Card -->
-<div class="bg-brand-navy text-white rounded-sm p-7 shadow-md relative overflow-hidden">
-<!-- Subtle corner accent -->
-<div class="absolute -right-8 -top-8 w-28 h-28 bg-white/5 rounded-full pointer-events-none"></div>
-<!-- Eyebrow Badge -->
+<div class="text-white rounded-sm p-7 shadow-md relative overflow-hidden" style="background-color: #0B192C;">
+  <!-- Subtle corner accent -->
+  <div class="absolute -right-8 -top-8 w-28 h-28 bg-white/5 rounded-full pointer-events-none"></div>
 
-<h3 class="font-serif text-2xl leading-snug font-semibold text-white mb-2">
-            Konsultasi Gratis dengan Arsitek
-          </h3>
-<p class="text-xs sm:text-sm text-slate-300 font-light leading-relaxed mb-6">
-            Butuh kalkulasi awal atau telaah denah? Diskusikan langsung dengan tim perencana kami.
-          </p>
-<!-- WhatsApp Button -->
-<a class="w-full flex items-center justify-center gap-2 px-4 py-3 bg-[#c7ab7c] hover:bg-[#bfa06d] text-brand-dark text-xs font-bold uppercase tracking-wider rounded-sm shadow transition" href="https://wa.me/6281239401899" rel="noopener noreferrer" target="_blank">
-<svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
-<path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"></path>
-</svg>
-            CHAT VIA WHATSAPP
-          </a>
-<!-- Direct Line & Hours -->
-<div class="mt-6 pt-5 border-t border-white/15 space-y-2 text-xs text-slate-300">
-<div class="flex items-center gap-2.5">
-<svg class="w-4 h-4 text-amber-200/90" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24">
-<path d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z" stroke-linecap="round" stroke-linejoin="round"></path>
-</svg>
-<span class="font-semibold text-white">0812 3940 1899</span>
-</div>
-<div class="flex items-center gap-2.5 text-slate-300">
-<svg class="w-4 h-4 text-amber-200/90" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24">
-<path d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round" stroke-linejoin="round"></path>
-</svg>
-<span class="">Senin – Sabtu: 08.00 – 17.00 WIB</span>
-</div>
-</div>
+  <h3 class="font-serif text-2xl leading-snug font-semibold text-white mb-2">
+    Konsultasi Gratis 
+  </h3>
+
+  <p class="text-xs sm:text-sm text-slate-300 font-light leading-relaxed mb-6">
+    Butuh kalkulasi awal atau telaah denah? Diskusikan langsung dengan tim perencana kami.
+  </p>
+
+  <!-- WhatsApp Button -->
+  <a class="w-full flex items-center justify-center gap-2 px-4 py-3 bg-[#c7ab7c] hover:bg-[#bfa06d] text-slate-900 text-xs font-bold uppercase tracking-wider rounded-sm shadow transition"
+     href="https://wa.me/6281239401899"
+     rel="noopener noreferrer"
+     target="_blank">
+
+    <i class="fa-brands fa-whatsapp text-base"></i>
+
+    CHAT VIA WHATSAPP
+  </a>
+
+  <!-- Direct Line & Hours -->
+  <div class="mt-6 pt-5 border-t border-white/15 space-y-2 text-xs text-slate-300">
+
+    <div class="flex items-center gap-2.5">
+      <i class="fa-solid fa-phone w-4 text-center text-amber-200/90"></i>
+      <span class="font-semibold text-white">0812 3940 1899</span>
+    </div>
+
+    <div class="flex items-center gap-2.5 text-slate-300">
+      <i class="fa-regular fa-clock w-4 text-center text-amber-200/90"></i>
+      <span>Senin – Sabtu: 08.00 – 17.00 WIB</span>
+    </div>
+
+  </div>
 </div>
 </aside>
 <!-- END: LeftSidebar -->
@@ -288,34 +292,6 @@
 </div>
 </main>
 <!-- END: MainContent -->
-<!-- BEGIN: BottomCTA -->
-<section class="bg-[#071324] text-white py-16 sm:py-20 border-t border-slate-800">
-<div class="max-w-4xl mx-auto px-4 sm:px-6 text-center">
-<!-- Eyebrow Tag -->
-<span class="text-xs tracking-[0.25em] text-[#d4af37] uppercase font-semibold block mb-3">
-        LAYANAN BANTUAN RESPONSIF
-      </span>
-<!-- Headline -->
-<h2 class="font-serif text-3xl sm:text-4xl lg:text-5xl font-normal tracking-tight text-white mb-4">
-        Masih punya pertanyaan lain?
-      </h2>
-<!-- Description -->
-<p class="text-sm sm:text-base text-slate-300 max-w-xl mx-auto font-light leading-relaxed mb-8">
-        Tim arsitek dan perencana Surya Karya siap membantu menjawab segala kebutuhan dan visi hunian Anda.
-      </p>
-<!-- CTA Button -->
-<div class="flex justify-center">
-<a class="inline-flex items-center gap-2.5 px-8 py-3.5 bg-[#d8c7a5] hover:bg-[#c9b58f] text-brand-dark text-xs font-bold uppercase tracking-wider rounded-sm shadow-lg transition" href="https://wa.me/6281239401899" rel="noopener noreferrer" target="_blank">
-<svg class="w-4 h-4 fill-current text-brand-dark" viewBox="0 0 24 24">
-<path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"></path>
-</svg>
-          KONSULTASI VIA WHATSAPP
-        </a>
-</div>
-</div>
-</section>
-<!-- END: BottomCTA -->
-
 @endsection
 
 @push('scripts')

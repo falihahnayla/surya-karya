@@ -32,7 +32,7 @@
 <a class="w-full sm:w-auto px-8 py-3.5 text-xs sm:text-sm font-semibold tracking-wide text-white bg-[#0d1c31] border border-blue-900/60 hover:bg-[#152742] rounded-md transition shadow-md" href="#kontak">
           Konsultasi
         </a>
-<a class="w-full sm:w-auto px-8 py-3.5 text-xs sm:text-sm font-semibold tracking-wide text-slate-200 border border-slate-400/50 hover:bg-white/10 hover:text-white rounded-md transition backdrop-blur-sm" href="#portofolio">
+<a class="w-full sm:w-auto px-8 py-3.5 text-xs sm:text-sm font-semibold tracking-wide text-slate-200 border border-slate-400/50 hover:bg-white/10 hover:text-white rounded-md transition backdrop-blur-sm" href="{{ route('portofolio') }}">
           Lihat Portofolio
         </a>
 </div>
@@ -303,26 +303,6 @@
 </div>
 </section>
 <!-- END: FeaturedProjectsSection -->
-<!-- BEGIN: CallToActionSection -->
-<section class="relative py-28 lg:py-36 overflow-hidden bg-slate-900 flex items-center justify-center text-center">
-<!-- Atmospheric Night Villa / Pool Lounge Background -->
-<div class="absolute inset-0 z-0">
-<img alt="Surya Karya Luxury Night Villa and Pool Background" class="w-full h-full object-cover object-center brightness-50 contrast-125" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCkjTUvhvPCI6BfQxEEwvNqvrAmqozh9dLGhJ_LomcyJDbFh7_8fbqhalZRqcdS6YO_LL5wpCys92SUNoez5ZxtipY7Fsl1V2wMLdOJRDwci3G36KGrPlEQcR2-15utKzMMXdEVedeA5fAWBSV6_lCcuEaixwMAZJAtf4DYMSvqseC1ua6K8GJ-uFsVPuRyEiIwGaG1ZtuHbUnoRI8ol-tL8HzndKKtlZNsoRGfR0BbW5-jwHdqFPk_"/>
-<div class="absolute inset-0 bg-gradient-to-t from-[#081323] via-[#091b33]/85 to-[#081323]/90"></div>
-</div>
-<!-- Centered CTA Content -->
-<div class="relative z-10 max-w-3xl mx-auto px-4 sm:px-6">
-<h2 class="heading-serif text-3xl sm:text-5xl lg:text-6xl font-normal text-white uppercase tracking-tight leading-tight mb-8">
-        SIAP MEMBANGUN ATAU MERENOVASI RUMAH ANDA?
-      </h2>
-<div>
-<a class="inline-flex items-center justify-center px-9 py-3 bg-[#e8dfcf] hover:bg-[#dfd4c1] text-slate-900 text-xs font-bold uppercase tracking-[0.2em] rounded-full transition shadow-lg active:scale-95" href="{{ route('frontend.form-pesanan') }}">
-          GET IN TOUCH
-        </a>
-</div>
-</div>
-</section>
-<!-- END: CallToActionSection -->
 
 @endsection
 
