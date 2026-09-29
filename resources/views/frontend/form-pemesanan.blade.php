@@ -18,7 +18,7 @@
 <main class="flex-grow py-10 sm:py-16 px-4 sm:px-6">
 <div class="max-w-3xl mx-auto">
 <!-- Logo Badge Above Title -->
-<div class="flex justify-center mb-6" data-purpose="brand-badge">
+<div class="flex justify-center mb-6 pt-12 sm:pt-7" data-purpose="brand-badge">
 <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-full overflow-hidden shadow-sm border border-stone-200 bg-white p-1">
 <img alt="Logo Surya Karya" class="w-full h-full object-cover rounded-full" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD84MJEp_1egsg2rnf-vVxJV9z8tO1tgHfHQX1KWTK3zDNY3_i7GJA8u1hH2jDkGL06Qwjs7oN6f7Oe-aLhPU3c2j1wAA6UtUdJaKNd6GHU0XVtMJfon55Oetdw5hzBUwHcpXFo468l5UfatJHMaB_GeLufABzBVZa3wJZxpEJsZI2pbC6COC7lx1z2aDNgBPeyAvukC2WJc3A5N3s5Y3IAknwJ2Rwdj9ewP8v9ALIGCeck6J5ROPs50tcp-7vCD_d2IQ"/>
 </div>
