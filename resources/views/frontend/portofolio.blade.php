@@ -74,7 +74,7 @@
 @section('content')
 
 <!-- BEGIN: HeroPortfolioIntro -->
-<section class="pt-14 pb-8 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" data-purpose="portfolio-intro">
+<section class="pt-28 pb-8 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" data-purpose="portfolio-intro">
     <!-- Section Tag / Eyebrow -->
     <p class="text-[11px] font-semibold tracking-[0.25em] text-gray-500 uppercase mb-3 animate-up">
         GALERI &amp; DOKUMENTASI PROYEK
@@ -415,6 +415,54 @@
 </section>
 <!-- END: CallToActionSection -->
 
+<!-- BEGIN: Portfolio Lightbox Modal -->
+<div id="portfolio-lightbox" class="fixed inset-0 z-[100] hidden flex items-center justify-center p-4 sm:p-6 lg:p-8 bg-black/90 backdrop-blur-md transition-all duration-300 opacity-0 pointer-events-none">
+
+    <!-- Close Button -->
+    <button id="lightbox-close" type="button" aria-label="Tutup Tampilan Penuh" class="absolute top-6 right-6 z-50 w-11 h-11 rounded-full bg-white/10 hover:bg-white text-white hover:text-black flex items-center justify-center backdrop-blur-md transition-all shadow-lg border border-white/20 hover:scale-110">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+        </svg>
+    </button>
+
+    <!-- Modal Card Container -->
+    <div id="lightbox-container" class="relative max-w-5xl w-full max-h-[85vh] rounded-2xl overflow-hidden shadow-2xl bg-[#06101e] border border-white/15 flex flex-col justify-end transform scale-95 transition-all duration-500 ease-out">
+        
+        <!-- Expanded High-Res Image -->
+        <img id="lightbox-img" src="" alt="Portofolio Fullscreen" class="w-full h-full object-cover max-h-[80vh] min-h-[400px] object-center">
+        
+        <!-- Gradient Overlay over Image for Readability -->
+        <div class="absolute inset-0 bg-gradient-to-t from-[#06101e] via-[#06101e]/60 to-transparent pointer-events-none"></div>
+
+        <!-- Animated Text & Meta Content Overlay -->
+        <div id="lightbox-content" class="absolute bottom-0 left-0 right-0 p-6 sm:p-10 z-10 space-y-3 transform translate-y-6 opacity-0 transition-all duration-500 delay-150">
+            <!-- Category Tag & Location -->
+            <div class="flex flex-wrap items-center gap-3">
+                <span id="lightbox-category" class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest bg-[#d4af37] text-[#06101e]">
+                    Pembangunan Baru
+                </span>
+                <span id="lightbox-location" class="flex items-center text-xs text-gray-300 font-medium space-x-1.5 bg-black/40 px-3.5 py-1 rounded-full backdrop-blur-sm border border-white/10">
+                    <svg class="w-3.5 h-3.5 text-[#d4af37] shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                        <path clip-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" fill-rule="evenodd"></path>
+                    </svg>
+                    <span id="lightbox-location-text">Badung, Bali</span>
+                </span>
+            </div>
+
+            <!-- Title -->
+            <h2 id="lightbox-title" class="font-serif-heading text-3xl sm:text-4xl lg:text-5xl font-bold text-white leading-tight">
+                Villa Modern Canggu
+            </h2>
+
+            <!-- Description -->
+            <p id="lightbox-description" class="text-sm sm:text-base text-gray-200/90 font-light leading-relaxed max-w-3xl">
+                Hunian 2 lantai 420 m², fasad kaca lebar dengan struktur beton ekspos minimalis modern.
+            </p>
+        </div>
+    </div>
+</div>
+<!-- END: Portfolio Lightbox Modal -->
+
 @endsection
 
 @push('scripts')
@@ -464,6 +512,90 @@
             card.addEventListener('mouseleave', function () {
                 card.style.transform = '';
             });
+        });
+
+        // Fullscreen Portfolio Lightbox Trigger Logic
+        const lightbox = document.getElementById('portfolio-lightbox');
+        const lightboxContainer = document.getElementById('lightbox-container');
+        const lightboxImg = document.getElementById('lightbox-img');
+        const lightboxCategory = document.getElementById('lightbox-category');
+        const lightboxLocationText = document.getElementById('lightbox-location-text');
+        const lightboxTitle = document.getElementById('lightbox-title');
+        const lightboxDesc = document.getElementById('lightbox-description');
+        const lightboxContent = document.getElementById('lightbox-content');
+        const lightboxClose = document.getElementById('lightbox-close');
+
+        function openLightbox(card) {
+            const img = card.querySelector('img');
+            const categorySpan = card.querySelector('.text-\\[10px\\]');
+            const title = card.querySelector('h2');
+            const desc = card.querySelector('p');
+            const locationSpan = card.querySelector('.border-t span span');
+
+            if (img) {
+                lightboxImg.src = img.src;
+                lightboxImg.alt = img.alt || 'Detail Portofolio';
+            }
+            if (categorySpan) {
+                lightboxCategory.textContent = categorySpan.textContent.trim();
+            }
+            if (title) {
+                lightboxTitle.textContent = title.textContent.trim();
+            }
+            if (desc) {
+                lightboxDesc.textContent = desc.textContent.trim();
+            }
+            if (locationSpan) {
+                lightboxLocationText.textContent = locationSpan.textContent.trim();
+            }
+
+            lightbox.classList.remove('hidden', 'pointer-events-none');
+            requestAnimationFrame(() => {
+                lightbox.classList.remove('opacity-0');
+                lightboxContainer.classList.remove('scale-95');
+                lightboxContainer.classList.add('scale-100');
+                lightboxContent.classList.remove('translate-y-6', 'opacity-0');
+            });
+        }
+
+        function closeLightbox() {
+            lightboxContent.classList.add('translate-y-6', 'opacity-0');
+            lightboxContainer.classList.remove('scale-100');
+            lightboxContainer.classList.add('scale-95');
+            lightbox.classList.add('opacity-0');
+
+            setTimeout(() => {
+                lightbox.classList.add('hidden', 'pointer-events-none');
+            }, 300);
+        }
+
+        // Bind click event to arrow navigation buttons inside cards
+        document.querySelectorAll('.portfolio-card a[aria-label^="Lihat detail"]').forEach(btn => {
+            btn.addEventListener('click', function (e) {
+                e.preventDefault();
+                const card = this.closest('.portfolio-card');
+                if (card) {
+                    openLightbox(card);
+                }
+            });
+        });
+
+        if (lightboxClose) {
+            lightboxClose.addEventListener('click', closeLightbox);
+        }
+
+        if (lightbox) {
+            lightbox.addEventListener('click', function (e) {
+                if (e.target === lightbox) {
+                    closeLightbox();
+                }
+            });
+        }
+
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape' && lightbox && !lightbox.classList.contains('hidden')) {
+                closeLightbox();
+            }
         });
     });
 </script>

@@ -12,9 +12,9 @@
 <div class="split-panel-selection w-full grid grid-cols-1 lg:grid-cols-2 relative">
 
     {{-- PEMBANGUNAN --}}
-    <div class="animate-left">
+    <div class="animate-left h-full w-full flex flex-col">
         <section aria-label="Pembangunan"
-            class="split-panel split-panel-left group relative flex flex-col justify-between p-8 sm:p-14 lg:p-20 xl:p-24 transition-all duration-500 overflow-hidden cursor-pointer"
+            class="split-panel split-panel-left group relative flex flex-col justify-between p-8 sm:p-14 lg:p-20 xl:p-24 transition-all duration-500 overflow-hidden cursor-pointer h-full flex-1"
             onclick="window.location.href='{{ route('pembangunan') }}'">
 
             {{-- Background Image --}}
@@ -31,7 +31,7 @@
             <div class="split-panel-overlay"></div>
 
             {{-- Eyebrow --}}
-            <div class="relative z-10 pt-2 lg:pt-4">
+            <div class="relative z-10 pt-24 lg:pt-28">
                 <span class="inline-block text-[11.5px] sm:text-xs font-semibold tracking-[0.25em] text-[#dfcfb9] uppercase font-sans">
                     PEMBANGUNAN HUNIAN &amp; PROPERTI
                 </span>
@@ -80,9 +80,9 @@
     <div class="split-panel-divider hidden lg:block"></div>
 
     {{-- RENOVASI --}}
-    <div class="animate-right">
+    <div class="animate-right h-full w-full flex flex-col">
         <section aria-label="Renovasi"
-            class="split-panel split-panel-right group relative flex flex-col justify-between p-8 sm:p-14 lg:p-20 xl:p-24 transition-all duration-500 overflow-hidden cursor-pointer"
+            class="split-panel split-panel-right group relative flex flex-col justify-between p-8 sm:p-14 lg:p-20 xl:p-24 transition-all duration-500 overflow-hidden cursor-pointer h-full flex-1"
             onclick="window.location.href='{{ route('renovasi') }}'">
 
             {{-- Background Image --}}
@@ -99,7 +99,7 @@
             <div class="split-panel-overlay"></div>
 
             {{-- Eyebrow --}}
-            <div class="relative z-10 pt-2 lg:pt-4">
+            <div class="relative z-10 pt-24 lg:pt-28">
                 <span class="inline-block text-[11.5px] sm:text-xs font-semibold tracking-[0.25em] text-[#cbb493] uppercase font-sans">
                     RENOVASI &amp; PENINGKATAN BANGUNAN
                 </span>

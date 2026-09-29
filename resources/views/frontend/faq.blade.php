@@ -6,7 +6,7 @@
 
 <!-- BEGIN: PageHero -->
 
-<section class="relative border-b border-slate-800/80 py-16 sm:py-20 lg:py-24 overflow-hidden bg-brand-dark bg-cover bg-center" style="background-image: linear-gradient(to right, rgba(7, 19, 36, 0.92), rgba(11, 25, 44, 0.85)), url(&quot;https://lh3.googleusercontent.com/aida-public/AB6AXuCeVbtNJiJuL00yT332BB87i6eGfIlEL-L_LdxKGSFd1Z1mfnTd3bZdOiyT88tu5L-T1dLtUlK2F8Sp8iWG-L1ZMCxzwC9bROyNihL-_pLkwPPeksOBvW6K8rNbXGLX0l7AhO4I8QZSAKgpizo8EcD7Ubl45jNNMN5IIhWdxqVVhl3xArBWUMccQsLabranZYvDMaEzvuaWRrqYM94q10omSYxM23s6vYlVswuYr8DQDHaRF0IHTIcK&quot;);">
+<section class="relative border-b border-slate-800/80 py-28 md:py-36 lg:py-44 px-6 sm:px-10 lg:px-16 overflow-hidden bg-brand-dark bg-cover bg-center" style="background-image: linear-gradient(to right, rgba(7, 19, 36, 0.92), rgba(11, 25, 44, 0.85)), url(&quot;https://lh3.googleusercontent.com/aida-public/AB6AXuCeVbtNJiJuL00yT332BB87i6eGfIlEL-L_LdxKGSFd1Z1mfnTd3bZdOiyT88tu5L-T1dLtUlK2F8Sp8iWG-L1ZMCxzwC9bROyNihL-_pLkwPPeksOBvW6K8rNbXGLX0l7AhO4I8QZSAKgpizo8EcD7Ubl45jNNMN5IIhWdxqVVhl3xArBWUMccQsLabranZYvDMaEzvuaWRrqYM94q10omSYxM23s6vYlVswuYr8DQDHaRF0IHTIcK&quot;);">
  <div class="animate-left">
 <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"><div class="max-w-3xl"><h1 class="font-serif text-4xl sm:text-5xl lg:text-6xl text-white font-normal tracking-tight leading-[1.15]">Pertanyaan yang Sering Diajukan</h1><p class="mt-5 text-base sm:text-lg text-slate-300 font-light leading-relaxed max-w-2xl">Temukan jawaban komprehensif seputar layanan, transparansi rancang bangun, estimasi RAB, dan alur kerja sama bersama Surya Karya.</p></div></div></div></section>
 

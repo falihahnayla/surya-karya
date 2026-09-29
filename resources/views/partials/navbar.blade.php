@@ -82,19 +82,10 @@
       >
         FAQ
       </a>
-
-      <!-- Kontak -->
-      <a
-        href="#kontak"
-        class="transition-colors hover:text-[#d4af37]"
-      >
-        Kontak
-      </a>
-
     </nav>
 
-    <!-- Right Action & Language -->
-    <div class="flex items-center space-x-4">
+    <!-- Right Action & Language & Mobile Hamburger -->
+    <div class="flex items-center space-x-3 sm:space-x-4">
 
       <!-- Language Icon -->
       <button
@@ -105,15 +96,105 @@
         <i class="fa-solid fa-globe text-[18px]"></i>
       </button>
 
-      <!-- CTA Button -->
+      <!-- CTA Button (Desktop/Tablet) -->
       <a
         href="{{ route('frontend.form-pesanan') }}"
-        class="inline-flex items-center justify-center px-5 py-2.5 text-xs sm:text-sm font-semibold tracking-wide text-white bg-[#0d1c31] hover:bg-[#d4af37] rounded-full transition shadow-sm active:scale-95"
+        class="hidden sm:inline-flex items-center justify-center px-5 py-2.5 text-xs sm:text-sm font-semibold tracking-wide text-white bg-[#0d1c31] hover:bg-[#d4af37] rounded-full transition shadow-sm active:scale-95"
       >
-        Konsultasi
+        Get In Touch 
       </a>
+
+      <!-- Mobile/Tablet Hamburger Button -->
+      <button
+        id="mobile-menu-btn"
+        aria-label="Toggle Navigation Menu"
+        type="button"
+        class="md:hidden p-2 rounded-lg text-slate-700 hover:text-[#d4af37] hover:bg-slate-100 transition focus:outline-none"
+      >
+        <i id="menu-icon-bars" class="fa-solid fa-bars text-xl"></i>
+        <i id="menu-icon-x" class="fa-solid fa-xmark text-xl hidden"></i>
+      </button>
+
+    </div>
+  </div>
+
+  <!-- Mobile / Tablet Drawer Menu -->
+  <div id="mobile-menu-drawer" class="hidden md:hidden bg-white/98 border-b border-slate-200 px-6 py-5 shadow-xl space-y-4">
+    <div class="flex flex-col space-y-3 text-base font-medium text-slate-700">
+      
+      <!-- Beranda -->
+      <a href="{{ route('home') }}" class="py-2 hover:text-[#d4af37] transition-colors {{ request()->routeIs('home') ? 'text-[#d4af37] font-semibold' : '' }}">
+        Beranda
+      </a>
+
+      <!-- Layanan Accordion for Mobile -->
+      <div class="border-y border-slate-100 py-2">
+        <button id="mobile-layanan-btn" type="button" class="w-full flex items-center justify-between py-1 text-left font-medium hover:text-[#d4af37] transition-colors">
+          <span>Layanan</span>
+          <i id="mobile-layanan-icon" class="fa-solid fa-chevron-down text-xs transition-transform duration-300"></i>
+        </button>
+
+        <div id="mobile-layanan-sub" class="hidden pl-4 pt-2 space-y-2 text-sm text-slate-600">
+          <a href="{{ route('pembangunan-renovasi') }}" class="block py-1.5 hover:text-[#d4af37] transition-colors">
+            Pembangunan &amp; Renovasi
+          </a>
+          <a href="{{ route('spesifikasi-standar') }}" class="block py-1.5 hover:text-[#d4af37] transition-colors">
+            Spesifikasi Bangunan &amp; Standar Mutu
+          </a>
+          <a href="{{ route('alur-kerja') }}" class="block py-1.5 hover:text-[#d4af37] transition-colors">
+            Alur Kerja Sama Kontraktor
+          </a>
+        </div>
+      </div>
+
+      <!-- Portofolio -->
+      <a href="{{ route('portofolio') }}" class="py-2 hover:text-[#d4af37] transition-colors {{ request()->routeIs('portofolio') ? 'text-[#d4af37] font-semibold' : '' }}">
+        Portofolio
+      </a>
+
+      <!-- FAQ -->
+      <a href="{{ route('faq') }}" class="py-2 hover:text-[#d4af37] transition-colors {{ request()->routeIs('faq') ? 'text-[#d4af37] font-semibold' : '' }}">
+        FAQ
+      </a>
+
+      <!-- Mobile Get In Touch CTA -->
+      <div class="pt-3">
+        <a href="{{ route('frontend.form-pesanan') }}" class="w-full inline-flex items-center justify-center px-5 py-3 text-sm font-semibold tracking-wide text-white bg-[#0d1c31] hover:bg-[#d4af37] rounded-full transition shadow-sm">
+          Get In Touch
+        </a>
+      </div>
 
     </div>
   </div>
 </header>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const menuBtn = document.getElementById('mobile-menu-btn');
+    const menuDrawer = document.getElementById('mobile-menu-drawer');
+    const iconBars = document.getElementById('menu-icon-bars');
+    const iconX = document.getElementById('menu-icon-x');
+
+    const layananBtn = document.getElementById('mobile-layanan-btn');
+    const layananSub = document.getElementById('mobile-layanan-sub');
+    const layananIcon = document.getElementById('mobile-layanan-icon');
+
+    if (menuBtn && menuDrawer) {
+      menuBtn.addEventListener('click', function () {
+        menuDrawer.classList.toggle('hidden');
+        iconBars.classList.toggle('hidden');
+        iconX.classList.toggle('hidden');
+      });
+    }
+
+    if (layananBtn && layananSub) {
+      layananBtn.addEventListener('click', function () {
+        layananSub.classList.toggle('hidden');
+        if (layananIcon) {
+          layananIcon.classList.toggle('rotate-180');
+        }
+      });
+    }
+  });
+</script>
 <!-- END: MainHeader -->
