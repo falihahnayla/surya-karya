@@ -27,7 +27,7 @@ class PortofolioCategoryController extends Controller
 
         PortofolioCategory::create($request->only('title'));
 
-        return redirect()->route('admin.portofolio-category.index')->with('success', 'Kategori Portofolio berhasil ditambahkan.');
+        return redirect()->route('admin.portofolio.index')->with('success', 'Kategori Portofolio berhasil ditambahkan.');
     }
 
     public function edit(PortofolioCategory $portofolioCategory)
@@ -43,12 +43,12 @@ class PortofolioCategoryController extends Controller
 
         $portofolioCategory->update($request->only('title'));
 
-        return redirect()->route('admin.portofolio-category.index')->with('success', 'Kategori Portofolio berhasil diperbarui.');
+        return redirect()->route('admin.portofolio.index')->with('success', 'Kategori Portofolio berhasil diperbarui.');
     }
 
     public function destroy(PortofolioCategory $portofolioCategory)
     {
         $portofolioCategory->delete();
-        return redirect()->route('admin.portofolio-category.index')->with('success', 'Kategori Portofolio berhasil dihapus.');
+        return redirect()->route('admin.portofolio.index')->with('success', 'Kategori Portofolio berhasil dihapus.');
     }
 }

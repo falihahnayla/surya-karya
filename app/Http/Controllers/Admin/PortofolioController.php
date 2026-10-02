@@ -11,8 +11,9 @@ class PortofolioController extends Controller
 {
     public function index()
     {
+        $categories = PortofolioCategory::withCount('portofolios')->latest()->get();
         $portofolios = Portofolio::with('category')->latest()->get();
-        return view('admin.portofolio.index', compact('portofolios'));
+        return view('admin.portofolio.index', compact('categories', 'portofolios'));
     }
 
     public function create()

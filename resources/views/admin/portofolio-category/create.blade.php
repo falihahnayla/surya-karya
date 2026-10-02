@@ -9,7 +9,7 @@
             <h1 class="text-3xl font-normal text-primary tracking-tight" style="font-family: 'Cormorant Garamond', serif;">Tambah Kategori Portofolio</h1>
             <p class="text-sm text-on-surface-variant font-normal" style="font-family: 'Inter', sans-serif;">Isi nama/judul kategori portofolio baru.</p>
         </div>
-        <a href="{{ route('admin.portofolio-category.index') }}" class="px-4 py-2 rounded-DEFAULT bg-slate-100 text-slate-700 text-sm font-medium hover:bg-slate-200 transition-colors inline-flex items-center gap-2" style="font-family: 'Inter', sans-serif;">
+        <a href="{{ route('admin.portofolio.index') }}" class="px-4 py-2 rounded-DEFAULT bg-slate-100 text-slate-700 text-sm font-medium hover:bg-slate-200 transition-colors inline-flex items-center gap-2" style="font-family: 'Inter', sans-serif;">
             &larr; Kembali
         </a>
     </div>
@@ -27,7 +27,7 @@
                 <button type="submit" class="px-6 py-2.5 rounded-DEFAULT bg-[#0a2569] text-white text-sm font-medium hover:bg-[#081d52] transition-colors">
                     Simpan Kategori
                 </button>
-                <a href="{{ route('admin.portofolio-category.index') }}" class="px-5 py-2.5 rounded-DEFAULT bg-slate-100 text-slate-600 text-sm font-medium hover:bg-slate-200 transition-colors">
+                <a href="{{ route('admin.portofolio.index') }}" class="px-5 py-2.5 rounded-DEFAULT bg-slate-100 text-slate-600 text-sm font-medium hover:bg-slate-200 transition-colors">
                     Batal
                 </a>
             </div>

@@ -38,7 +38,6 @@
           <li><a class="hover:text-white transition" href="#layanan">Layanan</a></li>
           <li><a class="hover:text-white transition" href="#portofolio">Portofolio</a></li>
           <li><a class="hover:text-white transition" href="#faq">FAQ</a></li>
-          <li><a class="hover:text-white transition" href="#kontak">Kontak</a></li>
         </ul>
       </div>
 
