@@ -9,7 +9,7 @@
 <section class="relative min-h-[600px] lg:min-h-[700px] flex items-center justify-center text-center px-4 py-24 sm:py-32 overflow-hidden bg-slate-900" id="beranda">
 <!-- Atmospheric architectural background image with deep moody overlay -->
 <div class="absolute inset-0 z-0">
-<img alt="Modern Luxury Residence Blueprint and Architecture" class="w-full h-full object-cover object-center opacity-30 brightness-75 filter contrast-125" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAEmAJlEszPG3P3R2DGhATkxADa1zefFNHUQg7z7wTIR3jvBRAh-P_-U01P9UKdGH1FRdneGvoUAGbeo63g_lbX0UbLrlB2o7waivWz-wYWTa_8y3nDWFIIMIq1v-E4hoDud10u48GOcIVVh2aOsNV9sqvGgY75sriQVXc0eN5zIT33ZkA2ge2ZcxNDloizwxlnbqPrm_P55zlGbeZqHvFovXfVVl18utIZ33_r73ET6yEDQDOLr_-R"/>
+<img alt="Modern Luxury Residence Blueprint and Architecture" class="w-full h-full object-cover object-center opacity-30 brightness-75 filter contrast-125" src="{{ $home->image_bg ? asset($home->image_bg) : 'https://lh3.googleusercontent.com/aida-public/AB6AXuAEmAJlEszPG3P3R2DGhATkxADa1zefFNHUQg7z7wTIR3jvBRAh-P_-U01P9UKdGH1FRdneGvoUAGbeo63g_lbX0UbLrlB2o7waivWz-wYWTa_8y3nDWFIIMIq1v-E4hoDud10u48GOcIVVh2aOsNV9sqvGgY75sriQVXc0eN5zIT33ZkA2ge2ZcxNDloizwxlnbqPrm_P55zlGbeZqHvFovXfVVl18utIZ33_r73ET6yEDQDOLr_-R' }}"/>
 <div class="absolute inset-0 bg-gradient-to-b from-[#101e33]/90 via-[#0d182b]/85 to-[#0b1424]/95 mix-blend-multiply"></div>
 </div>
 <!-- Hero Content Container -->
@@ -21,11 +21,11 @@
 </span>
 <!-- Primary Serif Headline -->
 <h1 class="heading-serif text-4xl sm:text-6xl lg:text-7xl font-semibold text-white uppercase tracking-normal leading-[1.1] max-w-3xl">
-        PEMBANGUNAN &amp;<br/>RENOVASI RUMAH
+        {!! nl2br(e($home->title ?? "PEMBANGUNAN &\nRENOVASI RUMAH")) !!}
       </h1>
 <!-- Supporting Tagline -->
 <p class="mt-6 text-sm sm:text-base lg:text-lg text-slate-300 font-light max-w-2xl leading-relaxed">
-        Solusi pembangunan dan renovasi rumah dengan proses yang profesional, transparan, dan berorientasi pada kualitas.
+        {{ $home->subtitle ?? 'Solusi pembangunan dan renovasi rumah dengan proses yang profesional, transparan, dan berorientasi pada kualitas.' }}
       </p>
 <!-- Action Buttons -->
 <div class="mt-10 flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto">
@@ -51,14 +51,14 @@
 <!-- Left: Project Under Construction Image with Info Card -->
 <div class="lg:col-span-6 relative">
 <div class="relative overflow-hidden rounded-2xl shadow-xl aspect-[4/3] bg-slate-100 group">
-<img alt="Proyek Konstruksi dan Pembangunan Surya Karya" class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCaVISVOE0HiYxrVbfBKu7qNuCkFrQ85oCaltnzEk1VThaOmYn935JMGSieA0Dxg_oXpAHqMLQ44eNOZ5S0xoDTBs8Cw0krzOlzHvn0jr0h1RevSiKR01HFUhFe81bqFm2TS4BqIPEs-4S_-VLv3zX7YKeFNdeoYwm_F2GsParqe0BkRYnUQ8Z9PX7yYCPFinRL-yBbDktuqKGMO-mRoRmE3c6nQB38hCE8yYIM-neD02s-fCvyeKJE"/>
+<img alt="Proyek Konstruksi dan Pembangunan Surya Karya" class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700" src="{{ $home->image_about ? asset($home->image_about) : 'https://lh3.googleusercontent.com/aida-public/AB6AXuCaVISVOE0HiYxrVbfBKu7qNuCkFrQ85oCaltnzEk1VThaOmYn935JMGSieA0Dxg_oXpAHqMLQ44eNOZ5S0xoDTBs8Cw0krzOlzHvn0jr0h1RevSiKR01HFUhFe81bqFm2TS4BqIPEs-4S_-VLv3zX7YKeFNdeoYwm_F2GsParqe0BkRYnUQ8Z9PX7yYCPFinRL-yBbDktuqKGMO-mRoRmE3c6nQB38hCE8yYIM-neD02s-fCvyeKJE' }}"/>
 <!-- Bottom Left Badge Overlay -->
 <div class="absolute bottom-5 left-5 right-5 sm:right-auto sm:max-w-xs bg-white/95 backdrop-blur-md p-4 rounded-lg shadow-lg border border-slate-100">
 <span class="text-[10px] uppercase font-bold tracking-wider text-slate-500 block mb-1">
                 KOMITMEN PRESISI &amp; KONSTRUKSI
               </span>
 <p class="text-xs text-slate-800 leading-snug font-medium">
-                Standar material premium dengan eksekusi teknik arsitektural modern.
+                {{ $home->img_desc ?? 'Standar material premium dengan eksekusi teknik arsitektural modern.' }}
               </p>
 </div>
 </div>
@@ -70,7 +70,7 @@
           </h2>
 <div class="border-l-2 border-slate-200 pl-6 space-y-4 text-slate-600 text-sm sm:text-base leading-relaxed text-justify">
 <p class="">
-              Surya Karya hadir sebagai mitra terpercaya Anda dalam mewujudkan hunian impian. Kami menggabungkan keahlian teknis teruji dengan pendekatan estetika modern untuk menghasilkan struktur yang tidak hanya kokoh dan tahan lama, tetapi juga mencerminkan karakter serta gaya hidup Anda.
+              {{ $home->content_about ?? 'Surya Karya hadir sebagai mitra terpercaya Anda dalam mewujudkan hunian impian. Kami menggabungkan keahlian teknis teruji dengan pendekatan estetika modern untuk menghasilkan struktur yang tidak hanya kokoh dan tahan lama, tetapi juga mencerminkan karakter serta gaya hidup Anda.' }}
             </p>
 <p class="">
               Dedikasi kami pada detail, integritas struktural, transparansi manajemen biaya, dan craftsmanship terkurasi memastikan setiap proyek berjalan lancar dari konsepsi desain awal hingga serah terima kunci.
@@ -105,9 +105,9 @@
 <span class="w-6 h-[1.5px] bg-slate-400"></span>
 <span class="text-[10px] tracking-[0.2em] uppercase font-semibold text-slate-300">ARAH &amp; CITA-CITA</span>
 </div>
-<h3 class="heading-serif text-3xl font-bold tracking-wider mb-4 text-white">VISI</h3>
+<h3 class="heading-serif text-3xl font-bold tracking-wider mb-4 text-white">{{ $visi->title ?? 'VISI' }}</h3>
 <p class="text-sm text-slate-300 leading-relaxed font-light">
-              Menjadi mitra konstruksi terdepan yang mendefinisikan ulang standar kualitas hunian melalui inovasi struktural, estetika arsitektural, dan pelayanan yang transparan.
+              {{ $visi->content ?? 'Menjadi mitra konstruksi terdepan yang mendefinisikan ulang standar kualitas hunian melalui inovasi struktural, estetika arsitektural, dan pelayanan yang transparan.' }}
             </p>
 </div>
 <div class="absolute -right-10 -bottom-10 w-40 h-40 bg-blue-600/10 rounded-full blur-3xl pointer-events-none"></div>
@@ -122,9 +122,9 @@
 <span class="w-6 h-[1.5px] bg-slate-400"></span>
 <span class="text-[10px] tracking-[0.2em] uppercase font-semibold text-slate-300">TANGGUNG JAWAB NYATA</span>
 </div>
-<h3 class="heading-serif text-3xl font-bold tracking-wider mb-4 text-white">MISI</h3>
+<h3 class="heading-serif text-3xl font-bold tracking-wider mb-4 text-white">{{ $misi->title ?? 'MISI' }}</h3>
 <p class="text-sm text-slate-300 leading-relaxed font-light">
-              Memberikan hasil karya berkualitas tinggi dengan presisi teknis, efisiensi manajemen waktu dan biaya, serta komunikasi yang jujur dan profesional pada setiap tahap.
+              {{ $misi->content ?? 'Memberikan hasil karya berkualitas tinggi dengan presisi teknis, efisiensi manajemen waktu dan biaya, serta komunikasi yang jujur dan profesional pada setiap tahap.' }}
             </p>
 </div>
 </div>
@@ -143,66 +143,36 @@
     <div class="flex flex-col md:flex-row md:items-end justify-between mb-16 pb-6 border-b border-slate-100 gap-4">
       <div>
         <h2 class="heading-serif text-3xl sm:text-5xl text-slate-900 tracking-tight font-normal">
-          Standar Eksekusi Terbaik
+          {{ $home->service_title ?? 'Standar Eksekusi Terbaik' }}
         </h2>
       </div>
 
       <p class="text-xs sm:text-sm text-slate-500 max-w-md leading-relaxed md:text-right">
-        Prinsip kerja profesional yang diterapkan di setiap proyek demi ketahanan dan kenyamanan tinggal Anda.
+        {{ $home->service_desc ?? 'Prinsip kerja profesional yang diterapkan di setiap proyek demi ketahanan dan kenyamanan tinggal Anda.' }}
       </p>
     </div>
 
     <!-- 3 Pillars Cards -->
     <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
 
-      <!-- Card 01 -->
-        <div class="animate-left">
+      @foreach($services as $service)
+      <!-- Card {{ sprintf('%02d', $loop->iteration) }} -->
+        <div class="{{ ['animate-left', 'animate-up', 'animate-right'][$loop->index % 3] }}">
       <div class="relative bg-white border border-slate-200 p-8 rounded-xl flex flex-col justify-between hover:border-slate-400 transition group shadow-sm hover:shadow-md">
-        <span class="card-watermark group-hover:text-slate-300/60 transition-colors">01</span>
+        <span class="card-watermark group-hover:text-slate-300/60 transition-colors">{{ sprintf('%02d', $loop->iteration) }}</span>
 
         <div class="relative z-10 pt-4">
           <h3 class="heading-serif text-2xl sm:text-3xl font-semibold text-slate-900 mb-4 pr-12">
-            Pembangunan &amp; Renovasi
+            {{ $service->title }}
           </h3>
 
           <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
-            Layanan menyeluruh dari pembangunan rumah baru hingga renovasi parsial atau total, dikerjakan oleh tim berpengalaman untuk hasil optimal.
+            {{ $service->content }}
           </p>
         </div>
       </div>
       </div>
-      <!-- Card 02 -->
-        <div class="animate-up">
-      <div class="relative bg-white border border-slate-200 p-8 rounded-xl flex flex-col justify-between hover:border-slate-400 transition group shadow-sm hover:shadow-md">
-        <span class="card-watermark group-hover:text-slate-300/60 transition-colors">02</span>
-
-        <div class="relative z-10 pt-4">
-          <h3 class="heading-serif text-2xl sm:text-3xl font-semibold text-slate-900 mb-4 pr-12">
-            Spesifikasi Bangunan &amp; Standar Mutu
-          </h3>
-
-          <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
-            Kami menjamin penggunaan material berkualitas dan penerapan standar konstruksi yang ketat demi keamanan dan keawetan bangunan Anda.
-          </p>
-        </div>
-      </div>
-      </div>
-      <!-- Card 03 -->
-        <div class="animate-right">
-      <div class="relative bg-white border border-slate-200 p-8 rounded-xl flex flex-col justify-between hover:border-slate-400 transition group shadow-sm hover:shadow-md">
-        <span class="card-watermark group-hover:text-slate-300/60 transition-colors">03</span>
-
-        <div class="relative z-10 pt-4">
-          <h3 class="heading-serif text-2xl sm:text-3xl font-semibold text-slate-900 mb-4 pr-12">
-            Alur Kerja Sama Kontraktor
-          </h3>
-
-          <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
-            Proses kerja sama yang jelas, terstruktur, dan transparan, memastikan Anda selalu mendapat informasi terkini mengenai perkembangan proyek.
-          </p>
-        </div>
-      </div>
-      </div>
+      @endforeach
     </div>
   </div>
 </section>
@@ -308,4 +278,3 @@
 <!-- END: FeaturedProjectsSection -->
 
 @endsection
-

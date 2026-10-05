@@ -14,16 +14,16 @@
         <nav class="flex flex-col gap-1 px-4 py-3 flex-1 overflow-y-auto" style="font-family: 'Inter', sans-serif;">
             
             <!-- Dashboard -->
-            <a class="flex items-center gap-3 px-3.5 py-2.5 rounded-DEFAULT {{ request()->is('admin/dashboard') || request()->is('admin') ? 'bg-[#0a2569] text-white font-medium' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50 font-normal' }} text-sm transition-colors" href="{{ url('/admin/dashboard') }}">
+            <a class="flex items-center gap-3 px-3.5 py-2.5 rounded-DEFAULT {{ request()->routeIs('admin.dashboard') ? 'bg-[#0a2569] text-white font-medium' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50 font-normal' }} text-sm transition-colors" href="{{ route('admin.dashboard') }}">
                 <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24"><rect height="7" rx="1" width="7" x="3" y="3"></rect><rect height="7" rx="1" width="7" x="14" y="3"></rect><rect height="7" rx="1" width="7" x="14" y="14"></rect><rect height="7" rx="1" width="7" x="3" y="14"></rect></svg>
                 <span>Dashboard</span>
             </a>
 
-            <!-- Pesanan -->
-            <a class="flex items-center gap-3 px-3.5 py-2.5 rounded-DEFAULT {{ request()->is('admin/pesanan*') ? 'bg-[#0a2569] text-white font-medium' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50 font-normal' }} text-sm transition-colors" href="#">
-                <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" x2="8" y1="13" y2="13"></line><line x1="16" x2="8" y1="17" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
-                <span>Pesanan</span>
-            </a>
+            <!-- Order -->
+        <a class="flex items-center gap-3 px-3.5 py-2.5 rounded-DEFAULT {{ request()->is('admin/orders*') ? 'bg-[#0a2569] text-white font-medium' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50 font-normal' }} text-sm transition-colors" href="{{ route('admin.orders.index') }}">
+            <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" x2="8" y1="13" y2="13"></line><line x1="16" x2="8" y1="17" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+            <span>Order</span>
+        </a>
 
             <!-- Pengaturan -->
             <a class="flex items-center gap-3 px-3.5 py-2.5 rounded-DEFAULT {{ request()->is('admin/settings*') ? 'bg-[#0a2569] text-white font-medium' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50 font-normal' }} text-sm transition-colors" href="{{ route('admin.settings.index') }}">
@@ -31,8 +31,32 @@
                 <span>Pengaturan</span>
             </a>
 
+            <!-- Home -->
+            <a class="flex items-center gap-3 px-3.5 py-2.5 rounded-DEFAULT {{ request()->is('admin/home*') ? 'bg-[#0a2569] text-white font-medium' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50 font-normal' }} text-sm transition-colors" href="{{ route('admin.home.index') }}">
+                <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 12l9-9 9 9M5 10v10a1 1 0 0 0 1 1h3v-6h6v6h3a1 1 0 0 0 1-1V10"></path></svg>
+                <span>Home</span>
+            </a>
+
+           <!-- Visi & Misi -->
+            <a class="flex items-center gap-3 px-3.5 py-2.5 rounded-DEFAULT {{ request()->is('admin/visi-misi*') ? 'bg-[#0a2569] text-white font-medium' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50 font-normal' }} text-sm transition-colors" href="{{ route('admin.visi-misi.index') }}">
+                <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                <span>Visi &amp; Misi</span>
+            </a>
+
+            <!-- Quick Links -->
+            <a class="flex items-center gap-3 px-3.5 py-2.5 rounded-DEFAULT {{ request()->is('admin/quick-links*') ? 'bg-[#0a2569] text-white font-medium' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50 font-normal' }} text-sm transition-colors" href="{{ route('admin.quick-links.index') }}">
+                <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path stroke-linecap="round" stroke-linejoin="round" d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
+                <span>Quick Links</span>
+            </a>
+
+            <!-- Service -->
+            <a class="flex items-center gap-3 px-3.5 py-2.5 rounded-DEFAULT {{ request()->is('admin/service*') ? 'bg-[#0a2569] text-white font-medium' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50 font-normal' }} text-sm transition-colors" href="{{ route('admin.service.index') }}">
+                <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 13.255A23.931 23.931 0 0 1 12 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2m4 6h.01M5 20h14a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2z"></path></svg>
+                <span>Service</span>
+            </a>
+
             <!-- Layanan -->
-            <a class="flex items-center gap-3 px-3.5 py-2.5 rounded-DEFAULT {{ request()->is('admin/layanan*') ? 'bg-[#0a2569] text-white font-medium' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50 font-normal' }} text-sm transition-colors" href="#">
+            <a class="flex items-center gap-3 px-3.5 py-2.5 rounded-DEFAULT {{ request()->is('admin/layanan*') ? 'bg-[#0a2569] text-white font-medium' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50 font-normal' }} text-sm transition-colors" href="{{ route('admin.layanan.index') }}">
                 <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
                 <span>Layanan</span>
             </a>
@@ -62,8 +86,15 @@
             </a>
 
             <!-- Alur Kerja sama -->
-            <a class="flex items-center gap-3 px-3.5 py-2.5 rounded-DEFAULT {{ request()->is('admin/alur-kerjasama*') ? 'bg-[#0a2569] text-white font-medium' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50 font-normal' }} text-sm transition-colors" href="#">
-                <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path><polyline points="16 11 18 13 22 9"></polyline></svg>
+            <a class="flex items-center gap-3 px-3.5 py-2.5 rounded-DEFAULT {{ request()->is('admin/alur-kerja*') ? 'bg-[#0a2569] text-white font-medium' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50 font-normal' }} text-sm transition-colors"
+            href="{{ route('admin.alur-kerja.index') }}">
+                <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24">
+                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="9" cy="7" r="4"></circle>
+                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                    <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                    <polyline points="16 11 18 13 22 9"></polyline>
+                </svg>
                 <span>Alur Kerja sama</span>
             </a>
 
@@ -73,16 +104,38 @@
                 <span>Portofolio</span>
             </a>
 
+            <!-- Kategori Portofolio -->
+            <a class="flex items-center gap-3 px-3.5 py-2.5 rounded-DEFAULT {{ request()->is('admin/portofolio-category*') ? 'bg-[#0a2569] text-white font-medium' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50 font-normal' }} text-sm transition-colors" href="{{ route('admin.portofolio-category.index') }}">
+                <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg>
+                <span>Kategori Portofolio</span>
+            </a>
+
             <!-- Hero Title -->
             <a class="flex items-center gap-3 px-3.5 py-2.5 rounded-DEFAULT {{ request()->is('admin/hero-title*') ? 'bg-[#0a2569] text-white font-medium' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50 font-normal' }} text-sm transition-colors" href="{{ route('admin.hero-title.index') }}">
                 <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"></path><line x1="4" x2="4" y1="22" y2="15"></line></svg>
                 <span>Hero Title</span>
             </a>
 
-            <!-- FAQ -->
-            <a class="flex items-center gap-3 px-3.5 py-2.5 rounded-DEFAULT {{ request()->is('admin/faq*') ? 'bg-[#0a2569] text-white font-medium' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50 font-normal' }} text-sm transition-colors" href="#">
-                <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" x2="12.01" y1="17" y2="17"></line></svg>
+           <!-- FAQ -->
+            <a class="flex items-center gap-3 px-3.5 py-2.5 rounded-DEFAULT {{ request()->is('admin/faqs*') ? 'bg-[#0a2569] text-white font-medium' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50 font-normal' }} text-sm transition-colors"
+            href="{{ route('admin.faqs.index') }}">
+                <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+                    <line x1="12" x2="12.01" y1="17" y2="17"></line>
+                </svg>
                 <span>FAQ</span>
+            </a>
+
+            <!-- Kategori FAQ -->
+            <a class="flex items-center gap-3 px-3.5 py-2.5 rounded-DEFAULT {{ request()->is('admin/faq_categories*') ? 'bg-[#0a2569] text-white font-medium' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50 font-normal' }} text-sm transition-colors"
+            href="{{ route('admin.faq_categories.index') }}">
+                <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24">
+                    <path d="M4 6h16"></path>
+                    <path d="M4 12h16"></path>
+                    <path d="M4 18h16"></path>
+                </svg>
+                <span>Kategori FAQ</span>
             </a>
 
             <!-- Sosial Media -->

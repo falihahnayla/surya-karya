@@ -1,14 +1,18 @@
 <?php
 
-namespace App\Http\Controllers\frontend;
+namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Models\FaqCategory;
 
 class FaqController extends Controller
 {
     public function index()
     {
-        return view('frontend.faq');
+        $categories = FaqCategory::with('faqs')
+            ->orderBy('id')
+            ->get();
+
+        return view('frontend.faq', compact('categories'));
     }
 }
