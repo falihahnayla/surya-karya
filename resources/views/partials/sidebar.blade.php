@@ -61,10 +61,10 @@
                 <span>Layanan</span>
             </a>
 
-            <!-- Bangunan -->
+            <!-- Pembangunan -->
             <a class="flex items-center gap-3 px-3.5 py-2.5 rounded-DEFAULT {{ request()->is('admin/pembangunan*') ? 'bg-[#0a2569] text-white font-medium' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50 font-normal' }} text-sm transition-colors" href="{{ route('admin.pembangunan.index') }}">
                 <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24"><path d="M3 21h18"></path><path d="M5 21V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16"></path><path d="M9 9h1"></path><path d="M9 13h1"></path><path d="M9 17h1"></path><path d="M14 9h1"></path><path d="M14 13h1"></path><path d="M14 17h1"></path></svg>
-                <span>Bangunan</span>
+                <span>Pembangunan</span>
             </a>
 
             <!-- Renovasi -->
@@ -102,12 +102,6 @@
             <a class="flex items-center gap-3 px-3.5 py-2.5 rounded-DEFAULT {{ request()->is('admin/portofolio*') ? 'bg-[#0a2569] text-white font-medium' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50 font-normal' }} text-sm transition-colors" href="{{ route('admin.portofolio.index') }}">
                 <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24"><rect height="18" rx="2" width="18" x="3" y="3"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
                 <span>Portofolio</span>
-            </a>
-
-            <!-- Kategori Portofolio -->
-            <a class="flex items-center gap-3 px-3.5 py-2.5 rounded-DEFAULT {{ request()->is('admin/portofolio-category*') ? 'bg-[#0a2569] text-white font-medium' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50 font-normal' }} text-sm transition-colors" href="{{ route('admin.portofolio-category.index') }}">
-                <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg>
-                <span>Kategori Portofolio</span>
             </a>
 
             <!-- Hero Title -->

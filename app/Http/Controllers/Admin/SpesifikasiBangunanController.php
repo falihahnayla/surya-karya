@@ -5,52 +5,96 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\SpesifikasiBangunan;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Str;
 
 class SpesifikasiBangunanController extends Controller
 {
     public function index()
     {
-        $items = SpesifikasiBangunan::latest()->get();
-        return view('admin.spesifikasi-bangunan.index', compact('items'));
+        $cards = SpesifikasiBangunan::where('item_type', 'card')->latest()->get();
+        $photos = SpesifikasiBangunan::where('item_type', 'photo')->latest()->get();
+        return view('admin.spesifikasi-bangunan.index', compact('cards', 'photos'));
     }
 
-    public function create()
+    public function create(Request $request)
     {
-        return view('admin.spesifikasi-bangunan.create');
+        $type = $request->query('type', 'card');
+        return view('admin.spesifikasi-bangunan.create', compact('type'));
     }
 
     public function store(Request $request)
     {
-        $request->validate([
-            'title' => 'required|string|max:225',
-            'content' => 'required|string|max:255',
+        $validated = $request->validate([
+            'item_type'  => 'required|in:card,photo',
+            'title'      => 'required|string|max:225',
+            'tag'        => 'nullable|string|max:225',
+            'content'    => 'nullable|string',
+            'checklist'  => 'nullable|string',
+            'image'      => 'nullable|string',
+            'image_file' => 'nullable|image|mimes:jpg,jpeg,png,webp,gif|max:5120',
         ]);
 
-        SpesifikasiBangunan::create($request->only('title', 'content'));
+        if ($request->hasFile('image_file')) {
+            $validated['image'] = $this->uploadImage($request->file('image_file'));
+        }
+        unset($validated['image_file']);
 
-        return redirect()->route('admin.spesifikasi-bangunan.index')->with('success', 'Data Spesifikasi Bangunan berhasil ditambahkan.');
+        SpesifikasiBangunan::create($validated);
+
+        return redirect()->route('admin.spesifikasi-bangunan.index')
+            ->with('success', 'Data Spesifikasi Bangunan berhasil ditambahkan.');
     }
 
-    public function edit(SpesifikasiBangunan $spesifikasiBangunan)
+    public function edit(SpesifikasiBangunan $spesifikasi_bangunan)
     {
-        return view('admin.spesifikasi-bangunan.edit', compact('spesifikasiBangunan'));
+        return view('admin.spesifikasi-bangunan.edit', compact('spesifikasi_bangunan'));
     }
 
-    public function update(Request $request, SpesifikasiBangunan $spesifikasiBangunan)
+    public function update(Request $request, SpesifikasiBangunan $spesifikasi_bangunan)
     {
-        $request->validate([
-            'title' => 'required|string|max:225',
-            'content' => 'required|string|max:255',
+        $validated = $request->validate([
+            'item_type'  => 'required|in:card,photo',
+            'title'      => 'required|string|max:225',
+            'tag'        => 'nullable|string|max:225',
+            'content'    => 'nullable|string',
+            'checklist'  => 'nullable|string',
+            'image'      => 'nullable|string',
+            'image_file' => 'nullable|image|mimes:jpg,jpeg,png,webp,gif|max:5120',
         ]);
 
-        $spesifikasiBangunan->update($request->only('title', 'content'));
+        if ($request->hasFile('image_file')) {
+            $this->deleteImage($spesifikasi_bangunan->image);
+            $validated['image'] = $this->uploadImage($request->file('image_file'));
+        }
+        unset($validated['image_file']);
 
-        return redirect()->route('admin.spesifikasi-bangunan.index')->with('success', 'Data Spesifikasi Bangunan berhasil diperbarui.');
+        $spesifikasi_bangunan->update($validated);
+
+        return redirect()->route('admin.spesifikasi-bangunan.index')
+            ->with('success', 'Data Spesifikasi Bangunan berhasil diperbarui.');
     }
 
-    public function destroy(SpesifikasiBangunan $spesifikasiBangunan)
+    public function destroy(SpesifikasiBangunan $spesifikasi_bangunan)
     {
-        $spesifikasiBangunan->delete();
-        return redirect()->route('admin.spesifikasi-bangunan.index')->with('success', 'Data Spesifikasi Bangunan berhasil dihapus.');
+        $this->deleteImage($spesifikasi_bangunan->image);
+        $spesifikasi_bangunan->delete();
+
+        return redirect()->route('admin.spesifikasi-bangunan.index')
+            ->with('success', 'Data Spesifikasi Bangunan berhasil dihapus.');
+    }
+
+    private function uploadImage($file): string
+    {
+        $name = Str::random(20) . '.' . $file->extension();
+        $file->move(public_path('uploads/spesifikasi-bangunan'), $name);
+        return 'uploads/spesifikasi-bangunan/' . $name;
+    }
+
+    private function deleteImage(?string $path): void
+    {
+        if ($path && File::exists(public_path($path))) {
+            File::delete(public_path($path));
+        }
     }
 }

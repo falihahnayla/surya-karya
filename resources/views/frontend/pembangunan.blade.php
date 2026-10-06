@@ -168,8 +168,33 @@
 
     <!-- 2x2 Bento-Style Service Cards -->
     <div class="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-10">
-        
-        <!-- CARD 1: Rumah Tinggal Baru (Mengambang Masuk dari Kiri) -->
+        @forelse($cards as $index => $card)
+        <div class="spec-card bg-white rounded-xl p-8 md:p-10 border border-gray-100 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] {{ $index % 2 == 0 ? 'animate-left' : 'animate-right' }}">
+            <div class="card-corner-shape"></div>
+            <div class="relative z-10">
+                <h3 class="font-serif-heading text-3xl font-semibold text-[#0b192c] mb-3">
+                    {{ $card->title }}
+                </h3>
+                @if($card->content)
+                <p class="text-slate-600 text-sm leading-relaxed mb-6 font-normal">
+                    {{ $card->content }}
+                </p>
+                @endif
+                <!-- Checklist items -->
+                @if(count($card->checklist_items) > 0)
+                <ul class="space-y-3.5 text-sm text-slate-700">
+                    @foreach($card->checklist_items as $item)
+                    <li class="flex items-start group/item">
+                        <span class="plus-badge text-[#d4af37] mr-3 text-base leading-none font-bold select-none">+</span>
+                        <span class="group-hover/item:text-[#0b192c] transition-colors">{{ $item }}</span>
+                    </li>
+                    @endforeach
+                </ul>
+                @endif
+            </div>
+        </div>
+        @empty
+        <!-- CARD 1: Rumah Tinggal Baru -->
         <div class="spec-card bg-white rounded-xl p-8 md:p-10 border border-gray-100 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] animate-left">
             <div class="card-corner-shape"></div>
             <div class="relative z-10">
@@ -179,7 +204,6 @@
                 <p class="text-slate-600 text-sm leading-relaxed mb-6 font-normal">
                     Pembangunan rumah baru dari nol mulai dari perencanaan desain, pematangan lahan, hingga serah terima kunci.
                 </p>
-                <!-- Checklist items -->
                 <ul class="space-y-3.5 text-sm text-slate-700">
                     <li class="flex items-start group/item">
                         <span class="plus-badge text-[#d4af37] mr-3 text-base leading-none font-bold select-none">+</span>
@@ -201,7 +225,7 @@
             </div>
         </div>
 
-        <!-- CARD 2: Ruko & Gedung Komersial (Mengambang Masuk dari Kanan) -->
+        <!-- CARD 2: Ruko & Gedung Komersial -->
         <div class="spec-card bg-white rounded-xl p-8 md:p-10 border border-gray-100 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] animate-right">
             <div class="card-corner-shape"></div>
             <div class="relative z-10">
@@ -211,7 +235,6 @@
                 <p class="text-slate-600 text-sm leading-relaxed mb-6 font-normal">
                     Konstruksi bangunan komersial yang mengutamakan ketahanan struktur, utilitas tinggi, dan efisiensi ruang usaha.
                 </p>
-                <!-- Checklist items -->
                 <ul class="space-y-3.5 text-sm text-slate-700">
                     <li class="flex items-start group/item">
                         <span class="plus-badge text-[#d4af37] mr-3 text-base leading-none font-bold select-none">+</span>
@@ -232,76 +255,32 @@
                 </ul>
             </div>
         </div>
-
-        <!-- CARD 3: Villa & Rumah Tropis Modern (Mengambang Masuk dari Kiri) -->
-        <div class="spec-card bg-white rounded-xl p-8 md:p-10 border border-gray-100 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] animate-left">
-            <div class="card-corner-shape"></div>
-            <div class="relative z-10">
-                <h3 class="font-serif-heading text-3xl font-semibold text-[#0b192c] mb-3">
-                    Villa &amp; Rumah Tropis Modern
-                </h3>
-                <p class="text-slate-600 text-sm leading-relaxed mb-6 font-normal">
-                    Hunian eksklusif bertema resort yang memadukan sirkulasi udara alami, bukaan lebar, dan estetika arsitektur tropis.
-                </p>
-                <!-- Checklist items -->
-                <ul class="space-y-3.5 text-sm text-slate-700">
-                    <li class="flex items-start group/item">
-                        <span class="plus-badge text-[#d4af37] mr-3 text-base leading-none font-bold select-none">+</span>
-                        <span class="group-hover/item:text-[#0b192c] transition-colors">Integrasi Lanskap, Kolam Renang, &amp; Area Terbuka</span>
-                    </li>
-                    <li class="flex items-start group/item">
-                        <span class="plus-badge text-[#d4af37] mr-3 text-base leading-none font-bold select-none">+</span>
-                        <span class="group-hover/item:text-[#0b192c] transition-colors">Material Kayu Rekayasa, Batu Alam &amp; Kaca Tempered</span>
-                    </li>
-                    <li class="flex items-start group/item">
-                        <span class="plus-badge text-[#d4af37] mr-3 text-base leading-none font-bold select-none">+</span>
-                        <span class="group-hover/item:text-[#0b192c] transition-colors">Sistem Pencahayaan &amp; Ventilasi Silang Alami</span>
-                    </li>
-                    <li class="flex items-start group/item">
-                        <span class="plus-badge text-[#d4af37] mr-3 text-base leading-none font-bold select-none">+</span>
-                        <span class="group-hover/item:text-[#0b192c] transition-colors">Detail Craftsmanship Presisi pada Setiap Sudut</span>
-                    </li>
-                </ul>
-            </div>
-        </div>
-
-        <!-- CARD 4: Manajemen & Pengawasan Proyek (Mengambang Masuk dari Kanan) -->
-        <div class="spec-card bg-white rounded-xl p-8 md:p-10 border border-gray-100 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] animate-right">
-            <div class="card-corner-shape"></div>
-            <div class="relative z-10">
-                <h3 class="font-serif-heading text-3xl font-semibold text-[#0b192c] mb-3">
-                    Manajemen &amp; Pengawasan Proyek
-                </h3>
-                <p class="text-slate-600 text-sm leading-relaxed mb-6 font-normal">
-                    Pendekatan tata kelola konstruksi profesional yang memastikan transparansi jadwal dan efisiensi biaya.
-                </p>
-                <!-- Checklist items -->
-                <ul class="space-y-3.5 text-sm text-slate-700">
-                    <li class="flex items-start group/item">
-                        <span class="plus-badge text-[#d4af37] mr-3 text-base leading-none font-bold select-none">+</span>
-                        <span class="group-hover/item:text-[#0b192c] transition-colors">Laporan Progres Mingguan Berbasis Foto &amp; Video</span>
-                    </li>
-                    <li class="flex items-start group/item">
-                        <span class="plus-badge text-[#d4af37] mr-3 text-base leading-none font-bold select-none">+</span>
-                        <span class="group-hover/item:text-[#0b192c] transition-colors">Pengawasan Mandor Ahli &amp; Supervisi Arsitek Berkala</span>
-                    </li>
-                    <li class="flex items-start group/item">
-                        <span class="plus-badge text-[#d4af37] mr-3 text-base leading-none font-bold select-none">+</span>
-                        <span class="group-hover/item:text-[#0b192c] transition-colors">Rancangan Anggaran Biaya (RAB) Rinci &amp; Transparan</span>
-                    </li>
-                    <li class="flex items-start group/item">
-                        <span class="plus-badge text-[#d4af37] mr-3 text-base leading-none font-bold select-none">+</span>
-                        <span class="group-hover/item:text-[#0b192c] transition-colors">Jaminan Penggunaan Material Sesuai Kontrak SPK</span>
-                    </li>
-                </ul>
-            </div>
-        </div>
-
+        @endforelse
     </div>
 
     <!-- BEGIN: 3 Photo Showcase Grid -->
     <div class="mt-16 lg:mt-24 grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
-        
+        @forelse($photos as $index => $photo)
+        <div class="relative overflow-hidden rounded-xl group shadow-sm animate-up" style="transition-delay: {{ $index * 150 }}ms;">
+            @if(!empty($photo->image))
+            <img class="w-full h-80 object-cover group-hover:scale-105 transition-transform duration-700" alt="{{ $photo->title }}" src="{{ (str_starts_with($photo->image, 'http://') || str_starts_with($photo->image, 'https://')) ? $photo->image : asset($photo->image) }}">
+            @else
+            <div class="w-full h-80 bg-slate-800"></div>
+            @endif
+            <div class="absolute inset-0 bg-gradient-to-t from-[#0b192c]/90 via-[#0b192c]/20 to-transparent flex items-end p-6">
+                <div>
+                    @if(!empty($photo->tag))
+                    <span class="text-xs font-semibold tracking-widest uppercase text-[#d4af37] mb-1 block">
+                        {{ $photo->tag }}
+                    </span>
+                    @endif
+                    <p class="font-serif-heading text-2xl font-semibold text-white">
+                        {{ $photo->title }}
+                    </p>
+                </div>
+            </div>
+        </div>
+        @empty
         <!-- Showcase Photo 1 -->
         <div class="relative overflow-hidden rounded-xl group shadow-sm animate-up">
             <img class="w-full h-80 object-cover group-hover:scale-105 transition-transform duration-700" alt="Pembesian Sesuai Gambar Kerja" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCH-rNSzviMG69-3LuIn5YoUjktFIW-pkdqZHxrBKho4_zdcu27QQHnStqIVCbIF3zMR3NYnBs6KsdJv2qej2fwKWwPFU4kW1hBe76ehzySHA_mJXOupX6c9nALQ2LGloiRm-ogQvdsiCEAWeOarDBOQdmvZ2MeGSEmJ2RVgn8x3dRc03kvdTsrWCauWCVw9jQGfImDRicpAdNyhuZXFLvh3I2spgQd8eelz_9je2HjnWIerx9kr7zz">
@@ -346,7 +325,7 @@
                 </div>
             </div>
         </div>
-
+        @endforelse
     </div>
     <!-- END: 3 Photo Showcase Grid -->
 

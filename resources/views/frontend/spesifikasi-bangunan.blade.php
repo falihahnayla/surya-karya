@@ -154,8 +154,33 @@
 <!-- BEGIN: SpecificationsGrid -->
 <main class="max-w-6xl mx-auto px-6 py-16 md:py-24 w-full overflow-x-hidden">
     <div class="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-10">
-        
-        <!-- Spec Card 1: Pondasi (Mengambang Masuk dari Kiri) -->
+        @forelse($cards as $index => $card)
+        <div class="spec-card bg-white rounded-xl p-8 md:p-10 border border-gray-100 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] {{ $index % 2 == 0 ? 'animate-left' : 'animate-right' }}">
+            <div class="card-corner-shape"></div>
+            <div class="relative z-10">
+                <h2 class="font-serif-heading text-3xl font-semibold text-[#0b192c] mb-4 flex items-center justify-between">
+                    {{ $card->title }}
+                </h2>
+                @if($card->content)
+                <p class="text-slate-600 text-sm leading-relaxed mb-6 font-normal">
+                    {{ $card->content }}
+                </p>
+                @endif
+                <!-- Checklist items -->
+                @if(count($card->checklist_items) > 0)
+                <ul class="space-y-3.5 text-sm text-slate-700">
+                    @foreach($card->checklist_items as $item)
+                    <li class="flex items-start group/item">
+                        <span class="plus-badge text-[#d4af37] mr-3 text-base leading-none font-bold select-none">+</span>
+                        <span class="group-hover/item:text-[#0b192c] transition-colors">{{ $item }}</span>
+                    </li>
+                    @endforeach
+                </ul>
+                @endif
+            </div>
+        </div>
+        @empty
+        <!-- Spec Card 1: Pondasi -->
         <div class="spec-card bg-white rounded-xl p-8 md:p-10 border border-gray-100 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] animate-left">
             <div class="card-corner-shape"></div>
             <div class="relative z-10">
@@ -165,7 +190,6 @@
                 <p class="text-slate-600 text-sm leading-relaxed mb-6 font-normal">
                     Pondasi dirancang untuk stabilitas jangka panjang sesuai dengan kondisi tanah setempat.
                 </p>
-                <!-- Checklist items -->
                 <ul class="space-y-3.5 text-sm text-slate-700">
                     <li class="flex items-start group/item">
                         <span class="plus-badge text-[#d4af37] mr-3 text-base leading-none font-bold select-none">+</span>
@@ -183,7 +207,7 @@
             </div>
         </div>
 
-        <!-- Spec Card 2: Struktur Bangunan (Mengambang Masuk dari Kanan) -->
+        <!-- Spec Card 2: Struktur Bangunan -->
         <div class="spec-card bg-white rounded-xl p-8 md:p-10 border border-gray-100 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] animate-right">
             <div class="card-corner-shape"></div>
             <div class="relative z-10">
@@ -193,7 +217,6 @@
                 <p class="text-slate-600 text-sm leading-relaxed mb-6 font-normal">
                     Sistem rangka struktural menggunakan beton bertulang berstandar tinggi.
                 </p>
-                <!-- Checklist items -->
                 <ul class="space-y-3.5 text-sm text-slate-700">
                     <li class="flex items-start group/item">
                         <span class="plus-badge text-[#d4af37] mr-3 text-base leading-none font-bold select-none">+</span>
@@ -210,64 +233,36 @@
                 </ul>
             </div>
         </div>
-
-        <!-- Spec Card 3: Dinding (Mengambang Masuk dari Kiri) -->
-        <div class="spec-card bg-white rounded-xl p-8 md:p-10 border border-gray-100 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] animate-left">
-            <div class="card-corner-shape"></div>
-            <div class="relative z-10">
-                <h2 class="font-serif-heading text-3xl font-semibold text-[#0b192c] mb-4">
-                    Dinding
-                </h2>
-                <p class="text-slate-600 text-sm leading-relaxed mb-6 font-normal">
-                    Dinding kokoh dengan insulasi termal dan akustik yang optimal.
-                </p>
-                <!-- Checklist items -->
-                <ul class="space-y-3.5 text-sm text-slate-700">
-                    <li class="flex items-start group/item">
-                        <span class="plus-badge text-[#d4af37] mr-3 text-base leading-none font-bold select-none">+</span>
-                        <span class="group-hover/item:text-[#0b192c] transition-colors">Bata Merah press mesin / Bata Ringan (Hebel)</span>
-                    </li>
-                    <li class="flex items-start group/item">
-                        <span class="plus-badge text-[#d4af37] mr-3 text-base leading-none font-bold select-none">+</span>
-                        <span class="group-hover/item:text-[#0b192c] transition-colors">Plesteran dengan semen berkualitas (Semen Tiga Roda/Gresik)</span>
-                    </li>
-                    <li class="flex items-start group/item">
-                        <span class="plus-badge text-[#d4af37] mr-3 text-base leading-none font-bold select-none">+</span>
-                        <span class="group-hover/item:text-[#0b192c] transition-colors">Acian halus khusus dinding untuk hasil pengecatan sempurna</span>
-                    </li>
-                </ul>
-            </div>
-        </div>
-
-        <!-- Spec Card 4: Atap (Mengambang Masuk dari Kanan) -->
-        <div class="spec-card bg-white rounded-xl p-8 md:p-10 border border-gray-100 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] animate-right">
-            <div class="card-corner-shape"></div>
-            <div class="relative z-10">
-                <h2 class="font-serif-heading text-3xl font-semibold text-[#0b192c] mb-4">
-                    Atap
-                </h2>
-                <p class="text-slate-600 text-sm leading-relaxed mb-6 font-normal">
-                    Struktur atap presisi tinggi dengan pelapis anti bocor.
-                </p>
-                <!-- Checklist items -->
-                <ul class="space-y-3.5 text-sm text-slate-700">
-                    <li class="flex items-start group/item">
-                        <span class="plus-badge text-[#d4af37] mr-3 text-base leading-none font-bold select-none">+</span>
-                        <span class="group-hover/item:text-[#0b192c] transition-colors">Rangka Atap Baja Ringan (Zincalume ketebalan 0.75mm - 1mm)</span>
-                    </li>
-                    <li class="flex items-start group/item">
-                        <span class="plus-badge text-[#d4af37] mr-3 text-base leading-none font-bold select-none">+</span>
-                        <span class="group-hover/item:text-[#0b192c] transition-colors">Genteng Keramik (Kanmuri/M-Class) atau Genteng Beton</span>
-                    </li>
-                    <li class="flex items-start group/item">
-                        <span class="plus-badge text-[#d4af37] mr-3 text-base leading-none font-bold select-none">+</span>
-                        <span class="group-hover/item:text-[#0b192c] transition-colors">Aluminium Foil Woven Double Sided untuk insulasi panas</span>
-                    </li>
-                </ul>
-            </div>
-        </div>
-
+        @endforelse
     </div>
+
+    @if($photos->isNotEmpty())
+    <!-- BEGIN: Photo Showcase Grid -->
+    <div class="mt-16 lg:mt-24 grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
+        @foreach($photos as $index => $photo)
+        <div class="relative overflow-hidden rounded-xl group shadow-sm animate-up" style="transition-delay: {{ $index * 150 }}ms;">
+            @if(!empty($photo->image))
+            <img class="w-full h-80 object-cover group-hover:scale-105 transition-transform duration-700" alt="{{ $photo->title }}" src="{{ (str_starts_with($photo->image, 'http://') || str_starts_with($photo->image, 'https://')) ? $photo->image : asset($photo->image) }}">
+            @else
+            <div class="w-full h-80 bg-slate-800"></div>
+            @endif
+            <div class="absolute inset-0 bg-gradient-to-t from-[#0b192c]/90 via-[#0b192c]/20 to-transparent flex items-end p-6">
+                <div>
+                    @if(!empty($photo->tag))
+                    <span class="text-xs font-semibold tracking-widest uppercase text-[#d4af37] mb-1 block">
+                        {{ $photo->tag }}
+                    </span>
+                    @endif
+                    <p class="font-serif-heading text-2xl font-semibold text-white">
+                        {{ $photo->title }}
+                    </p>
+                </div>
+            </div>
+        </div>
+        @endforeach
+    </div>
+    <!-- END: Photo Showcase Grid -->
+    @endif
 </main>
 <!-- END: SpecificationsGrid -->
 

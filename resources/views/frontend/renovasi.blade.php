@@ -171,8 +171,33 @@
 
     <!-- 2x2 Bento-Style Service Cards -->
     <div class="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-10">
-        
-        <!-- CARD 1: Renovasi Total (Overhaul) (Mengambang Masuk dari Kiri) -->
+        @forelse($cards as $index => $card)
+        <div class="spec-card bg-white rounded-xl p-8 md:p-10 border border-gray-100 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] {{ $index % 2 == 0 ? 'animate-left' : 'animate-right' }}">
+            <div class="card-corner-shape"></div>
+            <div class="relative z-10">
+                <h3 class="font-serif-heading text-3xl font-semibold text-[#0b192c] mb-3">
+                    {{ $card->title }}
+                </h3>
+                @if($card->content)
+                <p class="text-slate-600 text-sm leading-relaxed mb-6 font-normal">
+                    {{ $card->content }}
+                </p>
+                @endif
+                <!-- Checklist items -->
+                @if(count($card->checklist_items) > 0)
+                <ul class="space-y-3.5 text-sm text-slate-700">
+                    @foreach($card->checklist_items as $item)
+                    <li class="flex items-start group/item">
+                        <span class="plus-badge text-[#d4af37] mr-3 text-base leading-none font-bold select-none">+</span>
+                        <span class="group-hover/item:text-[#0b192c] transition-colors">{{ $item }}</span>
+                    </li>
+                    @endforeach
+                </ul>
+                @endif
+            </div>
+        </div>
+        @empty
+        <!-- CARD 1: Renovasi Total (Overhaul) -->
         <div class="spec-card bg-white rounded-xl p-8 md:p-10 border border-gray-100 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] animate-left">
             <div class="card-corner-shape"></div>
             <div class="relative z-10">
@@ -182,7 +207,6 @@
                 <p class="text-slate-600 text-sm leading-relaxed mb-6 font-normal">
                     Peremajaan menyeluruh bangunan lama menjadi hunian bernilai estetika modern dengan perkuatan struktur utama.
                 </p>
-                <!-- Checklist items -->
                 <ul class="space-y-3.5 text-sm text-slate-700">
                     <li class="flex items-start group/item">
                         <span class="plus-badge text-[#d4af37] mr-3 text-base leading-none font-bold select-none">+</span>
@@ -204,7 +228,7 @@
             </div>
         </div>
 
-        <!-- CARD 2: Penambahan Lantai / Ruang (Mengambang Masuk dari Kanan) -->
+        <!-- CARD 2: Penambahan Lantai / Ruang -->
         <div class="spec-card bg-white rounded-xl p-8 md:p-10 border border-gray-100 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] animate-right">
             <div class="card-corner-shape"></div>
             <div class="relative z-10">
@@ -214,7 +238,6 @@
                 <p class="text-slate-600 text-sm leading-relaxed mb-6 font-normal">
                     Perluasan kapasitas hunian baik secara vertikal (lantai 2/3) maupun penambahan ruangan secara horizontal.
                 </p>
-                <!-- Checklist items -->
                 <ul class="space-y-3.5 text-sm text-slate-700">
                     <li class="flex items-start group/item">
                         <span class="plus-badge text-[#d4af37] mr-3 text-base leading-none font-bold select-none">+</span>
@@ -235,72 +258,36 @@
                 </ul>
             </div>
         </div>
-
-        <!-- CARD 3: Renovasi Parsial & Interior (Mengambang Masuk dari Kiri) -->
-        <div class="spec-card bg-white rounded-xl p-8 md:p-10 border border-gray-100 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] animate-left">
-            <div class="card-corner-shape"></div>
-            <div class="relative z-10">
-                <h3 class="font-serif-heading text-3xl font-semibold text-[#0b192c] mb-3">
-                    Renovasi Parsial &amp; Interior
-                </h3>
-                <p class="text-slate-600 text-sm leading-relaxed mb-6 font-normal">
-                    Pembaruan terfokus pada area spesifik untuk meningkatkan kenyamanan, estetika, dan fungsionalitas harian.
-                </p>
-                <!-- Checklist items -->
-                <ul class="space-y-3.5 text-sm text-slate-700">
-                    <li class="flex items-start group/item">
-                        <span class="plus-badge text-[#d4af37] mr-3 text-base leading-none font-bold select-none">+</span>
-                        <span class="group-hover/item:text-[#0b192c] transition-colors">Peremajaan Dapur Modern (Kitchen Set &amp; Utility)</span>
-                    </li>
-                    <li class="flex items-start group/item">
-                        <span class="plus-badge text-[#d4af37] mr-3 text-base leading-none font-bold select-none">+</span>
-                        <span class="group-hover/item:text-[#0b192c] transition-colors">Renovasi Kamar Mandi dengan Waterproofing Berlapis</span>
-                    </li>
-                    <li class="flex items-start group/item">
-                        <span class="plus-badge text-[#d4af37] mr-3 text-base leading-none font-bold select-none">+</span>
-                        <span class="group-hover/item:text-[#0b192c] transition-colors">Penggantian Plafon Gypsum &amp; Sistem Downlight Estetik</span>
-                    </li>
-                    <li class="flex items-start group/item">
-                        <span class="plus-badge text-[#d4af37] mr-3 text-base leading-none font-bold select-none">+</span>
-                        <span class="group-hover/item:text-[#0b192c] transition-colors">Pemasangan Lantai Granit / Homogeneous Tile Presisi</span>
-                    </li>
-                </ul>
-            </div>
-        </div>
-
-        <!-- CARD 4: Perbaikan Atap & Struktural (Mengambang Masuk dari Kanan) -->
-        <div class="spec-card bg-white rounded-xl p-8 md:p-10 border border-gray-100 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] animate-right">
-            <div class="card-corner-shape"></div>
-            <div class="relative z-10">
-                <h3 class="font-serif-heading text-3xl font-semibold text-[#0b192c] mb-3">
-                    Perbaikan Atap &amp; Struktural
-                </h3>
-                <p class="text-slate-600 text-sm leading-relaxed mb-6 font-normal">
-                    Solusi penanganan masalah bocor kronis, pergeseran dinding, atau retak struktur untuk kenyamanan permanen.
-                </p>
-                <!-- Checklist items -->
-                <ul class="space-y-3.5 text-sm text-slate-700">
-                    <li class="flex items-start group/item">
-                        <span class="plus-badge text-[#d4af37] mr-3 text-base leading-none font-bold select-none">+</span>
-                        <span class="group-hover/item:text-[#0b192c] transition-colors">Penggantian Rangka Kayu Lapuk ke Baja Ringan SNI</span>
-                    </li>
-                    <li class="flex items-start group/item">
-                        <span class="plus-badge text-[#d4af37] mr-3 text-base leading-none font-bold select-none">+</span>
-                        <span class="group-hover/item:text-[#0b192c] transition-colors">Pemasangan Lapisan Waterproofing Membran Bakar</span>
-                    </li>
-                    <li class="flex items-start group/item">
-                        <span class="plus-badge text-[#d4af37] mr-3 text-base leading-none font-bold select-none">+</span>
-                        <span class="group-hover/item:text-[#0b192c] transition-colors">Perbaikan Dinding Lembap, Rembes, dan Retak Rambut</span>
-                    </li>
-                    <li class="flex items-start group/item">
-                        <span class="plus-badge text-[#d4af37] mr-3 text-base leading-none font-bold select-none">+</span>
-                        <span class="group-hover/item:text-[#0b192c] transition-colors">Garansi Anti Bocor Resmi Tertulis Pasca Pengerjaan</span>
-                    </li>
-                </ul>
-            </div>
-        </div>
-
+        @endforelse
     </div>
+
+    @if($photos->isNotEmpty())
+    <!-- BEGIN: Photo Showcase Grid -->
+    <div class="mt-16 lg:mt-24 grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
+        @foreach($photos as $index => $photo)
+        <div class="relative overflow-hidden rounded-xl group shadow-sm animate-up" style="transition-delay: {{ $index * 150 }}ms;">
+            @if(!empty($photo->image))
+            <img class="w-full h-80 object-cover group-hover:scale-105 transition-transform duration-700" alt="{{ $photo->title }}" src="{{ (str_starts_with($photo->image, 'http://') || str_starts_with($photo->image, 'https://')) ? $photo->image : asset($photo->image) }}">
+            @else
+            <div class="w-full h-80 bg-slate-800"></div>
+            @endif
+            <div class="absolute inset-0 bg-gradient-to-t from-[#0b192c]/90 via-[#0b192c]/20 to-transparent flex items-end p-6">
+                <div>
+                    @if(!empty($photo->tag))
+                    <span class="text-xs font-semibold tracking-widest uppercase text-[#d4af37] mb-1 block">
+                        {{ $photo->tag }}
+                    </span>
+                    @endif
+                    <p class="font-serif-heading text-2xl font-semibold text-white">
+                        {{ $photo->title }}
+                    </p>
+                </div>
+            </div>
+        </div>
+        @endforeach
+    </div>
+    <!-- END: Photo Showcase Grid -->
+    @endif
 
     <!-- BEGIN: 4-Step Process Section -->
     <div class="mt-20 lg:mt-28 border-t border-gray-100 pt-16">

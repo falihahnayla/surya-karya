@@ -15,7 +15,7 @@
     </div>
 
     <div class="bg-surface-container-lowest p-8 rounded-DEFAULT border border-surface-container-high shadow-sm max-w-3xl" style="font-family: 'Inter', sans-serif;">
-        <form action="{{ route('admin.portofolio.update', $portofolio->id) }}" method="POST" class="flex flex-col gap-6">
+        <form action="{{ route('admin.portofolio.update', $portofolio->id) }}" method="POST" enctype="multipart/form-data" class="flex flex-col gap-6">
             @csrf
             @method('PUT')
 
@@ -55,7 +55,25 @@
                 </div>
             </div>
 
+            <div class="flex items-center gap-2">
+                <input type="checkbox" name="is_featured" id="is_featured" value="1" {{ old('is_featured', $portofolio->is_featured ?? false) ? 'checked' : '' }} class="w-4 h-4 rounded border-slate-300 text-[#0a2569] focus:ring-[#0a2569]">
+                <label for="is_featured" class="text-sm text-slate-700 font-medium">Tandai sebagai Proyek Unggulan (tampil di halaman Home)</label>
+            </div>
+
             <div>
+                <label for="image_file" class="block text-xs uppercase tracking-wider text-outline font-medium mb-2">Upload Gambar Baru dari Perangkat (File Explorer)</label>
+                <input type="file" name="image_file" id="image_file" accept="image/*" class="w-full px-4 py-2.5 rounded-DEFAULT border border-slate-200 focus:outline-none focus:ring-2 focus:ring-[#0a2569] text-sm text-slate-900 bg-white file:mr-4 file:py-1.5 file:px-3 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-slate-100 file:text-slate-700 hover:file:bg-slate-200">
+                @error('image_file') <span class="text-xs text-rose-500 mt-1 block">{{ $message }}</span> @enderror
+
+                @if(!empty($portofolio->image))
+                <div class="mt-3 mb-2 flex items-center gap-3">
+                    <span class="text-xs text-slate-500">Gambar saat ini:</span>
+                    <img src="{{ (str_starts_with($portofolio->image, 'http://') || str_starts_with($portofolio->image, 'https://')) ? $portofolio->image : asset($portofolio->image) }}" class="h-16 w-24 object-cover rounded border border-slate-200 shadow-sm">
+                </div>
+                @endif
+
+                <div class="my-2.5 text-xs text-slate-400 font-medium">ATAU GUNAKAN URL (OPSIONAL)</div>
+
                 <label for="image" class="block text-xs uppercase tracking-wider text-outline font-medium mb-2">URL Gambar (Image URL)</label>
                 <input type="text" name="image" id="image" value="{{ old('image', $portofolio->image) }}" class="w-full px-4 py-3 rounded-DEFAULT border border-slate-200 focus:outline-none focus:ring-2 focus:ring-[#0a2569] text-sm text-slate-900 bg-white">
                 @error('image') <span class="text-xs text-rose-500 mt-1 block">{{ $message }}</span> @enderror

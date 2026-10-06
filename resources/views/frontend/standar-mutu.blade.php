@@ -171,8 +171,33 @@
 
     <!-- 2x2 Grid of Spec Cards -->
     <div class="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-10">
-        
-        <!-- Card 1: QC Berjenjang (Mengambang Masuk dari Kiri) -->
+        @forelse($cards as $index => $card)
+        <div class="spec-card bg-white rounded-xl p-8 md:p-10 border border-gray-100 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] {{ $index % 2 == 0 ? 'animate-left' : 'animate-right' }}">
+            <div class="card-corner-shape"></div>
+            <div class="relative z-10">
+                <h3 class="font-serif-heading text-3xl font-semibold text-[#0b192c] mb-4">
+                    {{ $card->title }}
+                </h3>
+                @if($card->content)
+                <p class="text-slate-600 text-sm leading-relaxed mb-6 font-normal">
+                    {{ $card->content }}
+                </p>
+                @endif
+                <!-- Checklist items -->
+                @if(count($card->checklist_items) > 0)
+                <ul class="space-y-3.5 text-sm text-slate-700">
+                    @foreach($card->checklist_items as $item)
+                    <li class="flex items-start group/item">
+                        <span class="plus-badge text-[#d4af37] mr-3 text-base leading-none font-bold select-none">+</span>
+                        <span class="group-hover/item:text-[#0b192c] transition-colors">{{ $item }}</span>
+                    </li>
+                    @endforeach
+                </ul>
+                @endif
+            </div>
+        </div>
+        @empty
+        <!-- Card 1: QC Berjenjang -->
         <div class="spec-card bg-white rounded-xl p-8 md:p-10 border border-gray-100 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] animate-left">
             <div class="card-corner-shape"></div>
             <div class="relative z-10">
@@ -204,7 +229,7 @@
             </div>
         </div>
 
-        <!-- Card 2: Material Bersertifikasi Resmi (Mengambang Masuk dari Kanan) -->
+        <!-- Card 2: Material Bersertifikasi Resmi -->
         <div class="spec-card bg-white rounded-xl p-8 md:p-10 border border-gray-100 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] animate-right">
             <div class="card-corner-shape"></div>
             <div class="relative z-10">
@@ -236,7 +261,7 @@
             </div>
         </div>
 
-        <!-- Card 3: SOP & Keselamatan Kerja (K3) (Mengambang Masuk dari Kiri) -->
+        <!-- Card 3: SOP & Keselamatan Kerja (K3) -->
         <div class="spec-card bg-white rounded-xl p-8 md:p-10 border border-gray-100 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] animate-left">
             <div class="card-corner-shape"></div>
             <div class="relative z-10">
@@ -268,7 +293,7 @@
             </div>
         </div>
 
-        <!-- Card 4: Garansi & Retensi Purna Jual (Mengambang Masuk dari Kanan) -->
+        <!-- Card 4: Garansi & Retensi Purna Jual -->
         <div class="spec-card bg-white rounded-xl p-8 md:p-10 border border-gray-100 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] animate-right">
             <div class="card-corner-shape"></div>
             <div class="relative z-10">
@@ -299,8 +324,36 @@
                 </ul>
             </div>
         </div>
-
+        @endforelse
     </div>
+
+    <!-- BEGIN: Photo Showcase Grid -->
+    @if($photos->isNotEmpty())
+    <div class="mt-16 lg:mt-24 grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
+        @foreach($photos as $index => $photo)
+        <div class="relative overflow-hidden rounded-xl group shadow-sm animate-up" style="transition-delay: {{ $index * 150 }}ms;">
+            @if(!empty($photo->image))
+            <img class="w-full h-80 object-cover group-hover:scale-105 transition-transform duration-700" alt="{{ $photo->title }}" src="{{ (str_starts_with($photo->image, 'http://') || str_starts_with($photo->image, 'https://')) ? $photo->image : asset($photo->image) }}">
+            @else
+            <div class="w-full h-80 bg-slate-800"></div>
+            @endif
+            <div class="absolute inset-0 bg-gradient-to-t from-[#0b192c]/90 via-[#0b192c]/20 to-transparent flex items-end p-6">
+                <div>
+                    @if(!empty($photo->tag))
+                    <span class="text-xs font-semibold tracking-widest uppercase text-[#d4af37] mb-1 block">
+                        {{ $photo->tag }}
+                    </span>
+                    @endif
+                    <p class="font-serif-heading text-2xl font-semibold text-white">
+                        {{ $photo->title }}
+                    </p>
+                </div>
+            </div>
+        </div>
+        @endforeach
+    </div>
+    @endif
+    <!-- END: Photo Showcase Grid -->
 </main>
 <!-- END: PillarsSection -->
 

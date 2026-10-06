@@ -177,7 +177,16 @@
   </div>
 </section>
 <!-- END: ExecutionStandardsSection -->
+@php
+$featuredProjects = \App\Models\Portofolio::with('category')
+    ->where('status', 'Show')
+    ->where('is_featured', true)
+    ->latest()
+    ->take(8)
+    ->get();
+@endphp
 <!-- BEGIN: FeaturedProjectsSection -->
+@if($featuredProjects->isNotEmpty())
 <section class="py-20 lg:py-28 bg-[#fbfbfb]" id="portofolio">
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 <!-- Section Title Header -->
@@ -194,78 +203,18 @@
 </div>
 <!-- 8-Project Portfolio Grid -->
 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-6">
-<!-- Project 1 -->
+@foreach($featuredProjects as $project)
 <div class="group relative overflow-hidden rounded-xl aspect-[3/4] bg-slate-200 shadow-md">
-<img alt="Villa Modern Canggu" class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCcCxX3w64aPb3I7M_Jv3zwPP9XjGuj8m8FQW5En5L2l1_s5TJL2sp-4tnf1uJhh1GJuk90IeIvaBuJ079LQGSyz3GvGH62nKf8rCd0eTS9QGFmg2Swa--nQ51HaSluPMtT3syMnXEY1LyX13LV1DphULaokyD6Uum_SmSCiJ66nMcTRWcoJwYgJPnXXbPVTLnYVdcWwu83Lxn3v-roSlF8JMLMMD8HzRRlIxcXPOyjd6JnLPzUoHsG"/>
+@if(!empty($project->image))
+<img alt="{{ $project->title }}" class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500" src="{{ (str_starts_with($project->image, 'http://') || str_starts_with($project->image, 'https://')) ? $project->image : asset($project->image) }}"/>
+@endif
 <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent opacity-90 group-hover:opacity-95 transition-opacity"></div>
 <div class="absolute bottom-0 inset-x-0 p-5 text-white">
-<span class="text-[9px] uppercase tracking-widest font-semibold text-slate-300 block mb-1">PEMBANGUNAN BARU</span>
-<h3 class="heading-serif text-xl font-medium text-white tracking-wide">Villa Modern Canggu</h3>
+<span class="text-[9px] uppercase tracking-widest font-semibold text-slate-300 block mb-1">{{ $project->category->title ?? 'PORTOFOLIO' }}</span>
+<h3 class="heading-serif text-xl font-medium text-white tracking-wide">{{ $project->title }}</h3>
 </div>
 </div>
-<!-- Project 2 -->
-<div class="group relative overflow-hidden rounded-xl aspect-[3/4] bg-slate-200 shadow-md">
-<img alt="Kediaman Senopati" class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCxulc2Skb4zSNRaaJSzajyewjkdi1qQQntzVhkJ7XRN-1d1b7rTgNOqz6vg1pVxZ2lugMTVKZBGKUTu0rI-KtMgrV4hDOffOf7BWh-Gqy1yubZx_uIHEQ5fkugySmlJfn7_S36JFTuo3KrgHajIg14DMCJp0zxvT0v7_4StRsgZTLup5j6G1gSA25SMcW9jfMHpfs5Qwdz4xi5mdAKAgqprXgIbCxeOf_RuPgMheQBM7mfJFAztMbf"/>
-<div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent opacity-90 group-hover:opacity-95 transition-opacity"></div>
-<div class="absolute bottom-0 inset-x-0 p-5 text-white">
-<span class="text-[9px] uppercase tracking-widest font-semibold text-slate-300 block mb-1">RENOVASI &amp; INTERIOR</span>
-<h3 class="heading-serif text-xl font-medium text-white tracking-wide">Kediaman Senopati</h3>
-</div>
-</div>
-<!-- Project 3 -->
-<div class="group relative overflow-hidden rounded-xl aspect-[3/4] bg-slate-200 shadow-md">
-<img alt="Paviliun Menteng" class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBicQbFlJ2T28Uc8cxgyySGusyy_lGD8gGHQwRylLat0G1Rt__xi5UksYgVRBLJbEjUE8TOPZ_ehbZJXWaK-80nG64rXyOjb_ymQ6X5QhoF6UfW9-0XXTI7mYhJMUFmDL0PUgnoeeY1hjfQNdVN1BTAfKeLXLplf7tUegNPFw_5xjteE2dJOD_GRJX6rppZaPySOMN-wvHZQuMzP_abOYDtphdZ7QgEKmKbmbhUJ91tQarZw0jvDUVj"/>
-<div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent opacity-90 group-hover:opacity-95 transition-opacity"></div>
-<div class="absolute bottom-0 inset-x-0 p-5 text-white">
-<span class="text-[9px] uppercase tracking-widest font-semibold text-slate-300 block mb-1">ARSITEKTUR TROPIS MODERN</span>
-<h3 class="heading-serif text-xl font-medium text-white tracking-wide">Paviliun Menteng</h3>
-</div>
-</div>
-<!-- Project 4 -->
-<div class="group relative overflow-hidden rounded-xl aspect-[3/4] bg-slate-200 shadow-md">
-<img alt="Bintaro Private House" class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAmqg2rq1sRbxq-3pYbrDSwVVehokQHS6y8o-KhA5uLHYod2fMYVUkjc8maY1lkHT25XRGJgxVW8Jki_94Pj0SttWKLYczZZmTMQu13gn28GLghgw2UOJkiqV4zIaYsE61UygOFfNNIbWUVxdzjjBWOw8LCxud4rSmHQOgHR3NXO8zwVPs3MnAmQG3Z6y9vTfiRcCitqiTcMOi0zW0vjgqMwv3WSfYdmLNxlcbpzOPYf04dYYHulgol"/>
-<div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent opacity-90 group-hover:opacity-95 transition-opacity"></div>
-<div class="absolute bottom-0 inset-x-0 p-5 text-white">
-<span class="text-[9px] uppercase tracking-widest font-semibold text-slate-300 block mb-1">KONSTRUKSI STRUKTURAL</span>
-<h3 class="heading-serif text-xl font-medium text-white tracking-wide">Bintaro Private House</h3>
-</div>
-</div>
-<!-- Project 5 -->
-<div class="group relative overflow-hidden rounded-xl aspect-[3/4] bg-slate-200 shadow-md">
-<img alt="Dharmawangsa Residence" class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDE_I_8ZYPj-6SbGMh_arrP_KEN8pclTtjxcxgS9DJzHcfdlHLVXkNlrloGrNq7TN4DIRqvP-9U6xJcC8XHi2vbLTrNhM1OpJiBXayWUzPRrzcWSzInG7wZvmetti5ZW8dP5kGly1lHZwZBXca_h4OwLSKAkqeSpKiwTp7hG_ZIPLvHXWSseB_wPUiFMTuYyEUP6PasrQk57Foy5lZ-ihHMbt4dl76TtnDFNkwseEN0ce_lG62k7j4S"/>
-<div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent opacity-90 group-hover:opacity-95 transition-opacity"></div>
-<div class="absolute bottom-0 inset-x-0 p-5 text-white">
-<span class="text-[9px] uppercase tracking-widest font-semibold text-slate-300 block mb-1">INTERIOR &amp; EKSTERIOR</span>
-<h3 class="heading-serif text-xl font-medium text-white tracking-wide">Dharmawangsa Residence</h3>
-</div>
-</div>
-<!-- Project 6 -->
-<div class="group relative overflow-hidden rounded-xl aspect-[3/4] bg-slate-200 shadow-md">
-<img alt="Pondok Indah Mansion" class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuARYNPwnx97jSMr6ivdDLX6tTeqwrFDFAlGkpdxABfp9wjB5wOZ_M_x31VrW8jZtTzVoGKDdrABbQTaifqskXFBuLRx3xwWqlldsYnZDGrJCnE_K21orGndTHNbDjY5MIIF2JRZARKVJ5lQ6eoc1Z9k7xxLkc1_3hXb3hFPUkYEa4b9ZO6p7i0t_j6eRxhpday14mwyMAs6KStBv7YUqgFto65ReQomL-SXXidrm-dd3b_ile3zgpHo"/>
-<div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent opacity-90 group-hover:opacity-95 transition-opacity"></div>
-<div class="absolute bottom-0 inset-x-0 p-5 text-white">
-<span class="text-[9px] uppercase tracking-widest font-semibold text-slate-300 block mb-1">PEMBANGUNAN MEWAH</span>
-<h3 class="heading-serif text-xl font-medium text-white tracking-wide">Pondok Indah Mansion</h3>
-</div>
-</div>
-<!-- Project 7 -->
-<div class="group relative overflow-hidden rounded-xl aspect-[3/4] bg-slate-200 shadow-md">
-<img alt="Kemang Living Space" class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAIe-ZaL4SBEQZtJYvot1-Kp_0Fgy1ZaT7t4BWN9SdyCsA28Nsch19zOr1mXd6usTv6EO_m6abUq5Ca5GnztCuYIhV5m9DgI7Mp9IvR7IEx1qsZViYDGenXYx-GMKRsqyLzhS9p9vaOPDx6cs1LFZwgU5qb7LQAezXpLMLilcwV2iiPuCZr7MUI9c8242FTrHxKiWaedHV1U1mbqP0cTdujAV5Oos079kTY1q9GTYOg2BF8sHT6YWgd"/>
-<div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent opacity-90 group-hover:opacity-95 transition-opacity"></div>
-<div class="absolute bottom-0 inset-x-0 p-5 text-white">
-<span class="text-[9px] uppercase tracking-widest font-semibold text-slate-300 block mb-1">RENOVASI TOTAL</span>
-<h3 class="heading-serif text-xl font-medium text-white tracking-wide">Kemang Living Space</h3>
-</div>
-</div>
-<!-- Project 8 -->
-<div class="group relative overflow-hidden rounded-xl aspect-[3/4] bg-slate-200 shadow-md">
-<img alt="Citra Garden Villa" class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuApJ6J7qBMEZp6cHsfqW0omzgbxc4D73ZvBRASS-EcnzpETV_FYSukFONgVlNGDPLscD2IXVYlsarnRKSJDpgwWbgazNA7yPs4w4qtupJEaiwg_KkcI2TlDcA-d1POWC1Lw-oWesxql9XZADarVDNvnAqhkbxhMeSW87fWmS6mcnNmsvbi94fBp9da0OimXf2WTFWKGZkiFbsfKClx-AKkdIPOXJ59odXtTvXoGv75oq0os4jrccZFW"/>
-<div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent opacity-90 group-hover:opacity-95 transition-opacity"></div>
-<div class="absolute bottom-0 inset-x-0 p-5 text-white">
-<span class="text-[9px] uppercase tracking-widest font-semibold text-slate-300 block mb-1">FASAD &amp; LANDSCAPING</span>
-<h3 class="heading-serif text-xl font-medium text-white tracking-wide">Citra Garden Villa</h3>
-</div>
-</div>
+@endforeach
 </div>
 <!-- View All Portfolio Button -->
 <div class="mt-14 text-center">
@@ -275,6 +224,7 @@
 </div>
 </div>
 </section>
+@endif
 <!-- END: FeaturedProjectsSection -->
 
 @endsection

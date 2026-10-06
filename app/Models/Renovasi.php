@@ -9,10 +9,21 @@ class Renovasi extends Model
 {
     use HasFactory;
 
-    protected $table = 'renovasis';
-
     protected $fillable = [
+        'item_type',
         'title',
+        'tag',
         'content',
+        'checklist',
+        'image',
     ];
+
+    public function getChecklistItemsAttribute(): array
+    {
+        if (empty($this->checklist)) {
+            return [];
+        }
+
+        return array_values(array_filter(array_map('trim', explode("\n", $this->checklist))));
+    }
 }

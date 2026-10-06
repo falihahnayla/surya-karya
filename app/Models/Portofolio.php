@@ -18,6 +18,7 @@ class Portofolio extends Model
         'location',
         'image',
         'status',
+        'is_featured',
     ];
 
     public function category()
