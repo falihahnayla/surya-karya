@@ -126,10 +126,16 @@
 @section('content')
 
 <!-- BEGIN: HeroSection -->
+@php
+    $hero = \App\Models\HeroTitle::getForPage('standar_mutu');
+    $heroTitleText = ($hero && !empty($hero->title)) ? $hero->title : 'STANDAR MUTU';
+    $heroDeskripsiText = ($hero && !empty($hero->deskripsi)) ? $hero->deskripsi : 'Komitmen integritas tanpa kompromi melalui kendali mutu bertahap, pengawasan ketat, dan jaminan purna-jual resmi.';
+    $heroImage = ($hero && !empty($hero->image_url)) ? $hero->image_url : 'https://lh3.googleusercontent.com/aida-public/AB6AXuDIutYZVIDdb3tmEhhuc0qalJ8m1tJO32n2MKhDITkGv4jZpEl8mYQzdfwJfHyi1tYjlbvhT6Eou2s3_Zl5Btu-Ip4hunJMG71va3i9Y1g_Sht-mx7ZduBMZkA7b_GXbjyNNI8vkAdz9gihGxMPWRj7PBhktAe7ZFn2aCAyNXxzbwM5JbvYPSBGiqfcahrclUTQ3SMTebPpIpOAssl59Ry0xDUt58ir2xVxJ3LEyf6HzaRByKLt3Xj7';
+@endphp
 <section class="relative text-white py-28 md:py-36 lg:py-44 px-6 sm:px-10 lg:px-16 border-b border-slate-700/30 overflow-hidden">
     <!-- Background Image -->
     <div class="absolute inset-0 bg-cover bg-center transition-transform duration-1000 scale-105"
-        style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDIutYZVIDdb3tmEhhuc0qalJ8m1tJO32n2MKhDITkGv4jZpEl8mYQzdfwJfHyi1tYjlbvhT6Eou2s3_Zl5Btu-Ip4hunJMG71va3i9Y1g_Sht-mx7ZduBMZkA7b_GXbjyNNI8vkAdz9gihGxMPWRj7PBhktAe7ZFn2aCAyNXxzbwM5JbvYPSBGiqfcahrclUTQ3SMTebPpIpOAssl59Ry0xDUt58ir2xVxJ3LEyf6HzaRByKLt3Xj7'); background-position: center 40%;">
+        style="background-image: url('{{ $heroImage }}'); background-position: center 40%;">
     </div>
 
     <!-- Semi-Transparent Navy Color Overlay -->
@@ -141,11 +147,11 @@
     <div class="max-w-6xl mx-auto text-left relative z-10">
         <!-- Architectural Heading (Rata Kiri) -->
         <h1 class="font-serif-heading text-4xl sm:text-5xl md:text-[56px] font-semibold tracking-wider uppercase leading-tight mb-6 text-left animate-left">
-            STANDAR MUTU
+            {{ $heroTitleText }}
         </h1>
         <!-- Description Subtitle (Rata Kiri) -->
         <p class="text-slate-200 text-sm sm:text-base font-normal max-w-2xl leading-relaxed tracking-normal text-left animate-left">
-            Komitmen integritas tanpa kompromi melalui kendali mutu bertahap, pengawasan ketat, dan jaminan purna-jual resmi.
+            {{ $heroDeskripsiText }}
         </p>
     </div>
 </section>

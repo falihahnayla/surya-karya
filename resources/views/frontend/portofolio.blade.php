@@ -74,6 +74,11 @@
 @section('content')
 
 <!-- BEGIN: HeroPortfolioIntro -->
+@php
+    $hero = \App\Models\HeroTitle::getForPage('portofolio');
+    $heroTitleText = ($hero && !empty($hero->title)) ? $hero->title : 'PORTOFOLIO';
+    $heroDeskripsiText = ($hero && !empty($hero->deskripsi)) ? $hero->deskripsi : 'Jelajahi dedikasi kami dalam mewujudkan rancang bangun bernilai tinggi. Setiap proyek mencerminkan ketelitian struktural, material pilihan SNI, serta estetika arsitektur residensial modern yang dirancang untuk bertahan lintas generasi.';
+@endphp
 <section class="pt-28 pb-8 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" data-purpose="portfolio-intro">
     <!-- Section Tag / Eyebrow -->
     <p class="text-[11px] font-semibold tracking-[0.25em] text-gray-500 uppercase mb-3 animate-up">
@@ -82,12 +87,12 @@
 
     <!-- Big Editorial Headline -->
     <h1 class="font-serif-heading text-5xl sm:text-6xl lg:text-7xl font-semibold tracking-tight text-[#0a192f] uppercase mb-5 leading-none animate-up">
-        PORTOFOLIO
+        {{ $heroTitleText }}
     </h1>
 
     <!-- Architectural Narrative Subtext -->
     <p class="max-w-3xl text-sm sm:text-base leading-relaxed text-gray-600 font-normal animate-up">
-        Jelajahi dedikasi kami dalam mewujudkan rancang bangun bernilai tinggi. Setiap proyek mencerminkan ketelitian struktural, material pilihan SNI, serta estetika arsitektur residensial modern yang dirancang untuk bertahan lintas generasi.
+        {{ $heroDeskripsiText }}
     </p>
 
     <!-- Category Filter Tabs -->

@@ -126,10 +126,16 @@
 @section('content')
 
 <!-- BEGIN: HeroSection -->
+@php
+    $hero = \App\Models\HeroTitle::getForPage('renovasi');
+    $heroTitleText = ($hero && !empty($hero->title)) ? $hero->title : 'RENOVASI';
+    $heroDeskripsiText = ($hero && !empty($hero->deskripsi)) ? $hero->deskripsi : 'Revitalisasi estetika dan peremajaan struktur hunian Anda dengan ketepatan teknis, efisiensi waktu, dan hasil bergaransi.';
+    $heroImage = ($hero && !empty($hero->image_url)) ? $hero->image_url : 'https://lh3.googleusercontent.com/aida-public/AB6AXuBEJ38MBqOwfXulF1m9ktJQLpRGNVXbbD7QJeRHwIkBk30DGYnjyvdBnPJade1qlJ4csz1Paq_6Mym_cek3aOTzNJxd_K6zb77LZuuuwNfHPJE12ElWxTFHZstiufztqG_UZrhv7g8PlEo-rrVt5vSymA8fyj9h8crzHbuKhvDX5c4xgDXi21cBMAaA6bqYmF6kdXnwnEkDZWTZny_Se8BL1LcmpfuOqcxtmKVvswfpe7MvF5WFWjQe_vYlBVADSJs0ZADurpzAlGb2PA';
+@endphp
 <section class="relative text-white py-28 md:py-36 lg:py-44 px-6 sm:px-10 lg:px-16 border-b border-slate-700/30 overflow-hidden">
     <!-- Background Image -->
     <div class="absolute inset-0 bg-cover bg-center transition-transform duration-1000 scale-105"
-        style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBEJ38MBqOwfXulF1m9ktJQLpRGNVXbbD7QJeRHwIkBk30DGYnjyvdBnPJade1qlJ4csz1Paq_6Mym_cek3aOTzNJxd_K6zb77LZuuuwNfHPJE12ElWxTFHZstiufztqG_UZrhv7g8PlEo-rrVt5vSymA8fyj9h8crzHbuKhvDX5c4xgDXi21cBMAaA6bqYmF6kdXnwnEkDZWTZny_Se8BL1LcmpfuOqcxtmKVvswfpe7MvF5WFWjQe_vYlBVADSJs0ZADurpzAlGb2PA'); background-position: center 40%;">
+        style="background-image: url('{{ $heroImage }}'); background-position: center 40%;">
     </div>
 
     <!-- Semi-Transparent Navy Color Overlay -->
@@ -141,11 +147,11 @@
     <div class="max-w-6xl mx-auto text-left relative z-10">
         <!-- Architectural Heading (Rata Kiri) -->
         <h1 class="font-serif-heading text-4xl sm:text-5xl md:text-[56px] font-semibold tracking-wider uppercase leading-tight mb-6 text-left animate-left">
-            RENOVASI
+            {{ $heroTitleText }}
         </h1>
         <!-- Description Subtitle (Rata Kiri) -->
         <p class="text-slate-200 text-sm sm:text-base font-normal max-w-2xl leading-relaxed tracking-normal text-left animate-left">
-            Revitalisasi estetika dan peremajaan struktur hunian Anda dengan ketepatan teknis, efisiensi waktu, dan hasil bergaransi.
+            {{ $heroDeskripsiText }}
         </p>
     </div>
 </section>

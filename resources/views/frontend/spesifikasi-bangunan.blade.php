@@ -126,10 +126,16 @@
 @section('content')
 
 <!-- BEGIN: HeroSection -->
+@php
+    $hero = \App\Models\HeroTitle::getForPage('spesifikasi_bangunan');
+    $heroTitleText = ($hero && !empty($hero->title)) ? $hero->title : 'SPESIFIKASI BANGUNAN';
+    $heroDeskripsiText = ($hero && !empty($hero->deskripsi)) ? $hero->deskripsi : 'Komitmen Surya Karya terhadap keunggulan teknis dan material berkualitas tinggi pada setiap tahap pembangunan.';
+    $heroImage = ($hero && !empty($hero->image_url)) ? $hero->image_url : 'https://lh3.googleusercontent.com/aida-public/AB6AXuAUM6ebrWgmHazERXSijlCE-wfzWMQ95b35y7U9Zu0wsQr8XI0SKfxGZxRGLVrYw90mYgdSTFQCnQRSkCePkrPwLIjmPgSz2EhHdqJjy7kx50gnWj4TYW1vIupCHYiel3_BvmtevGrPzyrW9tKzODPiuaf9T_IScFETZZT01uFwVEWqoGIqklf4JT8zyrXiapGBs6zbXoz82IDGaKgfwE6trODnNfs05FyWP2WdpwY6ZD0NGJ6a-wfE';
+@endphp
 <section class="relative text-white py-28 md:py-36 lg:py-44 px-6 sm:px-10 lg:px-16 border-b border-slate-700/30 overflow-hidden">
     <!-- Background Image -->
     <div class="absolute inset-0 bg-cover bg-center transition-transform duration-1000 scale-105"
-        style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAUM6ebrWgmHazERXSijlCE-wfzWMQ95b35y7U9Zu0wsQr8XI0SKfxGZxRGLVrYw90mYgdSTFQCnQRSkCePkrPwLIjmPgSz2EhHdqJjy7kx50gnWj4TYW1vIupCHYiel3_BvmtevGrPzyrW9tKzODPiuaf9T_IScFETZZT01uFwVEWqoGIqklf4JT8zyrXiapGBs6zbXoz82IDGaKgfwE6trODnNfs05FyWP2WdpwY6ZD0NGJ6a-wfE'); background-position: center 35%;">
+        style="background-image: url('{{ $heroImage }}'); background-position: center 35%;">
     </div>
 
     <!-- Semi-Transparent Navy Color Overlay -->
@@ -141,11 +147,11 @@
     <div class="max-w-6xl mx-auto text-left relative z-10">
         <!-- Architectural Heading (Rata Kiri) -->
         <h1 class="font-serif-heading text-4xl sm:text-5xl md:text-[56px] font-semibold tracking-wider uppercase leading-tight mb-6 text-left animate-left">
-            SPESIFIKASI BANGUNAN
+            {{ $heroTitleText }}
         </h1>
         <!-- Description Subtitle (Rata Kiri) -->
         <p class="text-slate-200 text-sm sm:text-base font-normal max-w-2xl leading-relaxed tracking-normal text-left animate-left">
-            Komitmen Surya Karya terhadap keunggulan teknis dan material berkualitas tinggi pada setiap tahap pembangunan.
+            {{ $heroDeskripsiText }}
         </p>
     </div>
 </section>

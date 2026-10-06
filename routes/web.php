@@ -18,6 +18,7 @@ use App\Http\Controllers\Admin\PortofolioController as AdminPortofolioController
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\MediaController;
 use App\Http\Controllers\Admin\HeroTitleController;
+use App\Http\Controllers\Admin\ServicePanelController;
 use App\Http\Controllers\Admin\VisiMisiController;
 use App\Http\Controllers\Admin\ServiceController;
 use App\Http\Controllers\Admin\HomeController as AdminHomeController;
@@ -69,6 +70,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
     Route::resource('media', MediaController::class);
     Route::resource('hero-title', HeroTitleController::class);
+    Route::resource('service-panel', ServicePanelController::class);
     Route::resource('visi-misi', VisiMisiController::class);
     Route::resource('service', ServiceController::class);
     Route::resource('home', AdminHomeController::class);

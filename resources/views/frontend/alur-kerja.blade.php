@@ -8,12 +8,18 @@
 
 @section('content')
 
+@php
+    $hero = \App\Models\HeroTitle::getForPage('alur_kerja');
+    $heroTitleText = ($hero && !empty($hero->title)) ? $hero->title : 'Alur Kerja Sama Kontraktor';
+    $heroDeskripsiText = ($hero && !empty($hero->deskripsi)) ? $hero->deskripsi : 'Proses kerja sama yang jelas, transparan, dan terstruktur dari awal pengajuan hingga hunian siap dihuni. Kami menjaga presisi teknis dan ketepatan timeline di setiap fase.';
+    $heroImage = ($hero && !empty($hero->image_url)) ? $hero->image_url : 'https://lh3.googleusercontent.com/aida-public/AB6AXuAGm0ulHQ0lBqq0fHtOHN2MPUpqdGLeEr7qeHdJ0pOCBfuQ00DhnO_DGKIkUgMDilRhQu_u485FeizWRyUsxlxgQiyJbiNeASq1zqm9kenrPu2MgnlLHnuz0VNrPRcptNvboS8RdM-_5u7Pgj8uzSV8lCNYs3E0B8VIm2Kdt2earzo2ONq0UFen9sGfqRzRb77qqSFktTAe3b5dc7fSgoD2LBOXZJlBHbGUSJgKdN4mbJDld0Nqqk8o';
+@endphp
 <section class="relative pt-24 pb-24 md:pt-32 md:pb-32 overflow-hidden bg-brand-navy text-white">
     <div class="absolute inset-0 z-0">
         <img
             alt="Architectural Plan and Construction"
             class="w-full h-full object-cover object-center filter brightness-[0.6] contrast-[1.1]"
-            src="https://lh3.googleusercontent.com/aida-public/AB6AXuAGm0ulHQ0lBqq0fHtOHN2MPUpqdGLeEr7qeHdJ0pOCBfuQ00DhnO_DGKIkUgMDilRhQu_u485FeizWRyUsxlxgQiyJbiNeASq1zqm9kenrPu2MgnlLHnuz0VNrPRcptNvboS8RdM-_5u7Pgj8uzSV8lCNYs3E0B8VIm2Kdt2earzo2ONq0UFen9sGfqRzRb77qqSFktTAe3b5dc7fSgoD2LBOXZJlBHbGUSJgKdN4mbJDld0Nqqk8o"
+            src="{{ $heroImage }}"
         >
         <div class="absolute inset-0 bg-gradient-to-r from-[#0b192c]/95 via-[#0b192c]/90 to-[#1e3a8a]/75 mix-blend-multiply"></div>
         <div class="absolute inset-0 bg-[#0b192c]/40"></div>
@@ -30,11 +36,11 @@
                 </div>
 
                 <h1 class="font-serif-cormorant text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-semibold tracking-tight text-white leading-[1.1] uppercase">
-                    Alur Kerja Sama<br>Kontraktor
+                    {!! nl2br(e($heroTitleText)) !!}
                 </h1>
 
                 <p class="mt-6 sm:mt-8 text-base sm:text-lg text-[#e7d8c9]/90 font-normal leading-relaxed max-w-2xl">
-                    Proses kerja sama yang jelas, transparan, dan terstruktur dari awal pengajuan hingga hunian siap dihuni. Kami menjaga presisi teknis dan ketepatan timeline di setiap fase.
+                    {{ $heroDeskripsiText }}
                 </p>
             </div>
         </div>
