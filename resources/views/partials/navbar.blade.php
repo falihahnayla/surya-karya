@@ -1,17 +1,26 @@
 <!-- BEGIN: MainHeader -->
+@php
+  $siteSetting = \App\Models\Setting::first();
+  $companyName = filled($siteSetting?->company) ? $siteSetting->company : 'Surya Karya';
+  $logoDefault = 'https://lh3.googleusercontent.com/aida-public/AB6AXuD2KLbLTxsEJf3LH3g7OCe1Q9xsz15bakNmmuzw7uFHTpFd6k0-TeLTj2GP9BNIIEf3bmhsRRyp_-yLtzeYVIz8AqLQ8RcxkN8bmNeAD2ExnOpix2Gc-BBuqPtnPxG-4TAGVfZW9Uj_dpEZI4tlIwDV7mjPi_xsGES1kOGE11UHOwLERF57omZMgcuiz4u3PA1xBu3EutZpQrTjRbcvKzMT_kw3AbzL2yOoN_m0Br0ykTSUduAOqCnmCm7dW3M0XCECUA';
+  $logoUrl = $logoDefault;
+  if (filled($siteSetting?->logo)) {
+      $logoUrl = (str_starts_with($siteSetting->logo, 'http://') || str_starts_with($siteSetting->logo, 'https://')) ? $siteSetting->logo : asset($siteSetting->logo);
+  }
+@endphp
 <header class="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md border-b border-gray-100 shadow-sm transition-all">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
 
     <!-- Brand Logo & Name -->
     <a class="flex items-center gap-3.5 group" href="{{ route('home') }}">
       <img
-        alt="Surya Karya Logo"
+        alt="{{ $companyName }} Logo"
         class="w-11 h-11 object-cover rounded-full shadow-sm ring-1 ring-slate-200/80 group-hover:scale-105 transition-transform"
-        src="https://lh3.googleusercontent.com/aida-public/AB6AXuD2KLbLTxsEJf3LH3g7OCe1Q9xsz15bakNmmuzw7uFHTpFd6k0-TeLTj2GP9BNIIEf3bmhsRRyp_-yLtzeYVIz8AqLQ8RcxkN8bmNeAD2ExnOpix2Gc-BBuqPtnPxG-4TAGVfZW9Uj_dpEZI4tlIwDV7mjPi_xsGES1kOGE11UHOwLERF57omZMgcuiz4u3PA1xBu3EutZpQrTjRbcvKzMT_kw3AbzL2yOoN_m0Br0ykTSUduAOqCnmCm7dW3M0XCECUA"
+        src="{{ $logoUrl }}"
       />
 
       <span class="heading-serif text-2xl sm:text-3xl font-semibold tracking-tight text-slate-900 group-hover:text-[#d4af37] transition-colors">
-        Surya Karya
+        {{ $companyName }}
       </span>
     </a>
 

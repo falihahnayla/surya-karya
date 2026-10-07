@@ -29,7 +29,7 @@
     @endif
 
     <div class="bg-surface-container-lowest p-8 rounded-DEFAULT border border-surface-container-high shadow-sm max-w-3xl" style="font-family: 'Inter', sans-serif;">
-        <form action="{{ route('admin.settings.update') }}" method="POST" class="flex flex-col gap-6">
+        <form action="{{ route('admin.settings.update') }}" method="POST" enctype="multipart/form-data" class="flex flex-col gap-6">
             @csrf
 
             {{-- WhatsApp (utama) --}}
@@ -81,14 +81,41 @@
                 @error('description') <span class="text-xs text-rose-500 mt-1 block">{{ $message }}</span> @enderror
             </div>
 
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 p-5 rounded-DEFAULT bg-slate-50 border border-slate-200">
                 <div>
-                    <label for="logo" class="{{ $label }}">Logo (URL / path)</label>
+                    <label for="logo_file" class="{{ $label }}">Upload Logo dari Perangkat (File Explorer)</label>
+                    <input type="file" name="logo_file" id="logo_file" accept="image/*" class="w-full px-4 py-2 rounded-DEFAULT border border-slate-200 focus:outline-none focus:ring-2 focus:ring-[#0a2569] text-sm text-slate-900 bg-white file:mr-3 file:py-1 file:px-3 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-slate-100 file:text-slate-700 hover:file:bg-slate-200">
+                    @error('logo_file') <span class="text-xs text-rose-500 mt-1 block">{{ $message }}</span> @enderror
+
+                    @if(!empty($setting->logo))
+                    <div class="mt-3 mb-2 flex items-center gap-3">
+                        <span class="text-xs text-slate-500 font-medium">Logo saat ini:</span>
+                        <img src="{{ (str_starts_with($setting->logo, 'http://') || str_starts_with($setting->logo, 'https://')) ? $setting->logo : asset($setting->logo) }}" class="h-10 w-auto max-w-[140px] object-contain rounded border border-slate-200 p-1 bg-white shadow-sm">
+                    </div>
+                    @endif
+
+                    <div class="my-2 text-[11px] text-slate-400 font-medium uppercase tracking-wider">ATAU GUNAKAN PATH / URL (OPSIONAL)</div>
+
+                    <label for="logo" class="{{ $label }}">Path / URL Logo</label>
                     <input type="text" name="logo" id="logo" value="{{ old('logo', $setting->logo) }}" placeholder="images/logo.jpg" class="{{ $input }}">
                     @error('logo') <span class="text-xs text-rose-500 mt-1 block">{{ $message }}</span> @enderror
                 </div>
+
                 <div>
-                    <label for="favicon" class="{{ $label }}">Favicon (URL / path)</label>
+                    <label for="favicon_file" class="{{ $label }}">Upload Favicon dari Perangkat (File Explorer)</label>
+                    <input type="file" name="favicon_file" id="favicon_file" accept="image/*,.ico" class="w-full px-4 py-2 rounded-DEFAULT border border-slate-200 focus:outline-none focus:ring-2 focus:ring-[#0a2569] text-sm text-slate-900 bg-white file:mr-3 file:py-1 file:px-3 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-slate-100 file:text-slate-700 hover:file:bg-slate-200">
+                    @error('favicon_file') <span class="text-xs text-rose-500 mt-1 block">{{ $message }}</span> @enderror
+
+                    @if(!empty($setting->favicon))
+                    <div class="mt-3 mb-2 flex items-center gap-3">
+                        <span class="text-xs text-slate-500 font-medium">Favicon saat ini:</span>
+                        <img src="{{ (str_starts_with($setting->favicon, 'http://') || str_starts_with($setting->favicon, 'https://')) ? $setting->favicon : asset($setting->favicon) }}" class="h-8 w-8 object-contain rounded border border-slate-200 p-1 bg-white shadow-sm">
+                    </div>
+                    @endif
+
+                    <div class="my-2 text-[11px] text-slate-400 font-medium uppercase tracking-wider">ATAU GUNAKAN PATH / URL (OPSIONAL)</div>
+
+                    <label for="favicon" class="{{ $label }}">Path / URL Favicon</label>
                     <input type="text" name="favicon" id="favicon" value="{{ old('favicon', $setting->favicon) }}" placeholder="images/favicon.ico" class="{{ $input }}">
                     @error('favicon') <span class="text-xs text-rose-500 mt-1 block">{{ $message }}</span> @enderror
                 </div>

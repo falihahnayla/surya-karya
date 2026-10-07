@@ -28,6 +28,7 @@
                 <thead>
                     <tr class="border-b border-surface-container-high text-outline text-xs uppercase tracking-wider bg-surface-container-low/30">
                         <th class="py-4 px-6 font-medium w-16">No</th>
+                        <th class="py-4 px-6 font-medium w-16 text-center">Ikon</th>
                         <th class="py-4 px-6 font-medium">Judul (Title)</th>
                         <th class="py-4 px-6 font-medium">URL</th>
                         <th class="py-4 px-6 font-medium text-right w-44">Aksi</th>
@@ -37,6 +38,11 @@
                     @forelse($mediaItems as $index => $item)
                         <tr class="hover:bg-surface-container-low/40 transition-colors">
                             <td class="py-5 px-6 font-medium text-slate-500">{{ $index + 1 }}</td>
+                            <td class="py-5 px-6 text-center">
+                                <span class="w-8 h-8 rounded bg-slate-100 border border-slate-200 inline-flex items-center justify-center text-slate-700">
+                                    <i class="{{ $item->icon_class }}"></i>
+                                </span>
+                            </td>
                             <td class="py-5 px-6 font-medium text-primary text-base" style="font-family: 'Cormorant Garamond', serif;">{{ $item->title }}</td>
                             <td class="py-5 px-6 text-on-surface-variant">
                                 <a href="{{ $item->url }}" target="_blank" class="text-blue-600 hover:underline flex items-center gap-1">
@@ -59,7 +65,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="4" class="py-8 text-center text-slate-400">Belum ada data media. Klik tombol di atas untuk membuat data baru.</td>
+                            <td colspan="5" class="py-8 text-center text-slate-400">Belum ada data media. Klik tombol di atas untuk membuat data baru.</td>
                         </tr>
                     @endforelse
                 </tbody>

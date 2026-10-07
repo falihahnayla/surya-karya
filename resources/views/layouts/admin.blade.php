@@ -5,6 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title', 'Admin Portal - Surya Karya')</title>
 
+    @php
+        $siteSetting = \App\Models\Setting::first();
+        $favIconUrl = ($siteSetting && !empty($siteSetting->favicon)) ? (str_starts_with($siteSetting->favicon, 'http') ? $siteSetting->favicon : asset($siteSetting->favicon)) : asset('images/favicon.ico');
+    @endphp
+    <link rel="icon" href="{{ $favIconUrl }}">
+
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@100..900&family=Space+Grotesk:wght@100..900&display=swap" rel="stylesheet">
@@ -116,7 +122,45 @@
     @stack('styles')
 </head>
 <body class="bg-background font-body-base text-body-base text-on-surface antialiased selection:bg-primary-container selection:text-on-primary">
-<!-- Sidebar Partial -->
+
+    @php
+        $adminLogoSetting = \App\Models\Setting::first();
+        $adminLogoUrl = asset('images/logo.jpg');
+        if (filled($adminLogoSetting?->logo)) {
+            $adminLogoUrl = (str_starts_with($adminLogoSetting->logo, 'http://') || str_starts_with($adminLogoSetting->logo, 'https://')) ? $adminLogoSetting->logo : asset($adminLogoSetting->logo);
+        }
+        $adminCompany = filled($adminLogoSetting?->company) ? $adminLogoSetting->company : 'Surya Karya';
+    @endphp
+    <!-- BEGIN: Page Loader -->
+    <div id="sk-page-loader" class="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-[#06101e] text-white transition-opacity duration-500 ease-out">
+        <div class="flex flex-col items-center text-center px-6">
+            <!-- Logo Emblem with Golden Ring Pulse -->
+            <div class="relative mb-5">
+                <img src="{{ $adminLogoUrl }}" 
+                     alt="{{ $adminCompany }} Emblem" 
+                     class="w-16 h-16 rounded-full object-cover shadow-2xl ring-2 ring-[#d4af37]/70 p-0.5">
+                <div class="absolute inset-0 rounded-full border border-[#d4af37]/40 animate-ping opacity-35"></div>
+            </div>
+
+            <!-- Brand Serif Title -->
+            <h2 class="heading-serif text-3xl sm:text-4xl font-semibold tracking-wider uppercase text-white leading-none mb-2" style="font-family: 'Cormorant Garamond', Georgia, serif;">
+                {{ $adminCompany }}
+            </h2>
+
+            <!-- Subtitle Eyebrow -->
+            <span class="text-[10px] sm:text-xs font-semibold tracking-[0.3em] uppercase text-[#d4af37]">
+                Admin Management Portal
+            </span>
+
+            <!-- Minimalist Gold Progress Bar -->
+            <div class="w-44 h-[2px] bg-white/10 rounded-full overflow-hidden mt-6 relative">
+                <div id="sk-loader-bar" class="h-full bg-gradient-to-r from-[#dfcfb9] via-[#d4af37] to-[#dfcfb9] rounded-full w-0 transition-all duration-300 ease-out"></div>
+            </div>
+        </div>
+    </div>
+    <!-- END: Page Loader -->
+
+    <!-- Sidebar Partial -->
     @include('partials.sidebar')
 
     <!-- Content Wrapper -->
@@ -155,5 +199,65 @@
     </div>
 
     @stack('scripts')
+
+    <script>
+        (function () {
+            const loader = document.getElementById('sk-page-loader');
+            const loaderBar = document.getElementById('sk-loader-bar');
+
+            function startLoader() {
+                if (loaderBar) {
+                    loaderBar.style.transition = 'width 0.4s ease-out';
+                    loaderBar.style.width = '75%';
+                }
+                if (loader) {
+                    loader.classList.remove('opacity-0', 'pointer-events-none');
+                }
+            }
+
+            function finishLoader() {
+                if (loaderBar) {
+                    loaderBar.style.width = '100%';
+                }
+                setTimeout(function () {
+                    if (loader) {
+                        loader.classList.add('opacity-0', 'pointer-events-none');
+                    }
+                }, 350);
+            }
+
+            if (loaderBar) {
+                setTimeout(function () { loaderBar.style.width = '45%'; }, 50);
+                setTimeout(function () { loaderBar.style.width = '85%'; }, 200);
+            }
+
+            window.addEventListener('load', finishLoader);
+            setTimeout(finishLoader, 1200);
+
+            document.addEventListener('click', function (e) {
+                const link = e.target.closest('a');
+                if (!link) return;
+
+                const href = link.getAttribute('href');
+                const target = link.getAttribute('target');
+
+                if (!href || href.startsWith('#') || href.startsWith('javascript:') || href.startsWith('tel:') || href.startsWith('mailto:') || target === '_blank') {
+                    return;
+                }
+
+                startLoader();
+            });
+
+            document.addEventListener('submit', function (e) {
+                startLoader();
+            });
+
+            window.addEventListener('pageshow', function (event) {
+                if (event.persisted) {
+                    finishLoader();
+                }
+            });
+        })();
+    </script>
 </body>
 </html>

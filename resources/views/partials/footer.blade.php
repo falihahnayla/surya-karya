@@ -5,6 +5,9 @@
   // Quick Links dari Admin > Quick Links
   $quickLinks = \App\Models\QuickLink::orderBy('id')->get();
 
+  // Sosial Media dari Admin > Sosial Media (Media model)
+  $socialMediaList = \App\Models\Media::all();
+
   $companyName = filled($st?->company) ? $st->company : 'Surya Karya';
   $description = filled($st?->description)
       ? $st->description
@@ -122,11 +125,17 @@
 
         <div class="mt-4 pt-2">
           <span class="text-[10px] uppercase tracking-wider font-semibold text-slate-400 block mb-2">SOSIAL MEDIA</span>
-          <div class="flex items-center space-x-3 text-slate-400">
-            <a href="#" aria-label="Facebook" class="hover:text-white transition"><i class="fab fa-facebook-f"></i></a>
-            <a href="#" aria-label="Instagram" class="hover:text-white transition"><i class="fab fa-instagram"></i></a>
-            <a href="#" aria-label="LinkedIn" class="hover:text-white transition"><i class="fab fa-linkedin-in"></i></a>
-            <a href="#" aria-label="TikTok" class="hover:text-white transition"><i class="fab fa-tiktok"></i></a>
+          <div class="flex items-center space-x-3 text-slate-400 flex-wrap gap-y-2">
+            @forelse($socialMediaList as $social)
+              <a href="{{ $social->url }}" target="_blank" rel="noopener noreferrer" title="{{ $social->title }}" aria-label="{{ $social->title }}" class="hover:text-white transition text-sm p-1">
+                <i class="{{ $social->icon_class }}"></i>
+              </a>
+            @empty
+              <a href="#" aria-label="Facebook" class="hover:text-white transition"><i class="fa-brands fa-facebook-f"></i></a>
+              <a href="#" aria-label="Instagram" class="hover:text-white transition"><i class="fa-brands fa-instagram"></i></a>
+              <a href="#" aria-label="LinkedIn" class="hover:text-white transition"><i class="fa-brands fa-linkedin-in"></i></a>
+              <a href="#" aria-label="TikTok" class="hover:text-white transition"><i class="fa-brands fa-tiktok"></i></a>
+            @endforelse
           </div>
         </div>
       </div>

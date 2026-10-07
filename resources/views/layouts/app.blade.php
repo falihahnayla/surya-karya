@@ -6,6 +6,12 @@
 
     <title>@yield('title', 'Surya Karya')</title>
 
+    @php
+        $siteSetting = \App\Models\Setting::first();
+        $favIconUrl = ($siteSetting && !empty($siteSetting->favicon)) ? (str_starts_with($siteSetting->favicon, 'http') ? $siteSetting->favicon : asset($siteSetting->favicon)) : asset('images/favicon.ico');
+    @endphp
+    <link rel="icon" href="{{ $favIconUrl }}">
+
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 
     <script>

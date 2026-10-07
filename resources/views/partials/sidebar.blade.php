@@ -1,12 +1,20 @@
+    @php
+        $sidebarSetting = \App\Models\Setting::first();
+        $sidebarCompany = filled($sidebarSetting?->company) ? $sidebarSetting->company : 'SURYA KARYA';
+        $sidebarLogo = asset('images/logo.jpg');
+        if (filled($sidebarSetting?->logo)) {
+            $sidebarLogo = (str_starts_with($sidebarSetting->logo, 'http://') || str_starts_with($sidebarSetting->logo, 'https://')) ? $sidebarSetting->logo : asset($sidebarSetting->logo);
+        }
+    @endphp
     <!-- Sidebar -->
     <aside class="fixed left-0 top-0 h-screen w-72 bg-surface-container-lowest shadow-[0_1px_8px_rgba(0,0,0,0.04)] z-50 flex flex-col justify-between overflow-y-auto">
         <!-- Sidebar Brand Header -->
         <div class="p-6 pb-4 flex items-center gap-3 border-b border-surface-container-high shrink-0">
             <div class="w-10 h-10 rounded-full overflow-hidden shrink-0 border border-slate-200 shadow-sm flex items-center justify-center bg-white">
-                <img src="{{ asset('images/logo.jpg') }}" alt="Surya Karya Logo" class="w-full h-full object-cover">
+                <img src="{{ $sidebarLogo }}" alt="{{ $sidebarCompany }} Logo" class="w-full h-full object-cover">
             </div>
             <div class="flex flex-col">
-                <span class="text-base font-bold tracking-wider text-[#0a369d] leading-none uppercase" style="font-family: 'Cormorant Garamond', serif;">SURYA KARYA</span>
+                <span class="text-base font-bold tracking-wider text-[#0a369d] leading-none uppercase" style="font-family: 'Cormorant Garamond', serif;">{{ $sidebarCompany }}</span>
             </div>
         </div>
 
