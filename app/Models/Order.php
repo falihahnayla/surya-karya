@@ -17,7 +17,7 @@ class Order extends Model
         'order_code', 'name', 'company_name', 'email', 'phone', 'address',
         'layanan_id', 'building_area', 'land_area', 'building_position',
         'project_detail', 'denah_image', 'lahan_image', 'notes',
-        'total', 'termin_1', 'termin_2', 'termin_3', 'status',
+        'total', 'termin_1', 'termin_2', 'termin_3', 'status', 'seen_at',
     ];
 
     protected $casts = [
@@ -25,6 +25,7 @@ class Order extends Model
         'termin_1' => 'decimal:2',
         'termin_2' => 'decimal:2',
         'termin_3' => 'decimal:2',
+        'seen_at'  => 'datetime',
     ];
 
     protected static function booted(): void

@@ -1,5 +1,6 @@
     @php
         $sidebarSetting = \App\Models\Setting::first();
+        $hasNewOrder = \App\Models\Order::whereNull('seen_at')->exists();
         $sidebarCompany = filled($sidebarSetting?->company) ? $sidebarSetting->company : 'SURYA KARYA';
         $sidebarLogo = asset('images/logo.jpg');
         if (filled($sidebarSetting?->logo)) {
@@ -28,10 +29,16 @@
             </a>
 
             <!-- Order -->
-        <a class="flex items-center gap-3 px-3.5 py-2.5 rounded-DEFAULT {{ request()->is('admin/orders*') ? 'bg-[#0a2569] text-white font-medium' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50 font-normal' }} text-sm transition-colors" href="{{ route('admin.orders.index') }}">
-            <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" x2="8" y1="13" y2="13"></line><line x1="16" x2="8" y1="17" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
-            <span>Order</span>
-        </a>
+            <a class="flex items-center gap-3 px-3.5 py-2.5 rounded-DEFAULT {{ request()->is('admin/orders*') ? 'bg-[#0a2569] text-white font-medium' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50 font-normal' }} text-sm transition-colors" href="{{ route('admin.orders.index') }}">
+                <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" x2="8" y1="13" y2="13"></line><line x1="16" x2="8" y1="17" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                <span>Order</span>
+                @if($hasNewOrder)
+                    <span class="ml-auto relative flex h-2.5 w-2.5" title="Ada pesanan baru">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                        <span class="relative inline-flex h-2.5 w-2.5 rounded-full bg-emerald-500"></span>
+                    </span>
+                @endif
+            </a>
 
             <!-- Pengaturan -->
             <a class="flex items-center gap-3 px-3.5 py-2.5 rounded-DEFAULT {{ request()->is('admin/settings*') ? 'bg-[#0a2569] text-white font-medium' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50 font-normal' }} text-sm transition-colors" href="{{ route('admin.settings.index') }}">

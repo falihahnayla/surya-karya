@@ -36,6 +36,11 @@ class OrderController extends Controller
         $selected = $selected ?? $items->first();
         $totalAll = Order::count();
 
+        // Tandai order yang sedang dibuka sebagai sudah dilihat (toBase = tidak mengubah updated_at)
+        if ($selected && is_null($selected->seen_at)) {
+            Order::whereKey($selected->id)->whereNull('seen_at')->toBase()->update(['seen_at' => now()]);
+        }
+
         return view('admin.orders.index', compact('items', 'selected', 'totalAll'));
     }
 
@@ -51,6 +56,9 @@ class OrderController extends Controller
 
         $data['denah_image'] = $request->file('denah_image')?->store('orders/denah', 'public');
         $data['lahan_image'] = $request->file('lahan_image')?->store('orders/lahan', 'public');
+
+        // Order buatan admin sendiri langsung dianggap sudah dilihat
+        $data['seen_at'] = now();
 
         DB::transaction(fn () => Order::create($this->normalize($data)));
 
