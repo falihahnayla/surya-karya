@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
 use App\Models\FaqCategory;
+use App\Models\Setting;
 
 class FaqController extends Controller
 {
@@ -13,6 +14,8 @@ class FaqController extends Controller
             ->orderBy('id')
             ->get();
 
-        return view('frontend.faq', compact('categories'));
+        $setting = Setting::first();
+
+        return view('frontend.faq', compact('categories', 'setting'));
     }
 }

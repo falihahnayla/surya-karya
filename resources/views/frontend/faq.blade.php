@@ -9,6 +9,15 @@
     $heroTitleText = ($hero && !empty($hero->title)) ? $hero->title : 'Pertanyaan yang Sering Diajukan';
     $heroDeskripsiText = ($hero && !empty($hero->deskripsi)) ? $hero->deskripsi : 'Temukan jawaban komprehensif seputar layanan, transparansi rancang bangun, estimasi RAB, dan alur kerja sama bersama Surya Karya.';
     $heroImage = ($hero && !empty($hero->image_url)) ? $hero->image_url : 'https://lh3.googleusercontent.com/aida-public/AB6AXuCeVbtNJiJuL00yT332BB87i6eGfIlEL-L_LdxKGSFd1Z1mfnTd3bZdOiyT88tu5L-T1dLtUlK2F8Sp8iWG-L1ZMCxzwC9bROyNihL-_pLkwPPeksOBvW6K8rNbXGLX0l7AhO4I8QZSAKgpizo8EcD7Ubl45jNNMN5IIhWdxqVVhl3xArBWUMccQsLabranZYvDMaEzvuaWRrqYM94q10omSYxM23s6vYlVswuYr8DQDHaRF0IHTIcK';
+
+    // Kontak dari Setting
+    $waRaw   = $setting?->whatsapp ?? '';
+    $waDigit = preg_replace('/\D+/', '', $waRaw);
+    if (str_starts_with($waDigit, '0')) {
+        $waDigit = '62' . substr($waDigit, 1);
+    }
+    $waLink       = $waDigit ? 'https://wa.me/' . $waDigit : null;
+    $phoneDisplay = ($setting?->phone ?: $waRaw);
 @endphp
 <section class="relative border-b border-slate-800/80 py-28 md:py-36 lg:py-44 px-6 sm:px-10 lg:px-16 overflow-hidden bg-brand-dark bg-cover bg-center" style="background-image: linear-gradient(to right, rgba(7, 19, 36, 0.92), rgba(11, 25, 44, 0.85)), url('{{ $heroImage }}');">
     <div class="animate-left">
@@ -65,22 +74,26 @@
                     Butuh kalkulasi awal atau telaah denah? Diskusikan langsung dengan tim perencana kami.
                 </p>
 
-                <a class="w-full flex items-center justify-center gap-2 px-4 py-3 bg-[#c7ab7c] hover:bg-[#bfa06d] text-slate-900 text-xs font-bold uppercase tracking-wider rounded-sm shadow transition"
-                   href="https://wa.me/6281239401899"
-                   rel="noopener noreferrer"
-                   target="_blank">
+                @if($waLink)
+                    <a class="w-full flex items-center justify-center gap-2 px-4 py-3 bg-[#c7ab7c] hover:bg-[#bfa06d] text-slate-900 text-xs font-bold uppercase tracking-wider rounded-sm shadow transition"
+                       href="{{ $waLink }}"
+                       rel="noopener noreferrer"
+                       target="_blank">
 
-                    <i class="fa-brands fa-whatsapp text-base"></i>
+                        <i class="fa-brands fa-whatsapp text-base"></i>
 
-                    CHAT VIA WHATSAPP
-                </a>
+                        CHAT VIA WHATSAPP
+                    </a>
+                @endif
 
                 <div class="mt-6 pt-5 border-t border-white/15 space-y-2 text-xs text-slate-300">
 
-                    <div class="flex items-center gap-2.5">
-                        <i class="fa-solid fa-phone w-4 text-center text-amber-200/90"></i>
-                        <span class="font-semibold text-white">0812 3940 1899</span>
-                    </div>
+                    @if($phoneDisplay)
+                        <div class="flex items-center gap-2.5">
+                            <i class="fa-solid fa-phone w-4 text-center text-amber-200/90"></i>
+                            <span class="font-semibold text-white">{{ $phoneDisplay }}</span>
+                        </div>
+                    @endif
 
                     <div class="flex items-center gap-2.5 text-slate-300">
                         <i class="fa-regular fa-clock w-4 text-center text-amber-200/90"></i>
