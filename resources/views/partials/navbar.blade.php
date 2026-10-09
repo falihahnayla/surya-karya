@@ -8,6 +8,39 @@
       $logoUrl = (str_starts_with($siteSetting->logo, 'http://') || str_starts_with($siteSetting->logo, 'https://')) ? $siteSetting->logo : asset($siteSetting->logo);
   }
 @endphp
+
+<style>
+  /* Hide Google Translate top banner & popups cleanly */
+  .goog-te-banner-frame,
+  .goog-te-banner-frame.skiptranslate,
+  iframe.goog-te-banner-frame {
+      display: none !important;
+  }
+  body {
+      top: 0px !important;
+      position: static !important;
+  }
+  .goog-tooltip,
+  .goog-tooltip:hover {
+      display: none !important;
+  }
+  .goog-text-highlight {
+      background-color: transparent !important;
+      border: none !important;
+      box-shadow: none !important;
+  }
+  #goog-gt-tt,
+  .goog-te-balloon-frame {
+      display: none !important;
+  }
+  .skiptranslate {
+      display: none !important;
+  }
+</style>
+
+<!-- Hidden Google Translate Element Container -->
+<div id="google_translate_element" class="hidden" style="display:none !important;"></div>
+
 <header class="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md border-b border-gray-100 shadow-sm transition-all">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
 
@@ -53,7 +86,7 @@
               href="{{ route('pembangunan-renovasi') }}"
               class="block px-5 py-3 text-sm transition-colors hover:bg-slate-50 hover:text-[#d4af37] {{ request()->routeIs('pembangunan-renovasi') ? 'text-[#d4af37] font-semibold' : 'text-slate-600' }}"
             >
-              Pembangunan & Renovasi
+              Pembangunan &amp; Renovasi
             </a>
 
             <!-- Spesifikasi Bangunan -->
@@ -61,7 +94,7 @@
               href="{{ route('spesifikasi-standar') }}"
               class="block px-5 py-3 text-sm transition-colors hover:bg-slate-50 hover:text-[#d4af37] {{ request()->routeIs('spesifikasi-standar') ? 'text-[#d4af37] font-semibold' : 'text-slate-600' }}"
             >
-              Spesifikasi Bangunan & Standar Mutu
+              Spesifikasi Bangunan &amp; Standar Mutu
             </a>
 
             <!-- Alur Kerja -->
@@ -96,14 +129,65 @@
     <!-- Right Action & Language & Mobile Hamburger -->
     <div class="flex items-center space-x-3 sm:space-x-4">
 
-      <!-- Language Icon -->
-      <button
-        aria-label="Language selector"
-        class="text-slate-600 hover:text-[#d4af37] p-1.5 rounded-full hover:bg-slate-100 transition"
-        type="button"
-      >
-        <i class="fa-solid fa-globe text-[18px]"></i>
-      </button>
+      <!-- Language Switcher Dropdown -->
+      <div class="relative inline-block text-left" id="lang-switcher-wrapper">
+        <button
+          id="lang-menu-btn"
+          aria-label="Language selector"
+          class="text-slate-600 hover:text-[#d4af37] px-2.5 py-1.5 rounded-full hover:bg-slate-100 transition flex items-center gap-1.5 focus:outline-none border border-slate-200/80 shadow-2xs"
+          type="button"
+        >
+          <i class="fa-solid fa-globe text-base text-[#d4af37]"></i>
+          <span id="current-lang-code" class="text-xs font-bold uppercase tracking-wider text-slate-700">ID</span>
+          <i class="fa-solid fa-chevron-down text-[9px] text-slate-400 transition-transform duration-200" id="lang-chevron"></i>
+        </button>
+
+        <!-- Dropdown Menu -->
+        <div
+          id="lang-dropdown-menu"
+          class="hidden absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-xl border border-slate-100 py-2 z-50 transition-all"
+        >
+          <div class="px-4 py-1.5 border-b border-slate-100 text-[10px] font-bold text-slate-400 uppercase tracking-widest">
+            Pilih Bahasa / Language
+          </div>
+
+          <button
+            type="button"
+            data-lang="id"
+            class="lang-option-btn w-full flex items-center justify-between px-4 py-2.5 text-xs font-medium text-slate-700 hover:bg-slate-50 hover:text-[#d4af37] transition text-left"
+          >
+            <span class="flex items-center gap-2.5">
+              <span class="text-base">🇮🇩</span>
+              <span>Bahasa Indonesia</span>
+            </span>
+            <i class="fa-solid fa-check text-[#d4af37] text-xs check-icon hidden"></i>
+          </button>
+
+          <button
+            type="button"
+            data-lang="en"
+            class="lang-option-btn w-full flex items-center justify-between px-4 py-2.5 text-xs font-medium text-slate-700 hover:bg-slate-50 hover:text-[#d4af37] transition text-left"
+          >
+            <span class="flex items-center gap-2.5">
+              <span class="text-base">🇬🇧</span>
+              <span>English</span>
+            </span>
+            <i class="fa-solid fa-check text-[#d4af37] text-xs check-icon hidden"></i>
+          </button>
+
+          <button
+            type="button"
+            data-lang="zh-CN"
+            class="lang-option-btn w-full flex items-center justify-between px-4 py-2.5 text-xs font-medium text-slate-700 hover:bg-slate-50 hover:text-[#d4af37] transition text-left"
+          >
+            <span class="flex items-center gap-2.5">
+              <span class="text-base">🇨🇳</span>
+              <span>中文 (Mandarin)</span>
+            </span>
+            <i class="fa-solid fa-check text-[#d4af37] text-xs check-icon hidden"></i>
+          </button>
+        </div>
+      </div>
 
       <!-- CTA Button (Desktop/Tablet) -->
       <a
@@ -166,6 +250,22 @@
         FAQ
       </a>
 
+      <!-- Mobile Language Selector -->
+      <div class="border-t border-slate-100 pt-3">
+        <div class="text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-2">PILIH BAHASA / LANGUAGE</div>
+        <div class="flex items-center gap-2">
+          <button type="button" data-lang="id" class="lang-option-btn flex-1 py-2 px-3 rounded-lg border border-slate-200 text-xs font-semibold flex items-center justify-center gap-2 text-slate-700 hover:border-[#d4af37]">
+            <span>🇮🇩</span> ID
+          </button>
+          <button type="button" data-lang="en" class="lang-option-btn flex-1 py-2 px-3 rounded-lg border border-slate-200 text-xs font-semibold flex items-center justify-center gap-2 text-slate-700 hover:border-[#d4af37]">
+            <span>🇬🇧</span> EN
+          </button>
+          <button type="button" data-lang="zh-CN" class="lang-option-btn flex-1 py-2 px-3 rounded-lg border border-slate-200 text-xs font-semibold flex items-center justify-center gap-2 text-slate-700 hover:border-[#d4af37]">
+            <span>🇨🇳</span> ZH
+          </button>
+        </div>
+      </div>
+
       <!-- Mobile Get In Touch CTA -->
       <div class="pt-3">
         <a href="{{ route('frontend.form-pesanan') }}" class="w-full inline-flex items-center justify-center px-5 py-3 text-sm font-semibold tracking-wide text-white bg-[#0d1c31] hover:bg-[#d4af37] rounded-full transition shadow-sm">
@@ -178,6 +278,17 @@
 </header>
 
 <script>
+  function googleTranslateElementInit() {
+    new google.translate.TranslateElement({
+      pageLanguage: 'id',
+      includedLanguages: 'id,en,zh-CN',
+      autoDisplay: false
+    }, 'google_translate_element');
+  }
+</script>
+<script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+<script>
   document.addEventListener('DOMContentLoaded', function () {
     const menuBtn = document.getElementById('mobile-menu-btn');
     const menuDrawer = document.getElementById('mobile-menu-drawer');
@@ -187,6 +298,11 @@
     const layananBtn = document.getElementById('mobile-layanan-btn');
     const layananSub = document.getElementById('mobile-layanan-sub');
     const layananIcon = document.getElementById('mobile-layanan-icon');
+
+    const langMenuBtn = document.getElementById('lang-menu-btn');
+    const langDropdownMenu = document.getElementById('lang-dropdown-menu');
+    const langChevron = document.getElementById('lang-chevron');
+    const currentLangCode = document.getElementById('current-lang-code');
 
     if (menuBtn && menuDrawer) {
       menuBtn.addEventListener('click', function () {
@@ -204,6 +320,72 @@
         }
       });
     }
+
+    // Language Dropdown Toggle
+    if (langMenuBtn && langDropdownMenu) {
+      langMenuBtn.addEventListener('click', function (e) {
+        e.stopPropagation();
+        langDropdownMenu.classList.toggle('hidden');
+        if (langChevron) langChevron.classList.toggle('rotate-180');
+      });
+
+      document.addEventListener('click', function (e) {
+        if (!langMenuBtn.contains(e.target) && !langDropdownMenu.contains(e.target)) {
+          langDropdownMenu.classList.add('hidden');
+          if (langChevron) langChevron.classList.remove('rotate-180');
+        }
+      });
+    }
+
+    function applySelectedLangUI(langCode) {
+      const displayCode = langCode === 'zh-CN' ? 'ZH' : langCode.toUpperCase();
+      if (currentLangCode) currentLangCode.textContent = displayCode;
+
+      document.querySelectorAll('.lang-option-btn').forEach(btn => {
+        const checkIcon = btn.querySelector('.check-icon');
+        const bLang = btn.getAttribute('data-lang');
+        if (bLang === langCode) {
+          btn.classList.add('bg-slate-50', 'font-semibold', 'text-[#d4af37]');
+          if (checkIcon) checkIcon.classList.remove('hidden');
+        } else {
+          btn.classList.remove('bg-slate-50', 'font-semibold', 'text-[#d4af37]');
+          if (checkIcon) checkIcon.classList.add('hidden');
+        }
+      });
+    }
+
+    function changeLanguage(langCode) {
+      applySelectedLangUI(langCode);
+      localStorage.setItem('sk_site_lang', langCode);
+
+      // Set cookie for google translate engine
+      const domain = window.location.hostname;
+      document.cookie = "googtrans=/id/" + langCode + "; path=/; domain=" + domain;
+      document.cookie = "googtrans=/id/" + langCode + "; path=/;";
+
+      const googleSelect = document.querySelector('#google_translate_element select');
+      if (googleSelect) {
+        googleSelect.value = langCode;
+        googleSelect.dispatchEvent(new Event('change'));
+      } else {
+        window.location.reload();
+      }
+
+      if (langDropdownMenu) langDropdownMenu.classList.add('hidden');
+      if (langChevron) langChevron.classList.remove('rotate-180');
+    }
+
+    // Bind click events on all language option buttons
+    document.querySelectorAll('.lang-option-btn').forEach(btn => {
+      btn.addEventListener('click', function () {
+        const targetLang = this.getAttribute('data-lang');
+        changeLanguage(targetLang);
+      });
+    });
+
+    // Restore saved language on load
+    const savedLang = localStorage.getItem('sk_site_lang') || 'id';
+    applySelectedLangUI(savedLang);
   });
 </script>
 <!-- END: MainHeader -->

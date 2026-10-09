@@ -32,7 +32,7 @@
     <div class="bg-surface-container-lowest rounded-DEFAULT border border-surface-container-high shadow-sm overflow-hidden">
         <div class="p-6 border-b border-surface-container-high flex items-center justify-between">
             <div>
-                <h3 class="text-2xl font-normal text-primary tracking-tight" style="font-family: 'Cormorant Garamond', serif;">Tabel 1: Hero Banner Halaman</h3>
+                <h3 class="text-2xl font-normal text-primary tracking-tight" style="font-family: 'Cormorant Garamond', serif;">Hero Banner Halaman</h3>
                 <p class="text-sm text-on-surface-variant mt-0.5" style="font-family: 'Inter', sans-serif;">Menampilkan judul, deskripsi, dan banner utama untuk setiap halaman website.</p>
             </div>
             <a href="{{ route('admin.hero-title.create') }}" class="px-3.5 py-1.5 rounded-DEFAULT bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold transition-colors">
@@ -88,7 +88,7 @@
     <div class="bg-surface-container-lowest rounded-DEFAULT border border-surface-container-high shadow-sm overflow-hidden mt-6">
         <div class="p-6 border-b border-surface-container-high flex items-center justify-between">
             <div>
-                <h3 class="text-2xl font-normal text-primary tracking-tight" style="font-family: 'Cormorant Garamond', serif;">Tabel 2: Panel Layanan Utama (Split Panel Selection)</h3>
+                <h3 class="text-2xl font-normal text-primary tracking-tight" style="font-family: 'Cormorant Garamond', serif;">Panel Layanan Utama (Split Panel Selection)</h3>
                 <p class="text-sm text-on-surface-variant mt-0.5" style="font-family: 'Inter', sans-serif;">Menampilkan konfigurasi card split-panel (Pembangunan, Renovasi, Spesifikasi, &amp; Standar Mutu).</p>
             </div>
             <a href="{{ route('admin.service-panel.create') }}" class="px-3.5 py-1.5 rounded-DEFAULT bg-amber-50 hover:bg-amber-100 text-amber-700 border border-amber-200 text-xs font-semibold transition-colors">

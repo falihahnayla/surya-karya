@@ -125,20 +125,29 @@
 
 <body class="antialiased overflow-x-hidden">
 
+    @php
+        $siteLogoSetting = \App\Models\Setting::first();
+        $siteCompany = filled($siteLogoSetting?->company) ? $siteLogoSetting->company : 'Surya Karya';
+        $siteLogoDefault = 'https://lh3.googleusercontent.com/aida-public/AB6AXuD2KLbLTxsEJf3LH3g7OCe1Q9xsz15bakNmmuzw7uFHTpFd6k0-TeLTj2GP9BNIIEf3bmhsRRyp_-yLtzeYVIz8AqLQ8RcxkN8bmNeAD2ExnOpix2Gc-BBuqPtnPxG-4TAGVfZW9Uj_dpEZI4tlIwDV7mjPi_xsGES1kOGE11UHOwLERF57omZMgcuiz4u3PA1xBu3EutZpQrTjRbcvKzMT_kw3AbzL2yOoN_m0Br0ykTSUduAOqCnmCm7dW3M0XCECUA';
+        $siteLogoUrl = $siteLogoDefault;
+        if (filled($siteLogoSetting?->logo)) {
+            $siteLogoUrl = (str_starts_with($siteLogoSetting->logo, 'http://') || str_starts_with($siteLogoSetting->logo, 'https://')) ? $siteLogoSetting->logo : asset($siteLogoSetting->logo);
+        }
+    @endphp
     <!-- BEGIN: Page Loader - The Architectural Blueprint Reveal -->
     <div id="sk-page-loader" class="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-[#06101e] text-white transition-opacity duration-500 ease-out">
         <div class="flex flex-col items-center text-center px-6">
             <!-- Logo Emblem with Golden Ring Pulse -->
             <div class="relative mb-5">
-                <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuD2KLbLTxsEJf3LH3g7OCe1Q9xsz15bakNmmuzw7uFHTpFd6k0-TeLTj2GP9BNIIEf3bmhsRRyp_-yLtzeYVIz8AqLQ8RcxkN8bmNeAD2ExnOpix2Gc-BBuqPtnPxG-4TAGVfZW9Uj_dpEZI4tlIwDV7mjPi_xsGES1kOGE11UHOwLERF57omZMgcuiz4u3PA1xBu3EutZpQrTjRbcvKzMT_kw3AbzL2yOoN_m0Br0ykTSUduAOqCnmCm7dW3M0XCECUA" 
-                     alt="Surya Karya Emblem" 
+                <img src="{{ $siteLogoUrl }}" 
+                     alt="{{ $siteCompany }} Emblem" 
                      class="w-16 h-16 rounded-full object-cover shadow-2xl ring-2 ring-[#d4af37]/70 p-0.5">
                 <div class="absolute inset-0 rounded-full border border-[#d4af37]/40 animate-ping opacity-35"></div>
             </div>
 
             <!-- Brand Serif Title -->
             <h2 class="heading-serif text-3xl sm:text-4xl font-semibold tracking-wider uppercase text-white leading-none mb-2">
-                Surya Karya
+                {{ $siteCompany }}
             </h2>
 
             <!-- Subtitle Eyebrow -->
