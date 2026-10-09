@@ -12,50 +12,23 @@ class HomeController extends Controller
 {
     public function index()
     {
-        $items = Home::latest()->get();
+        $home = Home::first() ?? new Home();
 
-        return view('admin.home.index', compact('items'));
+        return view('admin.home.index', compact('home'));
     }
 
-    public function create()
+    public function update(Request $request)
     {
-        return view('admin.home.create');
-    }
+        $home = Home::first();
 
-    public function store(Request $request)
-    {
+        // Jika data belum ada, gambar wajib diupload. Jika sudah ada, gambar opsional.
+        $imageRule = ($home ? 'nullable' : 'required') . '|image|mimes:jpg,jpeg,png,webp|max:2048';
+
         $validated = $request->validate([
             'title'         => 'required|string|max:255',
             'subtitle'      => 'required|string',
-            'image_bg'      => 'required|image|mimes:jpg,jpeg,png,webp|max:2048',
-            'image_about'   => 'required|image|mimes:jpg,jpeg,png,webp|max:2048',
-            'content_about' => 'required|string|max:255',
-            'img_desc'      => 'required|string|max:255',
-            'service_title' => 'required|string|max:100',
-            'service_desc'  => 'required|string|max:100',
-        ]);
-
-        $validated['image_bg']    = $this->uploadImage($request->file('image_bg'));
-        $validated['image_about'] = $this->uploadImage($request->file('image_about'));
-
-        Home::create($validated);
-
-        return redirect()->route('admin.home.index')
-            ->with('success', 'Data home berhasil ditambahkan.');
-    }
-
-    public function edit(Home $home)
-    {
-        return view('admin.home.edit', compact('home'));
-    }
-
-    public function update(Request $request, Home $home)
-    {
-        $validated = $request->validate([
-            'title'         => 'required|string|max:255',
-            'subtitle'      => 'required|string',
-            'image_bg'      => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
-            'image_about'   => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+            'image_bg'      => $imageRule,
+            'image_about'   => $imageRule,
             'content_about' => 'required|string|max:255',
             'img_desc'      => 'required|string|max:255',
             'service_title' => 'required|string|max:100',
@@ -64,28 +37,23 @@ class HomeController extends Controller
 
         foreach (['image_bg', 'image_about'] as $field) {
             if ($request->hasFile($field)) {
-                $this->deleteImage($home->$field);
+                if ($home) {
+                    $this->deleteImage($home->$field);
+                }
                 $validated[$field] = $this->uploadImage($request->file($field));
             } else {
                 unset($validated[$field]);
             }
         }
 
-        $home->update($validated);
+        if ($home) {
+            $home->update($validated);
+        } else {
+            Home::create($validated);
+        }
 
         return redirect()->route('admin.home.index')
-            ->with('success', 'Data home berhasil diperbarui.');
-    }
-
-    public function destroy(Home $home)
-    {
-        $this->deleteImage($home->image_bg);
-        $this->deleteImage($home->image_about);
-
-        $home->delete();
-
-        return redirect()->route('admin.home.index')
-            ->with('success', 'Data home berhasil dihapus.');
+            ->with('success', 'Data home berhasil disimpan.');
     }
 
     /**

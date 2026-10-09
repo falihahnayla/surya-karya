@@ -10,52 +10,29 @@ class VisiMisiController extends Controller
 {
     public function index()
     {
-        $items = VisiMisi::latest()->get();
+        $visiMisi = VisiMisi::first() ?? new VisiMisi();
 
-        return view('admin.visi-misi.index', compact('items'));
+        return view('admin.visi-misi.index', compact('visiMisi'));
     }
 
-    public function create()
-    {
-        return view('admin.visi-misi.create');
-    }
-
-    public function store(Request $request)
+    public function update(Request $request)
     {
         $validated = $request->validate([
-            'title'   => 'required|string',
-            'content' => 'required|string|max:255',
+            'visi_title'   => 'required|string|max:100',
+            'visi_content' => 'required|string|max:500',
+            'misi_title'   => 'required|string|max:100',
+            'misi_content' => 'required|string|max:500',
         ]);
 
-        VisiMisi::create($validated);
+        $visiMisi = VisiMisi::first();
+
+        if ($visiMisi) {
+            $visiMisi->update($validated);
+        } else {
+            VisiMisi::create($validated);
+        }
 
         return redirect()->route('admin.visi-misi.index')
-            ->with('success', 'Data visi & misi berhasil ditambahkan.');
-    }
-
-    public function edit(VisiMisi $visi_misi)
-    {
-        return view('admin.visi-misi.edit', compact('visi_misi'));
-    }
-
-    public function update(Request $request, VisiMisi $visi_misi)
-    {
-        $validated = $request->validate([
-            'title'   => 'required|string',
-            'content' => 'required|string|max:255',
-        ]);
-
-        $visi_misi->update($validated);
-
-        return redirect()->route('admin.visi-misi.index')
-            ->with('success', 'Data visi & misi berhasil diperbarui.');
-    }
-
-    public function destroy(VisiMisi $visi_misi)
-    {
-        $visi_misi->delete();
-
-        return redirect()->route('admin.visi-misi.index')
-            ->with('success', 'Data visi & misi berhasil dihapus.');
+            ->with('success', 'Data visi & misi berhasil disimpan.');
     }
 }

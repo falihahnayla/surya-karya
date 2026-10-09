@@ -9,7 +9,9 @@ class VisiMisi extends Model
     protected $table = 'visi_misi';
 
     protected $fillable = [
-        'title',
-        'content',
+        'visi_title',
+        'visi_content',
+        'misi_title',
+        'misi_content',
     ];
 }

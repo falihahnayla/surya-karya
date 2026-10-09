@@ -81,8 +81,11 @@
 </div>
 </section>
 <!-- END: AboutSection -->
-<!-- BEGIN: VisionMissionSection -->
 
+<!-- BEGIN: VisionMissionSection -->
+@php
+    $visiMisi = \App\Models\VisiMisi::first();
+@endphp
 <section class="py-20 lg:py-24 bg-[#f8f9fa] border-b border-gray-200">
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 <!-- Section Header -->
@@ -105,9 +108,9 @@
 <span class="w-6 h-[1.5px] bg-slate-400"></span>
 <span class="text-[10px] tracking-[0.2em] uppercase font-semibold text-slate-300">ARAH &amp; CITA-CITA</span>
 </div>
-<h3 class="heading-serif text-3xl font-bold tracking-wider mb-4 text-white">{{ $visi->title ?? 'VISI' }}</h3>
+<h3 class="heading-serif text-3xl font-bold tracking-wider mb-4 text-white">{{ $visiMisi->visi_title ?? 'VISI' }}</h3>
 <p class="text-sm text-slate-300 leading-relaxed font-light">
-              {{ $visi->content ?? 'Menjadi mitra konstruksi terdepan yang mendefinisikan ulang standar kualitas hunian melalui inovasi struktural, estetika arsitektural, dan pelayanan yang transparan.' }}
+              {{ $visiMisi->visi_content ?? 'Menjadi mitra konstruksi terdepan yang mendefinisikan ulang standar kualitas hunian melalui inovasi struktural, estetika arsitektural, dan pelayanan yang transparan.' }}
             </p>
 </div>
 <div class="absolute -right-10 -bottom-10 w-40 h-40 bg-blue-600/10 rounded-full blur-3xl pointer-events-none"></div>
@@ -122,19 +125,19 @@
 <span class="w-6 h-[1.5px] bg-slate-400"></span>
 <span class="text-[10px] tracking-[0.2em] uppercase font-semibold text-slate-300">TANGGUNG JAWAB NYATA</span>
 </div>
-<h3 class="heading-serif text-3xl font-bold tracking-wider mb-4 text-white">{{ $misi->title ?? 'MISI' }}</h3>
+<h3 class="heading-serif text-3xl font-bold tracking-wider mb-4 text-white">{{ $visiMisi->misi_title ?? 'MISI' }}</h3>
 <p class="text-sm text-slate-300 leading-relaxed font-light">
-              {{ $misi->content ?? 'Memberikan hasil karya berkualitas tinggi dengan presisi teknis, efisiensi manajemen waktu dan biaya, serta komunikasi yang jujur dan profesional pada setiap tahap.' }}
+              {{ $visiMisi->misi_content ?? 'Memberikan hasil karya berkualitas tinggi dengan presisi teknis, efisiensi manajemen waktu dan biaya, serta komunikasi yang jujur dan profesional pada setiap tahap.' }}
             </p>
-</div>
 </div>
 <div class="absolute -right-10 -bottom-10 w-40 h-40 bg-blue-600/10 rounded-full blur-3xl pointer-events-none"></div>
 </div>
 </div>
 </div>
+</div>
 </section>
-
 <!-- END: VisionMissionSection -->
+
 <!-- BEGIN: ExecutionStandardsSection -->
 <section class="py-20 lg:py-28 bg-white border-b border-gray-100" id="layanan">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

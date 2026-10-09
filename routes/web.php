@@ -71,9 +71,17 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::resource('media', MediaController::class);
     Route::resource('hero-title', HeroTitleController::class);
     Route::resource('service-panel', ServicePanelController::class);
-    Route::resource('visi-misi', VisiMisiController::class);
+
+    // Visi & Misi: satu halaman form saja (singleton), hanya bisa di-update
+    Route::get('visi-misi', [VisiMisiController::class, 'index'])->name('visi-misi.index');
+    Route::post('visi-misi', [VisiMisiController::class, 'update'])->name('visi-misi.update');
+
     Route::resource('service', ServiceController::class);
-    Route::resource('home', AdminHomeController::class);
+
+    // Home: satu halaman form saja (singleton), hanya bisa di-update
+    Route::get('home', [AdminHomeController::class, 'index'])->name('home.index');
+    Route::post('home', [AdminHomeController::class, 'update'])->name('home.update');
+
     Route::resource('alur-kerja', AlurKerjaController::class);
     Route::resource('faqs', FaqAdminController::class);
     Route::resource('faq_categories', FaqCategoryAdminController::class);
