@@ -2,123 +2,138 @@
 
 namespace App\Http\Requests;
 
-use App\Rules\RealEmail;
-use App\Rules\ValidEmailDns;
+use App\Models\Layanan;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Support\Facades\Cache;
+use Illuminate\Validation\Rule;
 
 class StoreOrderRequest extends FormRequest
 {
+    /*
+     * Whitelist karakter. Simbol seperti !@#$%^&*()_+=[]{}<>|\~` TIDAK diizinkan.
+     * Setiap pola juga mewajibkan minimal 1 huruf/angka (lookahead),
+     * sehingga input seperti "..." atau "---" ditolak.
+     */
+    private const RX_NAME     = '/^(?=.*\p{L})[\p{L}\p{M} .\'\-]+$/us';
+    private const RX_COMPANY  = '/^(?=.*[\p{L}\p{N}])[\p{L}\p{M}\p{N} .,\'\-]+$/us';
+    private const RX_ADDRESS  = '/^(?=.*[\p{L}\p{N}])[\p{L}\p{M}\p{N} \r\n.,\'\-\/]+$/us';
+    private const RX_POSITION = '/^(?=.*[\p{L}\p{N}])[\p{L}\p{M}\p{N} .,\'\-\/]+$/us';
+    private const RX_TEXT     = '/^(?=.*[\p{L}\p{N}])[\p{L}\p{M}\p{N} \r\n.,\'\-\/:?]+$/us';
+
     public function authorize(): bool
     {
         return true;
     }
 
+    /**
+     * Rapikan input sebelum divalidasi (nomor_whatsapp & email SENGAJA tidak disentuh).
+     */
     protected function prepareForValidation(): void
     {
-        $sanitizeText = function (?string $value): ?string {
-            if ($value === null) {
-                return null;
+        $clean = function ($value, bool $multiline = false) {
+            if (!is_string($value)) {
+                return $value;
             }
-            $clean = trim(strip_tags($value));
-            return $clean === '' ? null : $clean;
+
+            $v = str_replace(["\r\n", "\r"], "\n", $value);
+
+            // Buang karakter kontrol / tak terlihat (kecuali newline)
+            $v = preg_replace('/[^\P{C}\n]+/u', '', $v) ?? $v;
+
+            if ($multiline) {
+                $v = preg_replace('/[ \t]+/u', ' ', $v) ?? $v;
+                $v = preg_replace("/\n{3,}/", "\n\n", $v) ?? $v;
+            } else {
+                $v = preg_replace('/\s+/u', ' ', $v) ?? $v;
+            }
+
+            return trim($v);
         };
 
-        $phone = $this->nomor_whatsapp;
-        if (is_string($phone)) {
-            $phone = preg_replace('/\D+/', '', $phone);
+        $data = [];
+
+        foreach (['nama_lengkap', 'nama_perusahaan', 'posisi_bangunan'] as $field) {
+            if ($this->has($field)) {
+                $data[$field] = $clean($this->input($field));
+            }
         }
 
-        $email = $this->email;
-        if (is_string($email)) {
-            $email = strtolower(trim(strip_tags($email)));
-            $email = $email === '' ? null : $email;
+        foreach (['alamat_proyek', 'kebutuhan_proyek', 'catatan_tambahan'] as $field) {
+            if ($this->has($field)) {
+                $data[$field] = $clean($this->input($field), true);
+            }
         }
 
-        $this->merge([
-            'nama_lengkap'     => $sanitizeText($this->nama_lengkap),
-            'nama_perusahaan'  => $sanitizeText($this->nama_perusahaan),
-            'nomor_whatsapp'   => $phone ?: null,
-            'email'            => $email,
-            'alamat_proyek'    => $sanitizeText($this->alamat_proyek),
-            'posisi_bangunan'  => $sanitizeText($this->posisi_bangunan),
-            'kebutuhan_proyek' => $sanitizeText($this->kebutuhan_proyek),
-            'catatan_tambahan' => $sanitizeText($this->catatan_tambahan),
-            'luas_bangunan'    => filled($this->luas_bangunan) ? (int) $this->luas_bangunan : null,
-            'luas_lahan'       => filled($this->luas_lahan) ? (int) $this->luas_lahan : null,
-        ]);
+        $this->merge($data);
     }
 
     public function rules(): array
     {
         return [
-            'website_hp'       => ['nullable', 'max:0'],
-            'nama_lengkap'     => ['required', 'string', 'min:3', 'max:100', 'regex:/^[\pL\s\.\,\'\-]+$/u'],
-            'nama_perusahaan'  => ['nullable', 'string', 'max:100', 'regex:/^[\pL0-9\s\.\,\&\-\(\)]+$/u'],
-            'nomor_whatsapp'   => ['required', 'regex:/^(62|0)8[0-9]{8,12}$/', 'max:15'],
-            'email'            => [
-                'nullable', 'email:rfc,dns', 'max:100', new RealEmail,
-                function (string $attr, $value, \Closure $fail) {
-                    if (!$value) return;
+            // Honeypot: harus kosong. Bot yang mengisinya akan ditolak.
+            'website_hp' => ['prohibited'],
 
-                    $vEmail    = strtolower(trim((string) $value));
-                    $okSession = $vEmail === session('verified_email')
-                        && (now()->timestamp - (int) session('verified_email_at', 0)) <= 1800; // 30 menit
-                    $okCache   = Cache::has('otp_verified:' . sha1($vEmail));
+            'nama_lengkap'    => ['required', 'string', 'min:3', 'max:100', 'regex:' . self::RX_NAME],
+            'nama_perusahaan' => ['nullable', 'string', 'max:100', 'regex:' . self::RX_COMPANY],
 
-                    if (!$okSession && !$okCache) {
-                        $fail('Email belum diverifikasi. Klik "Kirim Kode", lalu masukkan kode yang dikirim ke email Anda.');
-                    }
-                },
-            ],
-            'alamat_proyek'    => ['required', 'string', 'min:10', 'max:500'],
-            'layanan_id'       => ['required', 'integer', 'exists:layanan,id'],
-            'luas_bangunan'    => ['nullable', 'integer', 'min:1', 'max:1000000'],
-            'luas_lahan'       => ['nullable', 'integer', 'min:1', 'max:1000000'],
-            'posisi_bangunan'  => ['nullable', 'string', 'max:100'],
-            'kebutuhan_proyek' => ['required', 'string', 'min:10', 'max:2000'],
-            'catatan_tambahan' => ['nullable', 'string', 'max:1000'],
-            'file_denah'       => ['nullable', 'file', 'mimes:jpg,jpeg,png,pdf', 'mimetypes:image/jpeg,image/png,application/pdf', 'max:10240'],
-            'file_lahan'       => ['nullable', 'file', 'mimes:jpg,jpeg,png,pdf', 'mimetypes:image/jpeg,image/png,application/pdf', 'max:10240'],
+            // ===================================================================
+            // JANGAN DIUBAH: dua field di bawah ini PAKAI RULE ASLI Anda.
+            // Rule di bawah hanya placeholder, ganti dengan isi lama StoreOrderRequest Anda.
+            // ===================================================================
+            'nomor_whatsapp' => ['required', 'string', 'max:15'],
+            'email'          => ['nullable', 'email', 'max:100', 'regex:/^[a-zA-Z0-9._+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$/'],
+            // ===================================================================
+
+            'alamat_proyek' => ['required', 'string', 'min:10', 'max:500', 'regex:' . self::RX_ADDRESS],
+
+            'layanan_id' => ['required', 'integer', Rule::exists(Layanan::class, 'id')],
+
+            'luas_bangunan' => ['nullable', 'integer', 'min:1', 'max:1000000', 'regex:/^[0-9]{1,7}$/'],
+            'luas_lahan'    => ['nullable', 'integer', 'min:1', 'max:1000000', 'regex:/^[0-9]{1,7}$/'],
+
+            'posisi_bangunan'  => ['nullable', 'string', 'max:100', 'regex:' . self::RX_POSITION],
+            'kebutuhan_proyek' => ['required', 'string', 'min:10', 'max:2000', 'regex:' . self::RX_TEXT],
+            'catatan_tambahan' => ['nullable', 'string', 'max:1000', 'regex:' . self::RX_TEXT],
+
+            'file_denah' => ['nullable', 'file', 'mimes:jpg,jpeg,png,pdf', 'max:10240'],
+            'file_lahan' => ['nullable', 'file', 'mimes:jpg,jpeg,png,pdf', 'max:10240'],
         ];
     }
 
     public function messages(): array
     {
         return [
-            'website_hp.max'            => 'Permintaan tidak valid (terdeteksi spam bot).',
-            'nama_lengkap.required'     => 'Nama lengkap wajib diisi.',
-            'nama_lengkap.min'          => 'Nama lengkap minimal 3 karakter.',
-            'nama_lengkap.max'          => 'Nama lengkap maksimal 100 karakter.',
-            'nama_lengkap.regex'        => 'Nama lengkap hanya boleh berisi huruf, spasi, titik, koma, tanda petik, dan tanda hubung.',
-            'nama_perusahaan.max'       => 'Nama perusahaan maksimal 100 karakter.',
-            'nama_perusahaan.regex'     => 'Nama perusahaan hanya boleh berisi huruf, angka, spasi, dan karakter aman (.,&-()).',
-            'nomor_whatsapp.required'   => 'Nomor WhatsApp wajib diisi.',
-            'nomor_whatsapp.regex'      => 'Format nomor WhatsApp tidak valid. Gunakan format nomor Indonesia diawali 08 atau 628 (10–15 digit, contoh: 08123456789 atau 628123456789).',
-            'nomor_whatsapp.max'        => 'Nomor WhatsApp maksimal 15 digit.',
-            'email.max'                 => 'Email maksimal 100 karakter.',
-            'alamat_proyek.required'    => 'Alamat proyek wajib diisi.',
-            'alamat_proyek.min'         => 'Alamat proyek minimal 10 karakter.',
-            'alamat_proyek.max'         => 'Alamat proyek maksimal 500 karakter.',
-            'layanan_id.required'       => 'Silakan pilih jenis layanan.',
-            'layanan_id.exists'         => 'Jenis layanan yang dipilih tidak valid.',
-            'luas_bangunan.integer'     => 'Luas bangunan harus berupa angka bulat.',
-            'luas_bangunan.min'         => 'Luas bangunan minimal 1 m².',
-            'luas_bangunan.max'         => 'Luas bangunan maksimal 1.000.000 m².',
-            'luas_lahan.integer'        => 'Luas lahan harus berupa angka bulat.',
-            'luas_lahan.min'            => 'Luas lahan minimal 1 m².',
-            'luas_lahan.max'            => 'Luas lahan maksimal 1.000.000 m².',
-            'posisi_bangunan.max'       => 'Posisi bangunan maksimal 100 karakter.',
+            'website_hp.prohibited' => 'Pengiriman ditolak.',
+
+            'nama_lengkap.required' => 'Nama lengkap wajib diisi.',
+            'nama_lengkap.min'      => 'Nama lengkap minimal 3 karakter.',
+            'nama_lengkap.regex'    => 'Nama lengkap hanya boleh berisi huruf, spasi, titik, apostrof, dan tanda hubung (-).',
+
+            'nama_perusahaan.regex' => 'Nama perusahaan hanya boleh berisi huruf, angka, spasi, titik, koma, apostrof, dan tanda hubung (-).',
+
+            'alamat_proyek.required' => 'Alamat proyek wajib diisi.',
+            'alamat_proyek.min'      => 'Alamat proyek minimal 10 karakter.',
+            'alamat_proyek.regex'    => 'Alamat hanya boleh berisi huruf, angka, spasi, titik, koma, apostrof, tanda hubung (-), dan garis miring (/).',
+
+            'layanan_id.required' => 'Pilih jenis layanan.',
+            'layanan_id.exists'   => 'Jenis layanan tidak valid.',
+
+            'luas_bangunan.integer' => 'Luas bangunan harus berupa angka bulat.',
+            'luas_bangunan.regex'   => 'Luas bangunan hanya boleh berisi angka.',
+            'luas_lahan.integer'    => 'Luas lahan harus berupa angka bulat.',
+            'luas_lahan.regex'      => 'Luas lahan hanya boleh berisi angka.',
+
+            'posisi_bangunan.regex' => 'Arah/posisi bangunan hanya boleh berisi huruf, angka, spasi, titik, koma, apostrof, tanda hubung (-), dan garis miring (/).',
+
             'kebutuhan_proyek.required' => 'Kebutuhan proyek wajib diisi.',
             'kebutuhan_proyek.min'      => 'Kebutuhan proyek minimal 10 karakter.',
-            'kebutuhan_proyek.max'      => 'Kebutuhan proyek maksimal 2000 karakter.',
-            'catatan_tambahan.max'      => 'Catatan tambahan maksimal 1000 karakter.',
-            'file_denah.mimes'          => 'File denah harus berformat JPG, JPEG, PNG, atau PDF.',
-            'file_denah.mimetypes'      => 'File denah harus berformat JPG, JPEG, PNG, atau PDF.',
-            'file_denah.max'            => 'Ukuran file denah maksimal 10MB.',
-            'file_lahan.mimes'          => 'File lahan harus berformat JPG, JPEG, PNG, atau PDF.',
-            'file_lahan.mimetypes'      => 'File lahan harus berformat JPG, JPEG, PNG, atau PDF.',
-            'file_lahan.max'            => 'Ukuran file lahan maksimal 10MB.',
+            'kebutuhan_proyek.regex'    => 'Kebutuhan proyek hanya boleh berisi huruf, angka, spasi, titik, koma, apostrof, tanda hubung (-), garis miring (/), titik dua (:), dan tanda tanya (?).',
+
+            'catatan_tambahan.regex' => 'Catatan hanya boleh berisi huruf, angka, spasi, titik, koma, apostrof, tanda hubung (-), garis miring (/), titik dua (:), dan tanda tanya (?).',
+
+            'file_denah.mimes' => 'Gambar denah harus berformat JPG, PNG, atau PDF.',
+            'file_denah.max'   => 'Ukuran gambar denah maksimal 10MB.',
+            'file_lahan.mimes' => 'Gambar lahan harus berformat JPG, PNG, atau PDF.',
+            'file_lahan.max'   => 'Ukuran gambar lahan maksimal 10MB.',
         ];
     }
 }

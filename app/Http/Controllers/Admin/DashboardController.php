@@ -11,34 +11,40 @@ class DashboardController extends Controller
     {
         /*
          * Satu query agregat untuk semua angka dashboard.
-         * Aturan "sudah bayar": nominal termin > 0
-         * (termin diisi admin setelah klien membayar, default 0).
          *
-         * Kalau pesanan berstatus cancel TIDAK ingin ikut dihitung,
-         * tambahkan ->where('status', '!=', 'cancel') sebelum ->first().
+         * - Kartu status (pengajuan / pending / deal / cancel) tetap menghitung
+         *   semua order, karena memang hitungan per status.
+         * - SEMUA penjumlahan nilai & pembayaran (total nilai, termin 1-3,
+         *   jumlah yang sudah bayar) hanya dihitung dari order berstatus 'deal'.
+         *   Order pending / cancel tidak ikut dihitung.
+         * - Aturan "sudah bayar": nominal termin > 0
+         *   (termin diisi admin setelah klien membayar, default 0).
          */
         $s = Order::query()->selectRaw("
             COUNT(*) AS total_pesanan,
             COALESCE(SUM(CASE WHEN status = 'pending' THEN 1 ELSE 0 END), 0) AS pending,
             COALESCE(SUM(CASE WHEN status = 'deal'    THEN 1 ELSE 0 END), 0) AS deal,
             COALESCE(SUM(CASE WHEN status = 'cancel'  THEN 1 ELSE 0 END), 0) AS cancel,
-            COALESCE(SUM(total), 0)    AS total_nilai,
-            COALESCE(SUM(termin_1), 0) AS nominal_1,
-            COALESCE(SUM(termin_2), 0) AS nominal_2,
-            COALESCE(SUM(termin_3), 0) AS nominal_3,
-            COALESCE(SUM(CASE WHEN termin_1 > 0 THEN 1 ELSE 0 END), 0) AS paid_1,
-            COALESCE(SUM(CASE WHEN termin_2 > 0 THEN 1 ELSE 0 END), 0) AS paid_2,
-            COALESCE(SUM(CASE WHEN termin_3 > 0 THEN 1 ELSE 0 END), 0) AS paid_3
+
+            COALESCE(SUM(CASE WHEN status = 'deal' THEN total    ELSE 0 END), 0) AS total_nilai,
+            COALESCE(SUM(CASE WHEN status = 'deal' THEN termin_1 ELSE 0 END), 0) AS nominal_1,
+            COALESCE(SUM(CASE WHEN status = 'deal' THEN termin_2 ELSE 0 END), 0) AS nominal_2,
+            COALESCE(SUM(CASE WHEN status = 'deal' THEN termin_3 ELSE 0 END), 0) AS nominal_3,
+
+            COALESCE(SUM(CASE WHEN status = 'deal' AND termin_1 > 0 THEN 1 ELSE 0 END), 0) AS paid_1,
+            COALESCE(SUM(CASE WHEN status = 'deal' AND termin_2 > 0 THEN 1 ELSE 0 END), 0) AS paid_2,
+            COALESCE(SUM(CASE WHEN status = 'deal' AND termin_3 > 0 THEN 1 ELSE 0 END), 0) AS paid_3
         ")->first();
 
         $totalPesanan = (int) $s->total_pesanan;
+        $totalDeal    = (int) $s->deal;
         $totalNilai   = (float) $s->total_nilai;
         $totalTermin  = (float) $s->nominal_1 + (float) $s->nominal_2 + (float) $s->nominal_3;
         $outstanding  = $totalNilai - $totalTermin;
 
         $pct = fn ($a, $b) => $b > 0 ? round($a / $b * 100, 1) : 0;
 
-        // Kartu per termin
+        // Kartu per termin (persentase dihitung terhadap jumlah order deal)
         $termin = [];
         foreach ([1, 2, 3] as $i) {
             $nominal = (float) $s->{"nominal_$i"};
@@ -48,22 +54,25 @@ class DashboardController extends Controller
                 'short'   => $this->rupiahShort($nominal),
                 'full'    => $this->rupiah($nominal),
                 'paid'    => $paid,
-                'percent' => $pct($paid, $totalPesanan),
+                'percent' => $pct($paid, $totalDeal),
             ];
         }
 
-        // Tabel termin per pesanan
-        // Tabel termin: 4 pesanan yang terakhir diedit/diupdate
-        $pesanan = Order::with('layanan')->latest('updated_at')->limit(4)->get();
+        // Tabel termin: 4 pesanan DEAL yang terakhir diedit/diupdate
+        $pesanan = Order::with('layanan')
+            ->where('status', 'deal')
+            ->latest('updated_at')
+            ->limit(4)
+            ->get();
 
         return view('admin.dashboard', [
             // Kartu status
             'totalPengajuan' => $totalPesanan,
             'totalPending'   => (int) $s->pending,
-            'totalDeal'      => (int) $s->deal,
+            'totalDeal'      => $totalDeal,
             'totalCancel'    => (int) $s->cancel,
 
-            // Ringkasan pembayaran
+            // Ringkasan pembayaran (hanya order deal)
             'totalNilaiProyek'     => $this->rupiahShort($totalNilai),
             'totalNilaiProyekFull' => $this->rupiah($totalNilai),
             'outstanding'          => $this->rupiahShort($outstanding),
