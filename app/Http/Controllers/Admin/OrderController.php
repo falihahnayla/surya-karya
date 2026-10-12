@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Layanan;
 use App\Models\Order;
+use App\Rules\RealEmail;
 use App\Rules\ValidEmailDns;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -211,7 +212,7 @@ class OrderController extends Controller
         return [
             'name'              => ['required', 'string', 'min:3', 'max:100', 'regex:/^[\pL\s\.\,\'\-]+$/u'],
             'company_name'      => ['nullable', 'string', 'max:100', 'regex:/^[\pL0-9\s\.\,\&\-\(\)]+$/u'],
-            'email'             => ['nullable', 'string', 'max:100', new ValidEmailDns()],
+            'email'             => ['nullable', 'email:rfc', 'max:100', new RealEmail()],
             'phone'             => ['required', 'regex:/^(62|0)8[0-9]{8,12}$/', 'max:15'],
             'address'           => ['required', 'string', 'min:10', 'max:500'],
             'layanan_id'        => ['required', 'integer', 'exists:layanan,id'],

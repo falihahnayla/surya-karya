@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\RealEmail;
 use App\Rules\ValidEmailDns;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -54,7 +55,19 @@ class StoreOrderRequest extends FormRequest
             'nama_lengkap'     => ['required', 'string', 'min:3', 'max:100', 'regex:/^[\pL\s\.\,\'\-]+$/u'],
             'nama_perusahaan'  => ['nullable', 'string', 'max:100', 'regex:/^[\pL0-9\s\.\,\&\-\(\)]+$/u'],
             'nomor_whatsapp'   => ['required', 'regex:/^(62|0)8[0-9]{8,12}$/', 'max:15'],
-            'email'            => ['nullable', 'string', 'max:100', new ValidEmailDns()],
+            'email'            => [
+                'nullable', 'email:rfc', 'max:100', new RealEmail,
+                function (string $attr, $value, \Closure $fail) {
+                    if (!$value) return;
+
+                    $ok = strtolower($value) === session('verified_email')
+                        && (now()->timestamp - (int) session('verified_email_at', 0)) <= 1800; // 30 menit
+
+                    if (!$ok) {
+                        $fail('Email belum diverifikasi. Klik "Kirim Kode", lalu masukkan kode yang dikirim ke email Anda.');
+                    }
+                },
+            ],
             'alamat_proyek'    => ['required', 'string', 'min:10', 'max:500'],
             'layanan_id'       => ['required', 'integer', 'exists:layanan,id'],
             'luas_bangunan'    => ['nullable', 'integer', 'min:1', 'max:1000000'],

@@ -199,3 +199,154 @@ if (document.readyState === 'loading') {
 } else {
     setupFormValidation();
 }
+
+// 4. Modul Verifikasi Email OTP
+(function () {
+    const wrap = document.getElementById('email-wrap');
+    if (!wrap) return;
+
+    const form      = document.getElementById('order-form');
+    const email     = document.getElementById('email');
+    const btnSend   = document.getElementById('btn-send-otp');
+    const btnVerify = document.getElementById('btn-verify-otp');
+    const otpBox    = document.getElementById('otp-box');
+    const otpInput  = document.getElementById('otp-code');
+    const errEl     = document.getElementById('email-inline-error');
+    const okEl      = document.getElementById('email-inline-ok');
+    const token     = form ? form.querySelector('input[name="_token"]')?.value : '';
+
+    let verifiedEmail = wrap.dataset.verified === '1' && email ? email.value.trim().toLowerCase() : null;
+    let cooldownTimer = null;
+
+    const showErr = (m) => {
+        errEl.textContent = m;
+        errEl.classList.remove('hidden');
+        okEl.classList.add('hidden');
+    };
+    const clearErr = () => {
+        errEl.textContent = '';
+        errEl.classList.add('hidden');
+    };
+    const isFormatOk = (v) => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v);
+
+    async function post(url, body) {
+        const res = await fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'X-CSRF-TOKEN': token
+            },
+            body: JSON.stringify(body),
+        });
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok) {
+            const first = data.errors ? Object.values(data.errors)[0][0] : null;
+            throw new Error(first || data.message || 'Terjadi kesalahan. Coba lagi.');
+        }
+        return data;
+    }
+
+    function startCooldown(sec) {
+        let left = sec;
+        btnSend.disabled = true;
+        clearInterval(cooldownTimer);
+        btnSend.textContent = `Kirim ulang (${left})`;
+        cooldownTimer = setInterval(() => {
+            left--;
+            btnSend.textContent = left > 0 ? `Kirim ulang (${left})` : 'Kirim Ulang';
+            if (left <= 0) {
+                clearInterval(cooldownTimer);
+                btnSend.disabled = false;
+            }
+        }, 1000);
+    }
+
+    // Email diubah -> status verifikasi dicabut
+    email.addEventListener('input', () => {
+        email.value = email.value.replace(/\s/g, '');
+        if (verifiedEmail && email.value.trim().toLowerCase() !== verifiedEmail) {
+            verifiedEmail = null;
+            okEl.classList.add('hidden');
+            wrap.dataset.verified = '0';
+        }
+        otpBox.classList.add('hidden');
+        otpBox.style.display = 'none';
+        clearErr();
+    });
+
+    email.addEventListener('blur', () => {
+        const v = email.value.trim().toLowerCase();
+        if (v && !isFormatOk(v)) {
+            showErr('Format email tidak valid.');
+        }
+    });
+
+    btnSend.addEventListener('click', async () => {
+        const v = email.value.trim().toLowerCase();
+        if (!isFormatOk(v)) {
+            return showErr('Masukkan alamat email yang valid terlebih dahulu.');
+        }
+        clearErr();
+        btnSend.disabled = true;
+        btnSend.textContent = 'Mengirim...';
+        try {
+            const data = await post(wrap.dataset.sendUrl, { email: v });
+            otpBox.classList.remove('hidden');
+            otpBox.style.display = 'flex';
+            otpInput.focus();
+            okEl.textContent = data.message;
+            okEl.classList.remove('hidden');
+            startCooldown(60);
+        } catch (e) {
+            showErr(e.message);
+            btnSend.disabled = false;
+            btnSend.textContent = 'Kirim Kode';
+        }
+    });
+
+    otpInput.addEventListener('input', () => {
+        otpInput.value = otpInput.value.replace(/\D/g, '').slice(0, 6);
+    });
+
+    btnVerify.addEventListener('click', async () => {
+        const v = email.value.trim().toLowerCase();
+        if (otpInput.value.length !== 6) {
+            return showErr('Masukkan 6 digit kode verifikasi.');
+        }
+        clearErr();
+        btnVerify.disabled = true;
+        try {
+            await post(wrap.dataset.verifyUrl, { email: v, code: otpInput.value });
+            verifiedEmail = v;
+            wrap.dataset.verified = '1';
+            otpBox.classList.add('hidden');
+            otpBox.style.display = 'none';
+            otpInput.value = '';
+            okEl.textContent = '✓ Email terverifikasi';
+            okEl.classList.remove('hidden');
+        } catch (e) {
+            showErr(e.message);
+        } finally {
+            btnVerify.disabled = false;
+        }
+    });
+
+    // Blokir submit jika email diisi tapi belum diverifikasi (fase capture agar jalan sebelum handler anti-double-submit)
+    form.addEventListener('submit', (ev) => {
+        const v = email.value.trim().toLowerCase();
+        if (v && v !== verifiedEmail) {
+            ev.preventDefault();
+            ev.stopImmediatePropagation();
+            showErr('Email belum diverifikasi. Klik "Kirim Kode" lalu masukkan kode dari email Anda.');
+            email.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            const btn = document.getElementById('btn-submit');
+            if (btn) {
+                btn.disabled = false;
+                btn.classList.remove('opacity-60', 'cursor-not-allowed');
+                const span = btn.querySelector('span');
+                if (span) span.textContent = 'Ajukan / Pesan Jasa';
+            }
+        }
+    }, true);
+})();

@@ -52,6 +52,8 @@ class FormPesanController extends Controller
         $layanan = Layanan::find($v['layanan_id']);
         $waUrl   = $this->buildWhatsappUrl($v, $layanan?->title, $order->order_code ?? null);
 
+        session()->forget(['verified_email', 'verified_email_at']);
+
         return redirect()
             ->route('frontend.form-pesanan')
             ->with('success', true)
