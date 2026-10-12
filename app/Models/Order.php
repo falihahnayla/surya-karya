@@ -106,9 +106,10 @@ class Order extends Model
     public function whatsappMessage(): string
     {
         $dash = fn ($v) => filled($v) ? $v : '-';
+        $company = strtoupper(\App\Models\Setting::first()?->company ?? 'SURYA KARYA');
 
         $lines = [
-            '*PESANAN BARU - SURYA KARYA*',
+            '*PESANAN BARU - ' . $company . '*',
             'Kode Pesanan: ' . $this->order_code,
             '',
             '*Identitas*',

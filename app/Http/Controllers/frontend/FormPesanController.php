@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreOrderRequest;
 use App\Models\Layanan;
 use App\Models\Order;
 use App\Models\Setting;
@@ -21,28 +22,9 @@ class FormPesanController extends Controller
         );
     }
 
-    public function store(Request $request)
+    public function store(StoreOrderRequest $request)
     {
-        $v = $request->validate([
-            'nama_lengkap'     => 'required|string|max:255',
-            'nama_perusahaan'  => 'nullable|string|max:255',
-            'nomor_whatsapp'   => ['required', 'regex:/^(\+62|62|0)8[0-9]{8,12}$/'],
-            'email'            => 'nullable|email|max:255',
-            'alamat_proyek'    => 'required|string',
-            'layanan_id'       => 'required|exists:layanan,id',
-            'luas_bangunan'    => 'nullable|integer|min:0',
-            'luas_lahan'       => 'nullable|integer|min:0',
-            'posisi_bangunan'  => 'nullable|string|max:255',
-            'kebutuhan_proyek' => 'required|string',
-            'catatan_tambahan' => 'nullable|string',
-            'file_denah'       => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:10240',
-            'file_lahan'       => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:10240',
-        ], [
-            'nomor_whatsapp.regex' => 'Format nomor WhatsApp tidak valid. Contoh: 08123456789',
-            'layanan_id.required'  => 'Silakan pilih jenis layanan.',
-            'file_denah.max'       => 'Ukuran file denah maksimal 10MB.',
-            'file_lahan.max'       => 'Ukuran file lahan maksimal 10MB.',
-        ]);
+        $v = $request->validated();
 
         $order = DB::transaction(function () use ($request, $v) {
             return Order::create([
@@ -79,8 +61,8 @@ class FormPesanController extends Controller
     private function buildWhatsappUrl(array $v, ?string $layananTitle, ?string $orderCode): string
     {
         $dash = fn ($val, $suffix = '') => filled($val) ? $val . $suffix : '-';
-
-        $lines = ['*PEMESANAN JASA - SURYA KARYA*'];
+        $companyName = strtoupper(Setting::first()?->company ?? 'SURYA KARYA');
+        $lines = ['*PEMESANAN JASA - ' . $companyName . '*'];
 
         if ($orderCode) {
             $lines[] = 'Kode Pesanan: #' . $orderCode;

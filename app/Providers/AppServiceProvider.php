@@ -16,13 +16,15 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         View::composer('*', function ($view) {
-            $number = Setting::whatsappNumber();
+            $setting = Setting::first();
+            $number  = Setting::whatsappNumber();
 
             $view->with('siteWa', [
                 'number'  => $number,                          // 62895635040947
                 'display' => Setting::whatsappDisplay(),       // 0895 6350 40947
                 'url'     => 'https://wa.me/' . $number,       // link chat langsung
             ]);
+            $view->with('siteSetting', $setting);
         });
     }
 }

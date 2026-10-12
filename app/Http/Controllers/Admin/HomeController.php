@@ -26,13 +26,13 @@ class HomeController extends Controller
 
         $validated = $request->validate([
             'title'         => 'required|string|max:255',
-            'subtitle'      => 'required|string',
+            'subtitle'      => 'required|string|max:500',
             'image_bg'      => $imageRule,
             'image_about'   => $imageRule,
-            'content_about' => 'required|string|max:255',
+            'content_about' => 'required|string|max:2000',
             'img_desc'      => 'required|string|max:255',
             'service_title' => 'required|string|max:100',
-            'service_desc'  => 'required|string|max:100',
+            'service_desc'  => 'required|string|max:255',
         ]);
 
         foreach (['image_bg', 'image_about'] as $field) {

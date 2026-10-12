@@ -49,45 +49,153 @@ function closeModal() {
     m.classList.remove('flex');
 }
 
-// Kirim form ke server (AJAX), lalu tampilkan modal + link WhatsApp otomatis
-async function handleFormSubmit(event) {
-    event.preventDefault();
+// Validasi input nomor WhatsApp & email real-time serta proteksi form
+function setupFormValidation() {
+    const form = document.getElementById('order-form');
+    if (!form) return;
 
-    const form = event.target;
-    const btn = form.querySelector('button[type="submit"]');
-    const label = btn.querySelector('span');
-    const originalText = label.textContent;
+    const waInput = document.getElementById('nomor_whatsapp');
+    const waError = document.getElementById('whatsapp-inline-error');
+    const emailInput = document.getElementById('email');
+    const emailError = document.getElementById('email-inline-error');
+    const submitBtn = document.getElementById('btn-submit');
 
-    btn.disabled = true;
-    label.textContent = 'Mengirim...';
+    // 1. WhatsApp: Hanya angka, hapus karakter lain secara real-time
+    if (waInput) {
+        const cleanWa = () => {
+            const raw = waInput.value;
+            const cleaned = raw.replace(/\D/g, '');
+            if (raw !== cleaned) {
+                waInput.value = cleaned;
+            }
+        };
 
-    try {
-        // FormData otomatis menyertakan _token dari @csrf
-        const res = await fetch(form.action, {
-            method: 'POST',
-            body: new FormData(form),
-            headers: { 'Accept': 'application/json' },
+        waInput.addEventListener('input', () => {
+            cleanWa();
+            validateWa(false);
         });
-        const data = await res.json();
 
-        if (!res.ok) {
-            alert(res.status === 422
-                ? Object.values(data.errors).flat().join('\n')
-                : 'Terjadi kesalahan, silakan coba lagi.');
-            return;
+        waInput.addEventListener('paste', () => {
+            setTimeout(() => {
+                cleanWa();
+                validateWa(false);
+            }, 0);
+        });
+
+        waInput.addEventListener('blur', () => {
+            validateWa(true);
+        });
+    }
+
+    function validateWa(showEmptyError = false) {
+        if (!waInput || !waError) return true;
+        const val = waInput.value.trim();
+
+        if (!val) {
+            if (showEmptyError) {
+                waError.textContent = 'Nomor WhatsApp wajib diisi.';
+                waError.classList.remove('hidden');
+                return false;
+            }
+            waError.textContent = '';
+            waError.classList.add('hidden');
+            return true;
         }
 
-        document.getElementById('btn-whatsapp-modal').href = data.whatsapp_url;
-        const m = document.getElementById('success-modal');
-        m.classList.remove('hidden');
-        m.classList.add('flex');
-        form.reset();
-        resetUploadPreview('denah');
-        resetUploadPreview('lahan');
-    } catch (e) {
-        alert('Gagal mengirim data. Periksa koneksi internet Anda.');
-    } finally {
-        btn.disabled = false;
-        label.textContent = originalText;
+        // Format Indonesia: diawali 08 atau 628, panjang 10-15 digit
+        const regex = /^(62|0)8[0-9]{8,12}$/;
+        if (!regex.test(val)) {
+            waError.textContent = 'Nomor WhatsApp tidak valid. Diawali 08 atau 628, panjang 10–15 digit (contoh: 08123456789).';
+            waError.classList.remove('hidden');
+            return false;
+        }
+
+        waError.textContent = '';
+        waError.classList.add('hidden');
+        return true;
     }
+
+    // 2. Email: trim, toLowerCase, dan cek format pada blur
+    if (emailInput) {
+        const validateEmail = () => {
+            if (!emailError) return true;
+            emailInput.value = emailInput.value.trim().toLowerCase();
+            const val = emailInput.value;
+
+            if (!val) {
+                emailError.textContent = '';
+                emailError.classList.add('hidden');
+                return true;
+            }
+
+            const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+            if (!emailRegex.test(val)) {
+                emailError.textContent = 'Format email tidak valid. Mohon gunakan email yang aktif.';
+                emailError.classList.remove('hidden');
+                return false;
+            }
+
+            emailError.textContent = '';
+            emailError.classList.add('hidden');
+            return true;
+        };
+
+        emailInput.addEventListener('blur', validateEmail);
+        emailInput.addEventListener('input', () => {
+            if (!emailError.classList.contains('hidden')) {
+                validateEmail();
+            }
+        });
+    }
+
+    // 3. Submit Validation
+    form.addEventListener('submit', (e) => {
+        const isWaValid = validateWa(true);
+        let isEmailValid = true;
+
+        if (emailInput && emailInput.value.trim() !== '') {
+            emailInput.value = emailInput.value.trim().toLowerCase();
+            const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+            if (!emailRegex.test(emailInput.value)) {
+                if (emailError) {
+                    emailError.textContent = 'Format email tidak valid. Mohon gunakan email yang aktif.';
+                    emailError.classList.remove('hidden');
+                }
+                isEmailValid = false;
+            }
+        }
+
+        if (!isWaValid || !isEmailValid) {
+            e.preventDefault();
+            e.stopImmediatePropagation();
+
+            if (!isWaValid && waInput) {
+                waInput.focus();
+            } else if (!isEmailValid && emailInput) {
+                emailInput.focus();
+            }
+
+            if (submitBtn) {
+                submitBtn.disabled = false;
+                submitBtn.classList.remove('opacity-60', 'cursor-not-allowed');
+                const span = submitBtn.querySelector('span');
+                if (span) span.textContent = 'Ajukan / Pesan Jasa';
+            }
+            return false;
+        }
+
+        // Cegah double submit saat valid
+        if (submitBtn) {
+            submitBtn.disabled = true;
+            submitBtn.classList.add('opacity-60', 'cursor-not-allowed');
+            const span = submitBtn.querySelector('span');
+            if (span) span.textContent = 'Mengirim...';
+        }
+    });
+}
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', setupFormValidation);
+} else {
+    setupFormValidation();
 }

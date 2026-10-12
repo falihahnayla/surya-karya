@@ -4,7 +4,7 @@
 
 @section('content')
 @php
-    $filters = request()->only('q', 'status');
+    $filters = array_filter(request()->only('q', 'status', 'page'));
     $rp = fn ($v) => 'Rp ' . number_format((float) $v, 0, ',', '.');
     $tabs = ['' => 'Semua'] + \App\Models\Order::STATUSES;
 @endphp

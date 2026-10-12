@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Form Pemesanan Jasa | Surya Karya')
+@section('title', 'Form Pemesanan Jasa | ' . ($siteSetting->company ?? 'Surya Karya'))
 
 @push('styles')
 <link href="{{ asset('css/form-pemesanan.css') }}" rel="stylesheet">
@@ -14,14 +14,6 @@
     document.getElementById('success-modal')?.classList.add('hidden');
     document.getElementById('success-modal')?.classList.remove('flex');
   }
-
-  // Cegah double submit
-  document.getElementById('order-form')?.addEventListener('submit', function () {
-    const btn = document.getElementById('btn-submit');
-    btn.disabled = true;
-    btn.classList.add('opacity-60', 'cursor-not-allowed');
-    btn.querySelector('span').textContent = 'Mengirim...';
-  });
 
   @if (session('wa_url'))
     // Arahkan otomatis ke WhatsApp dengan pesan yang sudah terisi
@@ -45,7 +37,7 @@
     <!-- Logo -->
     <div class="flex justify-center mb-6 pt-12 sm:pt-7">
       <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-full overflow-hidden shadow-sm border border-stone-200 bg-white p-1">
-        <img alt="Logo Surya Karya" class="w-full h-full object-cover rounded-full"
+        <img alt="Logo {{ $siteSetting->company ?? 'Surya Karya' }}" class="w-full h-full object-cover rounded-full"
              src="https://lh3.googleusercontent.com/aida-public/AB6AXuD84MJEp_1egsg2rnf-vVxJV9z8tO1tgHfHQX1KWTK3zDNY3_i7GJA8u1hH2jDkGL06Qwjs7oN6f7Oe-aLhPU3c2j1wAA6UtUdJaKNd6GHU0XVtMJfon55Oetdw5hzBUwHcpXFo468l5UfatJHMaB_GeLufABzBVZa3wJZxpEJsZI2pbC6COC7lx1z2aDNgBPeyAvukC2WJc3A5N3s5Y3IAknwJ2Rwdj9ewP8v9ALIGCeck6J5ROPs50tcp-7vCD_d2IQ"/>
       </div>
     </div>
@@ -74,6 +66,12 @@
       <form id="order-form" method="POST" action="{{ route('frontend.form-pesanan.store') }}" enctype="multipart/form-data" novalidate>
         @csrf
 
+        {{-- Honeypot bot protection (hidden from humans) --}}
+        <div class="hidden" style="display: none;" aria-hidden="true">
+          <label for="website_hp">Biarkan field ini kosong jika Anda manusia</label>
+          <input type="text" id="website_hp" name="website_hp" tabindex="-1" autocomplete="off" value="">
+        </div>
+
         <!-- 1. Identitas -->
         <div class="mb-10">
           <h2 class="{{ $h2Class }}">Identitas</h2>
@@ -100,15 +98,16 @@
             <div>
               <label class="{{ $labelClass }}" for="nomor_whatsapp">Nomor WhatsApp <span class="text-rose-600">*</span></label>
               <input class="{{ $inputClass }}" id="nomor_whatsapp" name="nomor_whatsapp" type="tel" inputmode="numeric"
-                     pattern="^(\+62|62|0)8[0-9]{8,12}$" maxlength="16" required
-                     value="{{ old('nomor_whatsapp') }}" placeholder="Contoh: 08123456789"
-                     title="Gunakan format nomor Indonesia, contoh 08123456789">
+                     maxlength="15" required
+                     value="{{ old('nomor_whatsapp') }}" placeholder="Contoh: 08123456789">
+              <p id="whatsapp-inline-error" class="hidden mt-1 text-xs text-rose-600"></p>
               @error('nomor_whatsapp') <p class="mt-1 text-xs text-rose-600">{{ $message }}</p> @enderror
             </div>
             <div>
               <label class="{{ $labelClass }}" for="email">Email (Opsional)</label>
               <input class="{{ $inputClass }}" id="email" name="email" type="email" maxlength="100"
                      value="{{ old('email') }}" placeholder="alamat.email@domain.com">
+              <p id="email-inline-error" class="hidden mt-1 text-xs text-rose-600"></p>
               @error('email') <p class="mt-1 text-xs text-rose-600">{{ $message }}</p> @enderror
             </div>
           </div>
@@ -119,7 +118,7 @@
           <h2 class="{{ $h2Class }}">Alamat Proyek</h2>
           <div>
             <label class="{{ $labelClass }}" for="alamat_proyek">Alamat Lokasi Proyek <span class="text-rose-600">*</span></label>
-            <textarea class="{{ $inputClass }}" id="alamat_proyek" name="alamat_proyek" rows="2" required
+            <textarea class="{{ $inputClass }}" id="alamat_proyek" name="alamat_proyek" rows="2" maxlength="500" required
                       placeholder="Masukkan alamat lengkap lokasi proyek, kota, dan patokan">{{ old('alamat_proyek') }}</textarea>
             @error('alamat_proyek') <p class="mt-1 text-xs text-rose-600">{{ $message }}</p> @enderror
           </div>
@@ -144,7 +143,7 @@
             </div>
             <div>
               <label class="{{ $labelClass }}" for="luas_bangunan">Luas Bangunan (m²)</label>
-              <input class="{{ $inputClass }}" id="luas_bangunan" name="luas_bangunan" type="number" min="0" step="1" inputmode="numeric"
+              <input class="{{ $inputClass }}" id="luas_bangunan" name="luas_bangunan" type="number" min="1" max="1000000" step="1" inputmode="numeric"
                      value="{{ old('luas_bangunan') }}" placeholder="Contoh: 250">
               @error('luas_bangunan') <p class="mt-1 text-xs text-rose-600">{{ $message }}</p> @enderror
             </div>
@@ -153,7 +152,7 @@
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 mb-6">
             <div>
               <label class="{{ $labelClass }}" for="luas_lahan">Luas Lahan (m²)</label>
-              <input class="{{ $inputClass }}" id="luas_lahan" name="luas_lahan" type="number" min="0" step="1" inputmode="numeric"
+              <input class="{{ $inputClass }}" id="luas_lahan" name="luas_lahan" type="number" min="1" max="1000000" step="1" inputmode="numeric"
                      value="{{ old('luas_lahan') }}" placeholder="Contoh: 400">
               @error('luas_lahan') <p class="mt-1 text-xs text-rose-600">{{ $message }}</p> @enderror
             </div>
@@ -167,7 +166,7 @@
 
           <div>
             <label class="{{ $labelClass }}" for="kebutuhan_proyek">Jenis/Kebutuhan Proyek <span class="text-rose-600">*</span></label>
-            <textarea class="{{ $inputClass }}" id="kebutuhan_proyek" name="kebutuhan_proyek" rows="3" required
+            <textarea class="{{ $inputClass }}" id="kebutuhan_proyek" name="kebutuhan_proyek" rows="3" maxlength="2000" required
                       placeholder="Ceritakan detail kebutuhan renovasi atau pembangunan hunian Anda...">{{ old('kebutuhan_proyek') }}</textarea>
             @error('kebutuhan_proyek') <p class="mt-1 text-xs text-rose-600">{{ $message }}</p> @enderror
           </div>
@@ -241,7 +240,7 @@
         <div class="mb-10">
           <h2 class="{{ $h2Class }}">Catatan Tambahan</h2>
           <label class="{{ $labelClass }}" for="catatan_tambahan">Catatan Tambahan</label>
-          <textarea class="{{ $inputClass }}" id="catatan_tambahan" name="catatan_tambahan" rows="2"
+          <textarea class="{{ $inputClass }}" id="catatan_tambahan" name="catatan_tambahan" rows="2" maxlength="1000"
                     placeholder="Tambahkan catatan khusus atau preferensi lainnya...">{{ old('catatan_tambahan') }}</textarea>
           @error('catatan_tambahan') <p class="mt-1 text-xs text-rose-600">{{ $message }}</p> @enderror
         </div>
@@ -270,7 +269,7 @@
     </div>
     <h3 id="success-title" class="font-serif text-2xl font-semibold text-navy-900 mb-2">Pengajuan Berhasil Dikirim!</h3>
     <p class="text-slate-600 text-sm mb-6 leading-relaxed">
-      Terima kasih telah mempercayakan proyek Anda. Surya Karya akan segera meninjau data Anda.
+      Terima kasih telah mempercayakan proyek Anda. {{ $siteSetting->company ?? 'Surya Karya' }} akan segera meninjau data Anda.
       @if (session('wa_url'))
         <br><span class="font-medium text-slate-800">Anda akan diarahkan ke WhatsApp, cukup tekan kirim pada pesan yang sudah terisi.</span>
       @endif

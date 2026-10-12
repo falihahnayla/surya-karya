@@ -46,7 +46,7 @@ Route::get('/spesifikasi-bangunan', [PanelSpesifikasiController::class, 'spesifi
 Route::get('/standar-mutu', [PanelSpesifikasiController::class, 'standarMutu'])->name('standar-mutu');
 Route::get('/alur-kerja', [AlurKerjaSamaController::class, 'index'])->name('alur-kerja');
 Route::get('/form-pemesanan', [FormPesanController::class, 'index'])->name('frontend.form-pesanan');
-Route::post('/form-pemesanan', [FormPesanController::class, 'store'])->name('frontend.form-pesanan.store');
+Route::post('/form-pemesanan', [FormPesanController::class, 'store'])->middleware('throttle:5,1')->name('frontend.form-pesanan.store');
 
 /*
 |--------------------------------------------------------------------------

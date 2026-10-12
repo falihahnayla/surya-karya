@@ -17,7 +17,7 @@
 <div class="relative z-10 max-w-4xl mx-auto flex flex-col items-center ">
 <!-- Eyebrow Tag -->
 <span class="text-[11px] sm:text-xs uppercase tracking-[0.25em] font-medium text-slate-300 mb-4 block">
-  SURYA KARYA
+  {{ strtoupper($setting->company ?? ($siteSetting->company ?? 'Surya Karya')) }}
 </span>
 <!-- Primary Serif Headline -->
 <h1 class="heading-serif text-4xl sm:text-6xl lg:text-7xl font-semibold text-white uppercase tracking-normal leading-[1.1] max-w-3xl">
@@ -66,7 +66,7 @@
 <!-- Right: Brand Narrative & Technical Excellence Description -->
 <div class="lg:col-span-6 flex flex-col justify-center">
 <h2 class="heading-serif text-3xl sm:text-5xl font-normal text-slate-900 tracking-tight mb-6">
-            Surya Karya
+            {{ $setting->company ?? ($siteSetting->company ?? 'Surya Karya') }}
           </h2>
 <div class="border-l-2 border-slate-200 pl-6 space-y-4 text-slate-600 text-sm sm:text-base leading-relaxed text-justify">
 <p class="">

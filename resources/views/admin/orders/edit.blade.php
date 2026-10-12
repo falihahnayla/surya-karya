@@ -29,22 +29,22 @@
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 <div>
                     <label for="name" class="{{ $label }}">Nama Lengkap <span class="text-rose-500">*</span></label>
-                    <input type="text" name="name" id="name" maxlength="255" required value="{{ old('name', $o->name ?? '') }}" class="{{ $input }}">
+                    <input type="text" name="name" id="name" maxlength="100" required value="{{ old('name', $o->name ?? '') }}" class="{{ $input }}">
                     @error('name') <span class="text-xs text-rose-500 mt-1 block">{{ $message }}</span> @enderror
                 </div>
                 <div>
                     <label for="company_name" class="{{ $label }}">Nama Perusahaan</label>
-                    <input type="text" name="company_name" id="company_name" maxlength="255" value="{{ old('company_name', $o->company_name ?? '') }}" class="{{ $input }}">
+                    <input type="text" name="company_name" id="company_name" maxlength="100" value="{{ old('company_name', $o->company_name ?? '') }}" class="{{ $input }}">
                     @error('company_name') <span class="text-xs text-rose-500 mt-1 block">{{ $message }}</span> @enderror
                 </div>
                 <div>
                     <label for="phone" class="{{ $label }}">Nomor WhatsApp <span class="text-rose-500">*</span></label>
-                    <input type="text" name="phone" id="phone" maxlength="50" required value="{{ old('phone', $o->phone ?? '') }}" class="{{ $input }}">
+                    <input type="tel" inputmode="numeric" name="phone" id="phone" maxlength="15" required value="{{ old('phone', $o->phone ?? '') }}" placeholder="Contoh: 08123456789" class="{{ $input }}">
                     @error('phone') <span class="text-xs text-rose-500 mt-1 block">{{ $message }}</span> @enderror
                 </div>
                 <div>
                     <label for="email" class="{{ $label }}">Email</label>
-                    <input type="email" name="email" id="email" maxlength="255" value="{{ old('email', $o->email ?? '') }}" class="{{ $input }}">
+                    <input type="email" name="email" id="email" maxlength="100" value="{{ old('email', $o->email ?? '') }}" placeholder="alamat.email@domain.com" class="{{ $input }}">
                     @error('email') <span class="text-xs text-rose-500 mt-1 block">{{ $message }}</span> @enderror
                 </div>
             </div>
@@ -52,7 +52,7 @@
             {{-- Alamat --}}
             <div>
                 <label for="address" class="{{ $label }}">Alamat Proyek <span class="text-rose-500">*</span></label>
-                <textarea name="address" id="address" rows="2" required class="{{ $input }}">{{ old('address', $o->address ?? '') }}</textarea>
+                <textarea name="address" id="address" rows="2" maxlength="500" required class="{{ $input }}">{{ old('address', $o->address ?? '') }}</textarea>
                 @error('address') <span class="text-xs text-rose-500 mt-1 block">{{ $message }}</span> @enderror
             </div>
 
@@ -70,24 +70,24 @@
                 </div>
                 <div>
                     <label for="building_position" class="{{ $label }}">Posisi Bangunan</label>
-                    <input type="text" name="building_position" id="building_position" maxlength="255" value="{{ old('building_position', $o->building_position ?? '') }}" class="{{ $input }}">
+                    <input type="text" name="building_position" id="building_position" maxlength="100" value="{{ old('building_position', $o->building_position ?? '') }}" class="{{ $input }}">
                     @error('building_position') <span class="text-xs text-rose-500 mt-1 block">{{ $message }}</span> @enderror
                 </div>
                 <div>
                     <label for="building_area" class="{{ $label }}">Luas Bangunan (m²)</label>
-                    <input type="number" name="building_area" id="building_area" min="0" step="1" value="{{ old('building_area', $o->building_area ?? '') }}" class="{{ $input }}">
+                    <input type="number" name="building_area" id="building_area" min="1" max="1000000" step="1" value="{{ old('building_area', $o->building_area ?? '') }}" class="{{ $input }}">
                     @error('building_area') <span class="text-xs text-rose-500 mt-1 block">{{ $message }}</span> @enderror
                 </div>
                 <div>
                     <label for="land_area" class="{{ $label }}">Luas Lahan (m²)</label>
-                    <input type="number" name="land_area" id="land_area" min="0" step="1" value="{{ old('land_area', $o->land_area ?? '') }}" class="{{ $input }}">
+                    <input type="number" name="land_area" id="land_area" min="1" max="1000000" step="1" value="{{ old('land_area', $o->land_area ?? '') }}" class="{{ $input }}">
                     @error('land_area') <span class="text-xs text-rose-500 mt-1 block">{{ $message }}</span> @enderror
                 </div>
             </div>
 
             <div>
                 <label for="project_detail" class="{{ $label }}">Kebutuhan Proyek <span class="text-rose-500">*</span></label>
-                <textarea name="project_detail" id="project_detail" rows="3" required class="{{ $input }}">{{ old('project_detail', $o->project_detail ?? '') }}</textarea>
+                <textarea name="project_detail" id="project_detail" rows="3" maxlength="2000" required class="{{ $input }}">{{ old('project_detail', $o->project_detail ?? '') }}</textarea>
                 @error('project_detail') <span class="text-xs text-rose-500 mt-1 block">{{ $message }}</span> @enderror
             </div>
 
@@ -135,19 +135,32 @@
 
             <div>
                 <label for="notes" class="{{ $label }}">Catatan Tambahan</label>
-                <textarea name="notes" id="notes" rows="2" class="{{ $input }}">{{ old('notes', $o->notes ?? '') }}</textarea>
+                <textarea name="notes" id="notes" rows="2" maxlength="1000" class="{{ $input }}">{{ old('notes', $o->notes ?? '') }}</textarea>
                 @error('notes') <span class="text-xs text-rose-500 mt-1 block">{{ $message }}</span> @enderror
             </div>
 
             {{-- Pembayaran --}}
-            <div class="grid grid-cols-2 sm:grid-cols-4 gap-6">
-                @foreach(['total' => 'Total', 'termin_1' => 'Termin 1', 'termin_2' => 'Termin 2', 'termin_3' => 'Termin 3'] as $field => $text)
-                    <div>
-                        <label for="{{ $field }}" class="{{ $label }}">{{ $text }} (Rp)</label>
-                        <input type="number" name="{{ $field }}" id="{{ $field }}" min="0" step="0.01" value="{{ old($field, $o->$field ?? '') }}" class="{{ $input }}">
-                        @error($field) <span class="text-xs text-rose-500 mt-1 block">{{ $message }}</span> @enderror
-                    </div>
-                @endforeach
+            <div>
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-6">
+                    @foreach(['total' => 'Total', 'termin_1' => 'Termin 1', 'termin_2' => 'Termin 2', 'termin_3' => 'Termin 3'] as $field => $text)
+                        @php
+                            $val = old($field, $o->$field ?? '');
+                            if (is_numeric($val) && (float) $val > 0) {
+                                $val = number_format((float) $val, 0, ',', '.');
+                            } elseif ($val === '0' || $val === 0 || $val === 0.0) {
+                                $val = '';
+                            }
+                        @endphp
+                        <div>
+                            <label for="{{ $field }}" class="{{ $label }}">{{ $text }} (Rp)</label>
+                            <input type="text" inputmode="numeric" name="{{ $field }}" id="{{ $field }}" value="{{ $val }}" placeholder="0" class="nominal-input {{ $input }}">
+                            @error($field) <span class="text-xs text-rose-500 mt-1 block">{{ $message }}</span> @enderror
+                        </div>
+                    @endforeach
+                </div>
+                <p class="text-xs text-slate-500 mt-2">
+                    Isi nominal dalam Rupiah. Boleh memakai titik atau koma sebagai pemisah ribuan, contoh: 100.000 atau 100,000 (= Rp 100.000). Jangan tulis desimal.
+                </p>
             </div>
 
             {{-- Status --}}
@@ -172,4 +185,57 @@
         </form>
     </div>
 </div>
+
+@push('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    // 1. Nomor WhatsApp: hanya angka
+    const phoneInput = document.getElementById('phone');
+    if (phoneInput) {
+        const cleanPhone = function () {
+            phoneInput.value = phoneInput.value.replace(/\D/g, '');
+        };
+        phoneInput.addEventListener('input', cleanPhone);
+        phoneInput.addEventListener('paste', function () {
+            setTimeout(cleanPhone, 0);
+        });
+    }
+
+    // 2. Format nominal otomatis dengan pemisah ribuan titik tanpa merusak posisi kursor
+    document.querySelectorAll('.nominal-input').forEach(function (input) {
+        function formatDigits(val) {
+            const digits = val.replace(/\D/g, '');
+            if (!digits) return '';
+            return digits.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+        }
+
+        function handleFormat() {
+            const val = input.value;
+            const cursor = input.selectionStart || 0;
+            const digitsBefore = val.slice(0, cursor).replace(/\D/g, '').length;
+
+            const formatted = formatDigits(val);
+            input.value = formatted;
+
+            let newCursor = 0;
+            let count = 0;
+            for (let i = 0; i < formatted.length; i++) {
+                if (/\d/.test(formatted[i])) count++;
+                if (count === digitsBefore) {
+                    newCursor = i + 1;
+                    break;
+                }
+            }
+            if (digitsBefore === 0) newCursor = 0;
+            input.setSelectionRange(newCursor, newCursor);
+        }
+
+        input.addEventListener('input', handleFormat);
+        input.addEventListener('paste', function () {
+            setTimeout(handleFormat, 0);
+        });
+    });
+});
+</script>
+@endpush
 @endsection

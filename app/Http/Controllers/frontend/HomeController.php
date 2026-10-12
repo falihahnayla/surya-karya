@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Frontend;
 use App\Http\Controllers\Controller;
 use App\Models\Home;
 use App\Models\Service;
+use App\Models\Setting;
 use App\Models\VisiMisi;
 use Illuminate\Http\Request;
 
@@ -23,6 +24,9 @@ class HomeController extends Controller
         // Kartu "Standar Eksekusi Terbaik"
         $services = Service::orderBy('id')->get();
 
-        return view('frontend.home', compact('home', 'visi', 'misi', 'services'));
+        // Data profil perusahaan dari tabel settings
+        $setting = Setting::first();
+
+        return view('frontend.home', compact('home', 'visi', 'misi', 'services', 'setting'));
     }
 }
