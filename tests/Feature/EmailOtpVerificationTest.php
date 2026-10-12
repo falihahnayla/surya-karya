@@ -24,11 +24,12 @@ class EmailOtpVerificationTest extends TestCase
     public function test_1_fake_domain_rejected(): void
     {
         $response = $this->postJson(route('frontend.email.send'), [
-            'email' => 'budi@domain-ngawur-xyz123987456.com',
+            'email' => 'a@domain-ngawur-xyz123.com',
         ]);
 
         $response->assertStatus(422)
                  ->assertJsonValidationErrors(['email']);
+        $this->assertStringContainsString('Domain email tidak ditemukan', $response->json('errors.email.0'));
     }
 
     /** Uji 2: Email sekali pakai (disposable) ditolak */
@@ -40,6 +41,7 @@ class EmailOtpVerificationTest extends TestCase
 
         $response->assertStatus(422)
                  ->assertJsonValidationErrors(['email']);
+        $this->assertStringContainsString('Email sementara/sekali pakai tidak diperbolehkan', $response->json('errors.email.0'));
     }
 
     /** Uji 3: Kode salah dan pembatasan maksimal salah 5 kali */

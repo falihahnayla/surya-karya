@@ -56,7 +56,7 @@ class StoreOrderRequest extends FormRequest
             'nama_perusahaan'  => ['nullable', 'string', 'max:100', 'regex:/^[\pL0-9\s\.\,\&\-\(\)]+$/u'],
             'nomor_whatsapp'   => ['required', 'regex:/^(62|0)8[0-9]{8,12}$/', 'max:15'],
             'email'            => [
-                'nullable', 'email:rfc', 'max:100', new RealEmail,
+                'nullable', 'email:rfc,dns', 'max:100', new RealEmail,
                 function (string $attr, $value, \Closure $fail) {
                     if (!$value) return;
 

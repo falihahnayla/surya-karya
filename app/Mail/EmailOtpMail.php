@@ -13,8 +13,7 @@ class EmailOtpMail extends Mailable
 
     public function envelope(): Envelope
     {
-        $company = Setting::first()?->company ?? 'Surya Karya';
-        return new Envelope(subject: 'Kode Verifikasi Email - ' . $company);
+        return new Envelope(subject: 'Kode Verifikasi Email Anda');
     }
 
     public function content(): Content
