@@ -50,9 +50,9 @@ Route::get('/form-pemesanan', [FormPesanController::class, 'index'])->name('fron
 Route::post('/form-pemesanan', [FormPesanController::class, 'store'])->middleware('throttle:5,1')->name('frontend.form-pesanan.store');
 
 Route::post('/verifikasi-email/kirim', [EmailVerificationController::class, 'send'])
-    ->middleware('throttle:5,10')->name('frontend.email.send');
+    ->name('frontend.email.send');
 Route::post('/verifikasi-email/cek', [EmailVerificationController::class, 'verify'])
-    ->middleware('throttle:10,10')->name('frontend.email.verify');
+    ->name('frontend.email.verify');
 
 /*
 |--------------------------------------------------------------------------

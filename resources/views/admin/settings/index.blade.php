@@ -121,12 +121,6 @@
                 </div>
             </div>
 
-            <div>
-                <label for="footer_text" class="{{ $label }}">Teks Footer</label>
-                <textarea name="footer_text" id="footer_text" rows="2" class="{{ $input }}">{{ old('footer_text', $setting->footer_text) }}</textarea>
-                @error('footer_text') <span class="text-xs text-rose-500 mt-1 block">{{ $message }}</span> @enderror
-            </div>
-
             <div class="flex items-center gap-3 pt-2">
                 <button type="submit" class="px-6 py-2.5 rounded-DEFAULT bg-[#0a2569] text-white text-sm font-medium hover:bg-[#081d52] transition-colors">
                     Simpan Pengaturan

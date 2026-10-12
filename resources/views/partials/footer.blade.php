@@ -26,10 +26,6 @@
       ? $st->address
       : 'Jl. Arsitektur No. 88, Kawasan Bisnis Terpadu, Jakarta, Indonesia';
 
-  $footerText   = filled($st?->footer_text)
-      ? $st->footer_text
-      : '© ' . date('Y') . ' ' . $companyName . '. All Rights Reserved.';
-
   // Logo: dari admin (URL penuh atau path di folder public), cadangan: logo lama
   $logoDefault = 'https://lh3.googleusercontent.com/aida-public/AB6AXuAgb-mvC7ZmEqj9a5VnworSJL-Om492-eA4mNMwkY9UpkZv_1tiXNIKrcIsOUFa1I8IFUTHlUK7HJ9fyw6M1yGzMUeuvSP2uLbdt02Wx70RveLYkJJHzny-ou4PyWAlNOw-gt6L0_S7zScY8_1h5gCo5P8ZvQrGGTxaISefIpB72n7sIhjpw_KQueYHHqj6L5jybS3D01l_X5xXrquZ05q7xkhgpkUom5Sjpkxsui-5LRx2yfwZeI7B51_Rjxdgdcsh3g';
   $logoUrl = $logoDefault;
@@ -151,7 +147,7 @@
 
     <!-- Bottom Copyright Line -->
     <div class="pt-8 border-t border-slate-800/80 text-center sm:text-left text-xs text-slate-400">
-      <p>{{ $footerText }}</p>
+      <p>&copy; {{ date('Y') }} {{ $companyName }}. All Rights Reserved.</p>
     </div>
 
   </div>

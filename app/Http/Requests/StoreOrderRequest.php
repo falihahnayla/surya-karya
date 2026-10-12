@@ -5,6 +5,7 @@ namespace App\Http\Requests;
 use App\Rules\RealEmail;
 use App\Rules\ValidEmailDns;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Cache;
 
 class StoreOrderRequest extends FormRequest
 {
@@ -60,10 +61,12 @@ class StoreOrderRequest extends FormRequest
                 function (string $attr, $value, \Closure $fail) {
                     if (!$value) return;
 
-                    $ok = strtolower($value) === session('verified_email')
+                    $vEmail    = strtolower(trim((string) $value));
+                    $okSession = $vEmail === session('verified_email')
                         && (now()->timestamp - (int) session('verified_email_at', 0)) <= 1800; // 30 menit
+                    $okCache   = Cache::has('otp_verified:' . sha1($vEmail));
 
-                    if (!$ok) {
+                    if (!$okSession && !$okCache) {
                         $fail('Email belum diverifikasi. Klik "Kirim Kode", lalu masukkan kode yang dikirim ke email Anda.');
                     }
                 },

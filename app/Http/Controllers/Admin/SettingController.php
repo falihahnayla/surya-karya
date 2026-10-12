@@ -30,7 +30,6 @@ class SettingController extends Controller
             'description'  => 'nullable|string|max:2000',
             'logo'         => 'nullable|string|max:255',
             'logo_file'    => 'nullable|file|mimes:jpg,jpeg,png,webp,svg,ico|max:5120',
-            'footer_text'  => 'nullable|string|max:1000',
         ], [
             'whatsapp.regex' => 'Format nomor WhatsApp tidak valid. Contoh: 08123456789 atau 628123456789.',
             'company.max'    => 'Nama perusahaan maksimal 100 karakter.',

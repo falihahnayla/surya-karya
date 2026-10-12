@@ -8,6 +8,7 @@ use App\Models\Layanan;
 use App\Models\Order;
 use App\Models\Setting;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 
 class FormPesanController extends Controller
@@ -52,7 +53,11 @@ class FormPesanController extends Controller
         $layanan = Layanan::find($v['layanan_id']);
         $waUrl   = $this->buildWhatsappUrl($v, $layanan?->title, $order->order_code ?? null);
 
-        session()->forget(['verified_email', 'verified_email_at']);
+        if (!empty($v['email'])) {
+            Cache::forget('otp_verified:' . sha1(strtolower(trim((string) $v['email']))));
+        }
+
+        session()->forget(['verified_email', 'verified_email_at', 'pending_otp_email']);
 
         return redirect()
             ->route('frontend.form-pesanan')

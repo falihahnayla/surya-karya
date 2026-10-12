@@ -216,7 +216,7 @@ if (document.readyState === 'loading') {
     const token     = form ? form.querySelector('input[name="_token"]')?.value : '';
 
     let verifiedEmail = wrap.dataset.verified === '1' && email ? email.value.trim().toLowerCase() : null;
-    let cooldownTimer = null;
+    let lastSentEmail = null;
 
     const showErr = (m) => {
         errEl.textContent = m;
@@ -247,32 +247,29 @@ if (document.readyState === 'loading') {
         return data;
     }
 
-    function startCooldown(sec) {
-        let left = sec;
-        btnSend.disabled = true;
-        clearInterval(cooldownTimer);
-        btnSend.textContent = `Kirim ulang (${left})`;
-        cooldownTimer = setInterval(() => {
-            left--;
-            btnSend.textContent = left > 0 ? `Kirim ulang (${left})` : 'Kirim Ulang';
-            if (left <= 0) {
-                clearInterval(cooldownTimer);
-                btnSend.disabled = false;
-            }
-        }, 1000);
-    }
-
-    // Email diubah -> status verifikasi dicabut
+    // Email diubah
     email.addEventListener('input', () => {
         email.value = email.value.replace(/\s/g, '');
-        if (verifiedEmail && email.value.trim().toLowerCase() !== verifiedEmail) {
+        const currentEmail = email.value.trim().toLowerCase();
+
+        if (verifiedEmail && currentEmail !== verifiedEmail) {
             verifiedEmail = null;
             okEl.classList.add('hidden');
             wrap.dataset.verified = '0';
         }
-        otpBox.classList.add('hidden');
-        otpBox.style.display = 'none';
+
         clearErr();
+
+        // Pertahankan kotak OTP tetap terbuka jika email sama dengan yang diminta kodenya
+        if (lastSentEmail && currentEmail === lastSentEmail && !verifiedEmail) {
+            otpBox.classList.remove('hidden');
+            otpBox.style.display = 'flex';
+        } else if (lastSentEmail && currentEmail !== lastSentEmail) {
+            otpBox.classList.add('hidden');
+            otpBox.style.display = 'none';
+            btnSend.disabled = false;
+            btnSend.textContent = 'Kirim Kode';
+        }
     });
 
     email.addEventListener('blur', () => {
@@ -282,6 +279,7 @@ if (document.readyState === 'loading') {
         }
     });
 
+    // Kirim kode verifikasi
     btnSend.addEventListener('click', async () => {
         const v = email.value.trim().toLowerCase();
         if (!isFormatOk(v)) {
@@ -292,12 +290,19 @@ if (document.readyState === 'loading') {
         btnSend.textContent = 'Mengirim...';
         try {
             const data = await post(wrap.dataset.sendUrl, { email: v });
+            lastSentEmail = v;
             otpBox.classList.remove('hidden');
             otpBox.style.display = 'flex';
+            otpInput.value = '';
             otpInput.focus();
             okEl.textContent = data.message;
             okEl.classList.remove('hidden');
-            startCooldown(60);
+
+            // Tombol Kirim Ulang aktif kembali dalam 2 detik tanpa jeda/peringatan 1 menit
+            setTimeout(() => {
+                btnSend.disabled = false;
+                btnSend.textContent = 'Kirim Ulang';
+            }, 2000);
         } catch (e) {
             showErr(e.message);
             btnSend.disabled = false;
@@ -307,38 +312,81 @@ if (document.readyState === 'loading') {
 
     otpInput.addEventListener('input', () => {
         otpInput.value = otpInput.value.replace(/\D/g, '').slice(0, 6);
+        clearErr();
     });
 
-    btnVerify.addEventListener('click', async () => {
-        const v = email.value.trim().toLowerCase();
-        if (otpInput.value.length !== 6) {
-            return showErr('Masukkan 6 digit kode verifikasi.');
+    // Tekan Enter pada kotak kode langsung memicu verifikasi
+    otpInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            e.stopPropagation();
+            executeVerification();
         }
+    });
+
+    // Fungsi verifikasi OTP
+    async function executeVerification() {
+        const targetEmail = (lastSentEmail || email.value).trim().toLowerCase();
+        email.value = targetEmail;
+
+        if (otpInput.value.length !== 6) {
+            showErr('Masukkan 6 digit kode verifikasi.');
+            otpInput.focus();
+            return false;
+        }
+
         clearErr();
         btnVerify.disabled = true;
+        btnVerify.textContent = 'Memeriksa...';
+
         try {
-            await post(wrap.dataset.verifyUrl, { email: v, code: otpInput.value });
-            verifiedEmail = v;
+            const res = await post(wrap.dataset.verifyUrl, { email: targetEmail, code: otpInput.value });
+            verifiedEmail = targetEmail;
             wrap.dataset.verified = '1';
             otpBox.classList.add('hidden');
             otpBox.style.display = 'none';
             otpInput.value = '';
-            okEl.textContent = '✓ Email terverifikasi';
+            okEl.textContent = res.message || '✓ Email terverifikasi';
             okEl.classList.remove('hidden');
+            return true;
         } catch (e) {
             showErr(e.message);
+            return false;
         } finally {
             btnVerify.disabled = false;
+            btnVerify.textContent = 'Verifikasi';
         }
+    }
+
+    btnVerify.addEventListener('click', async () => {
+        await executeVerification();
     });
 
-    // Blokir submit jika email diisi tapi belum diverifikasi (fase capture agar jalan sebelum handler anti-double-submit)
-    form.addEventListener('submit', (ev) => {
+    // Blokir submit jika email diisi tapi belum diverifikasi (fase capture)
+    form.addEventListener('submit', async (ev) => {
         const v = email.value.trim().toLowerCase();
         if (v && v !== verifiedEmail) {
+            // Jika user sudah memasukkan 6 digit kode di form, otomatis verifikasi sebelum submit
+            if (otpInput && otpInput.value.length === 6) {
+                ev.preventDefault();
+                ev.stopImmediatePropagation();
+                const ok = await executeVerification();
+                if (ok) {
+                    const submitBtn = document.getElementById('btn-submit');
+                    if (submitBtn) {
+                        submitBtn.disabled = true;
+                        submitBtn.classList.add('opacity-60', 'cursor-not-allowed');
+                        const span = submitBtn.querySelector('span');
+                        if (span) span.textContent = 'Mengirim...';
+                    }
+                    form.submit();
+                }
+                return false;
+            }
+
             ev.preventDefault();
             ev.stopImmediatePropagation();
-            showErr('Email belum diverifikasi. Klik "Kirim Kode" lalu masukkan kode dari email Anda.');
+            showErr('Email belum diverifikasi. Masukkan 6 digit kode dari email Anda lalu klik "Verifikasi".');
             email.scrollIntoView({ behavior: 'smooth', block: 'center' });
             const btn = document.getElementById('btn-submit');
             if (btn) {
