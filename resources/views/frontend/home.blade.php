@@ -1,6 +1,10 @@
 @extends('layouts.app')
 
-@section('title', 'Beranda | Surya Karya')
+@php
+    $companyName = \App\Models\Setting::first()?->company ?: 'Surya Karya';
+@endphp
+
+@section('title', 'Beranda | ' . $companyName)
 
 @section('content')
 
@@ -15,13 +19,9 @@
 <!-- Hero Content Container -->
  <div class="animate-up">
 <div class="relative z-10 max-w-4xl mx-auto flex flex-col items-center ">
-<!-- Eyebrow Tag -->
-<span class="text-[11px] sm:text-xs uppercase tracking-[0.25em] font-medium text-slate-300 mb-4 block">
-  {{ strtoupper($setting->company ?? ($siteSetting->company ?? 'Surya Karya')) }}
-</span>
-<!-- Primary Serif Headline -->
+<!-- Primary Serif Headline (nama company dari Setting) -->
 <h1 class="heading-serif text-4xl sm:text-6xl lg:text-7xl font-semibold text-white uppercase tracking-normal leading-[1.1] max-w-3xl">
-        {!! nl2br(e($home->title ?? "PEMBANGUNAN &\nRENOVASI RUMAH")) !!}
+        {{ $companyName }}
       </h1>
 <!-- Supporting Tagline -->
 <p class="mt-6 text-sm sm:text-base lg:text-lg text-slate-300 font-light max-w-2xl leading-relaxed">
@@ -51,7 +51,7 @@
 <!-- Left: Project Under Construction Image with Info Card -->
 <div class="lg:col-span-6 relative">
 <div class="relative overflow-hidden rounded-2xl shadow-xl aspect-[4/3] bg-slate-100 group">
-<img alt="Proyek Konstruksi dan Pembangunan Surya Karya" class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700" src="{{ $home->image_about ? asset($home->image_about) : 'https://lh3.googleusercontent.com/aida-public/AB6AXuCaVISVOE0HiYxrVbfBKu7qNuCkFrQ85oCaltnzEk1VThaOmYn935JMGSieA0Dxg_oXpAHqMLQ44eNOZ5S0xoDTBs8Cw0krzOlzHvn0jr0h1RevSiKR01HFUhFe81bqFm2TS4BqIPEs-4S_-VLv3zX7YKeFNdeoYwm_F2GsParqe0BkRYnUQ8Z9PX7yYCPFinRL-yBbDktuqKGMO-mRoRmE3c6nQB38hCE8yYIM-neD02s-fCvyeKJE' }}"/>
+<img alt="Proyek Konstruksi dan Pembangunan {{ $companyName }}" class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700" src="{{ $home->image_about ? asset($home->image_about) : 'https://lh3.googleusercontent.com/aida-public/AB6AXuCaVISVOE0HiYxrVbfBKu7qNuCkFrQ85oCaltnzEk1VThaOmYn935JMGSieA0Dxg_oXpAHqMLQ44eNOZ5S0xoDTBs8Cw0krzOlzHvn0jr0h1RevSiKR01HFUhFe81bqFm2TS4BqIPEs-4S_-VLv3zX7YKeFNdeoYwm_F2GsParqe0BkRYnUQ8Z9PX7yYCPFinRL-yBbDktuqKGMO-mRoRmE3c6nQB38hCE8yYIM-neD02s-fCvyeKJE' }}"/>
 <!-- Bottom Left Badge Overlay -->
 <div class="absolute bottom-5 left-5 right-5 sm:right-auto sm:max-w-xs bg-white/95 backdrop-blur-md p-4 rounded-lg shadow-lg border border-slate-100">
 <span class="text-[10px] uppercase font-bold tracking-wider text-slate-500 block mb-1">
@@ -66,11 +66,11 @@
 <!-- Right: Brand Narrative & Technical Excellence Description -->
 <div class="lg:col-span-6 flex flex-col justify-center">
 <h2 class="heading-serif text-3xl sm:text-5xl font-normal text-slate-900 tracking-tight mb-6">
-            {{ $setting->company ?? ($siteSetting->company ?? 'Surya Karya') }}
+            {{ $companyName }}
           </h2>
 <div class="border-l-2 border-slate-200 pl-6 space-y-4 text-slate-600 text-sm sm:text-base leading-relaxed text-justify">
 <p class="">
-              {{ $home->content_about ?? 'Surya Karya hadir sebagai mitra terpercaya Anda dalam mewujudkan hunian impian. Kami menggabungkan keahlian teknis teruji dengan pendekatan estetika modern untuk menghasilkan struktur yang tidak hanya kokoh dan tahan lama, tetapi juga mencerminkan karakter serta gaya hidup Anda.' }}
+              {{ $home->content_about ?? ($companyName . ' hadir sebagai mitra terpercaya Anda dalam mewujudkan hunian impian. Kami menggabungkan keahlian teknis teruji dengan pendekatan estetika modern untuk menghasilkan struktur yang tidak hanya kokoh dan tahan lama, tetapi juga mencerminkan karakter serta gaya hidup Anda.') }}
             </p>
 <p class="">
               Dedikasi kami pada detail, integritas struktural, transparansi manajemen biaya, dan craftsmanship terkurasi memastikan setiap proyek berjalan lancar dari konsepsi desain awal hingga serah terima kunci.
