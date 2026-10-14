@@ -3,7 +3,9 @@
 namespace App\Http\Requests;
 
 use App\Models\Layanan;
+use App\Rules\RealEmail;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Validation\Rule;
 
 class StoreOrderRequest extends FormRequest
@@ -75,13 +77,22 @@ class StoreOrderRequest extends FormRequest
             'nama_lengkap'    => ['required', 'string', 'min:3', 'max:100', 'regex:' . self::RX_NAME],
             'nama_perusahaan' => ['nullable', 'string', 'max:100', 'regex:' . self::RX_COMPANY],
 
-            // ===================================================================
-            // JANGAN DIUBAH: dua field di bawah ini PAKAI RULE ASLI Anda.
-            // Rule di bawah hanya placeholder, ganti dengan isi lama StoreOrderRequest Anda.
-            // ===================================================================
-            'nomor_whatsapp' => ['required', 'string', 'max:15'],
-            'email'          => ['nullable', 'email', 'max:100', 'regex:/^[a-zA-Z0-9._+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$/'],
-            // ===================================================================
+            'nomor_whatsapp' => ['required', 'regex:/^(62|0)8[0-9]{8,12}$/', 'max:15'],
+            'email'          => [
+                'nullable', 'email:rfc,dns', 'max:100', new RealEmail,
+                function (string $attr, $value, \Closure $fail) {
+                    if (!$value) return;
+
+                    $vEmail    = strtolower(trim((string) $value));
+                    $okSession = $vEmail === session('verified_email')
+                        && (now()->timestamp - (int) session('verified_email_at', 0)) <= 1800; // 30 menit
+                    $okCache   = Cache::has('otp_verified:' . sha1($vEmail));
+
+                    if (!$okSession && !$okCache) {
+                        $fail('Email belum diverifikasi. Klik "Kirim Kode", lalu masukkan kode yang dikirim ke email Anda.');
+                    }
+                },
+            ],
 
             'alamat_proyek' => ['required', 'string', 'min:10', 'max:500', 'regex:' . self::RX_ADDRESS],
 
