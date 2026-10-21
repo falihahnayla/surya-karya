@@ -107,7 +107,7 @@
             <div id="email-wrap" data-verified="{{ $emailVerified ? '1' : '0' }}"
                  data-send-url="{{ route('frontend.email.send') }}"
                  data-verify-url="{{ route('frontend.email.verify') }}">
-              <label class="{{ $labelClass }}" for="email">Email (Opsional)</label>
+              <label class="{{ $labelClass }}" for="email">Email</label>
 
               <div class="flex gap-2">
                 <input class="{{ $inputClass }} flex-1" id="email" name="email" type="email" maxlength="100"
