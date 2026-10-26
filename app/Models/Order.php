@@ -92,13 +92,10 @@ class Order extends Model
     }
 
     /** Link WhatsApp ke pemesan (08xxx -> 628xxx). */
-    public function getCustomerWhatsappUrlAttribute(): string
+    public function getCustomerWhatsappUrlAttribute(): ?string
     {
-        $number = preg_replace('/\D+/', '', $this->phone);
-        if (str_starts_with($number, '0')) {
-            $number = '62' . substr($number, 1);
-        }
-        return 'https://wa.me/' . $number;
+        $number = Setting::normalizeWhatsapp($this->phone);
+        return $number ? ('https://wa.me/' . $number) : null;
     }
 
     /* ---------- WhatsApp ke admin ---------- */
@@ -141,9 +138,14 @@ class Order extends Model
         return implode("\n", $lines);
     }
 
-    public function adminWhatsappUrl(): string
+    public function adminWhatsappUrl(): ?string
     {
-        return 'https://wa.me/' . config('services.whatsapp_admin')
+        $number = Setting::whatsappNumber();
+        if (!$number) {
+            return null;
+        }
+
+        return 'https://wa.me/' . $number
             . '?text=' . rawurlencode($this->whatsappMessage());
     }
 }

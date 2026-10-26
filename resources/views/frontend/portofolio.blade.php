@@ -181,12 +181,14 @@
         </p>
         <!-- CTA Action Buttons -->
         <div class="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6">
-            <a class="w-full sm:w-auto inline-flex items-center justify-center space-x-2.5 bg-[#d4af37] hover:bg-[#c19b2e] text-[#0b192c] font-semibold px-7 py-3.5 rounded text-xs uppercase tracking-widest transition-all duration-150 shadow-md" href="https://wa.me/6281239401899" rel="noopener noreferrer" target="_blank">
+            @if(!empty($siteWa['url']))
+            <a class="w-full sm:w-auto inline-flex items-center justify-center space-x-2.5 bg-[#d4af37] hover:bg-[#c19b2e] text-[#0b192c] font-semibold px-7 py-3.5 rounded text-xs uppercase tracking-widest transition-all duration-150 shadow-md" href="{{ $siteWa['url'] }}" rel="noopener noreferrer" target="_blank">
                 <svg class="w-4 h-4 text-[#0b192c]" fill="currentColor" viewBox="0 0 20 20">
                     <path clip-rule="evenodd" d="M18 10c0 3.866-3.582 7-8 7a8.841 8.841 0 01-4.083-.98L2 17l1.338-3.123C2.493 12.767 2 11.434 2 10c0-3.866 3.582-7 8-7s8 3.134 8 7zM7 9H5v2h2V9zm8 0h-2v2h2V9zm-4 0h-2v2h2V9z" fill-rule="evenodd"></path>
                 </svg>
                 <span>Konsultasi Sekarang</span>
             </a>
+            @endif
             <a class="w-full sm:w-auto inline-flex items-center justify-center border border-slate-600 hover:border-white text-gray-200 hover:text-white px-7 py-3.5 rounded text-xs font-semibold uppercase tracking-widest transition-all duration-150 bg-[#14263e]" href="{{ route('alur-kerja') }}">
                 Pelajari Alur Kerja
             </a>

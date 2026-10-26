@@ -29,7 +29,6 @@
   $inputClass = 'input-borderless border-0 border-transparent bg-slate-50 focus:bg-white focus:outline-none focus:ring-1 focus:ring-navy-900';
   $labelClass = 'block text-xs font-semibold uppercase tracking-wider text-slate-700 mb-1.5';
   $h2Class    = 'font-serif text-xl sm:text-2xl font-semibold text-slate-800 pb-2 border-b border-stone-200 mb-6';
-  $emailVerified = old('email') && strtolower(old('email')) === session('verified_email');
 @endphp
 
 <main class="flex-grow py-10 sm:py-16 px-4 sm:px-6">
@@ -104,32 +103,11 @@
               <p id="whatsapp-inline-error" class="hidden mt-1 text-xs text-rose-600"></p>
               @error('nomor_whatsapp') <p class="mt-1 text-xs text-rose-600">{{ $message }}</p> @enderror
             </div>
-            <div id="email-wrap" data-verified="{{ $emailVerified ? '1' : '0' }}"
-                 data-send-url="{{ route('frontend.email.send') }}"
-                 data-verify-url="{{ route('frontend.email.verify') }}">
+            <div id="email-wrap">
               <label class="{{ $labelClass }}" for="email">Email</label>
-
-              <div class="flex gap-2">
-                <input class="{{ $inputClass }} flex-1" id="email" name="email" type="email" maxlength="100"
-                       value="{{ old('email') }}" placeholder="alamat.email@domain.com" autocomplete="email">
-                <button type="button" id="btn-send-otp"
-                        class="shrink-0 px-4 rounded-lg bg-[#0d1e38] hover:bg-[#071324] text-white text-xs font-semibold uppercase tracking-wider disabled:opacity-50 disabled:cursor-not-allowed">
-                  Kirim Kode
-                </button>
-              </div>
-
-              <div id="otp-box" class="hidden mt-3 flex gap-2">
-                <input id="otp-code" type="text" inputmode="numeric" maxlength="6" placeholder="6 digit kode"
-                       class="{{ $inputClass }} flex-1 tracking-[0.4em] text-center">
-                <button type="button" id="btn-verify-otp"
-                        class="shrink-0 px-4 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold uppercase tracking-wider disabled:opacity-50">
-                  Verifikasi
-                </button>
-              </div>
-
+              <input class="{{ $inputClass }}" id="email" name="email" type="email" maxlength="100"
+                     value="{{ old('email') }}" placeholder="alamat.email@domain.com" autocomplete="email">
               <p id="email-inline-error" class="hidden mt-1 text-xs text-rose-600"></p>
-              <p id="email-inline-ok" class="{{ $emailVerified ? '' : 'hidden' }} mt-1 text-xs text-emerald-600 font-medium">✓ Email terverifikasi</p>
-              <p class="mt-1 text-[11px] text-slate-400">Jika diisi, email wajib diverifikasi dengan kode yang dikirim ke inbox Anda.</p>
               @error('email') <p class="mt-1 text-xs text-rose-600">{{ $message }}</p> @enderror
             </div>
           </div>
@@ -297,12 +275,17 @@
       @endif
     </p>
     <div class="space-y-3">
+      @php
+        $modalWaUrl = session('wa_url') ?: ($siteWa['url'] ?? null);
+      @endphp
+      @if ($modalWaUrl)
       <a id="btn-whatsapp-modal"
-         href="{{ session('wa_url', $siteWa['url']) }}"
+         href="{{ $modalWaUrl }}"
          target="_self" rel="noopener noreferrer"
          class="w-full inline-flex items-center justify-center bg-[#25D366] hover:bg-[#20b858] text-white font-medium py-3 px-4 rounded-lg text-sm shadow transition-colors gap-2">
-        {{ session('wa_url') ? 'Buka WhatsApp Sekarang' : 'Chat WhatsApp (' . $siteWa['display'] . ')' }}
+        {{ session('wa_url') ? 'Buka WhatsApp Sekarang' : 'Chat WhatsApp (' . ($siteWa['display'] ?? '') . ')' }}
       </a>
+      @endif
       <button type="button" onclick="closeModal()"
               class="w-full bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium py-2.5 px-4 rounded-lg text-sm transition-colors">
         Tutup

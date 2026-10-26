@@ -97,13 +97,15 @@
             <a href="tel:{{ $phoneHref }}" class="hover:text-white transition">{{ $phone }}</a>
           </li>
 
-          <!-- WhatsApp (dari Admin > Pengaturan, cadangan: .env / kode) -->
+          @if(!empty($siteWa['url']) && !empty($siteWa['display']))
+          <!-- WhatsApp (dari Admin > Pengaturan) -->
           <li class="flex items-center gap-2">
             <i class="fa-brands fa-whatsapp text-slate-400 w-4"></i>
             <a href="{{ $siteWa['url'] }}" target="_blank" rel="noopener noreferrer" class="hover:text-white transition">
               {{ $siteWa['display'] }}
             </a>
           </li>
+          @endif
 
           <!-- Email -->
           <li class="flex items-center gap-2">

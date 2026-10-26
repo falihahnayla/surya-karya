@@ -7,8 +7,8 @@ use App\Http\Controllers\Frontend\PanelPembangunanController;
 use App\Http\Controllers\Frontend\PanelSpesifikasiController;
 use App\Http\Controllers\Frontend\AlurKerjaSamaController;
 use App\Http\Controllers\Frontend\FormPesanController;
-use App\Http\Controllers\Frontend\EmailVerificationController;
 use App\Http\Controllers\Frontend\PortofolioController;
+
 
 use App\Http\Controllers\Admin\PembangunanController;
 use App\Http\Controllers\Admin\RenovasiController;
@@ -49,10 +49,7 @@ Route::get('/alur-kerja', [AlurKerjaSamaController::class, 'index'])->name('alur
 Route::get('/form-pemesanan', [FormPesanController::class, 'index'])->name('frontend.form-pesanan');
 Route::post('/form-pemesanan', [FormPesanController::class, 'store'])->middleware('throttle:5,1')->name('frontend.form-pesanan.store');
 
-Route::post('/verifikasi-email/kirim', [EmailVerificationController::class, 'send'])
-    ->name('frontend.email.send');
-Route::post('/verifikasi-email/cek', [EmailVerificationController::class, 'verify'])
-    ->name('frontend.email.verify');
+
 
 /*
 |--------------------------------------------------------------------------

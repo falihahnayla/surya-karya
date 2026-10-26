@@ -357,12 +357,14 @@
                 </svg>
                 <span>FORM PEMESANAN PEMBANGUNAN</span>
             </a>
-            <a class="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-[#1a2b42] hover:bg-[#253954] text-white border border-slate-700/50 font-semibold text-xs sm:text-sm px-7 py-3.5 rounded shadow transition-all duration-300 tracking-wide hover:-translate-y-0.5 active:translate-y-0" href="https://wa.me/6281239401899" rel="noopener noreferrer" target="_blank">
+            @if(!empty($siteWa['url']))
+            <a class="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-[#1a2b42] hover:bg-[#253954] text-white border border-slate-700/50 font-semibold text-xs sm:text-sm px-7 py-3.5 rounded shadow transition-all duration-300 tracking-wide hover:-translate-y-0.5 active:translate-y-0" href="{{ $siteWa['url'] }}" rel="noopener noreferrer" target="_blank">
                 <svg class="w-4 h-4 text-[#d4af37]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
                 </svg>
                 <span>WHATSAPP QUICK DESK</span>
             </a>
+            @endif
         </div>
     </div>
 </section>

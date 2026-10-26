@@ -29,12 +29,14 @@
       </p>
 <!-- Action Buttons -->
 <div class="mt-10 flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto">
+@if(!empty($siteWa['url']))
 <a class="w-full sm:w-auto px-8 py-3.5 text-xs sm:text-sm font-semibold tracking-wide text-white bg-[#0d1c31] border border-blue-900/60 hover:bg-[#152742] rounded-md transition shadow-md"
-   href="https://wa.me/6281239401899"
+   href="{{ $siteWa['url'] }}"
    target="_blank"
    rel="noopener noreferrer">
   Konsultasi
 </a>
+@endif
 <a class="w-full sm:w-auto px-8 py-3.5 text-xs sm:text-sm font-semibold tracking-wide text-slate-200 border border-slate-400/50 hover:bg-white/10 hover:text-white rounded-md transition backdrop-blur-sm" href="{{ route('portofolio') }}">
           Lihat Portofolio
         </a>

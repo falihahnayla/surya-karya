@@ -20,9 +20,9 @@ class AppServiceProvider extends ServiceProvider
             $number  = Setting::whatsappNumber();
 
             $view->with('siteWa', [
-                'number'  => $number,                          // 62895635040947
-                'display' => Setting::whatsappDisplay(),       // 0895 6350 40947
-                'url'     => 'https://wa.me/' . $number,       // link chat langsung
+                'number'  => $number,
+                'display' => Setting::whatsappDisplay(),
+                'url'     => Setting::whatsappUrl(),
             ]);
             $view->with('siteSetting', $setting);
         });

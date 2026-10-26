@@ -174,9 +174,10 @@
         <script src="/js/scroll-animation.js"></script>
     @stack('scripts')
 
+    @if(!empty($siteWa['url']))
     <!-- BEGIN: Realistic Minimalist Floating Consultation Avatar CTA -->
     <div class="fixed bottom-6 right-6 sm:bottom-8 sm:right-8 z-50">
-        <a href="https://wa.me/6281239401899?text=Halo%20Surya%20Karya,%20saya%20ingin%20konsultasi%20mengenai%20proyek%20pembangunan/renovasi"
+        <a href="{{ $siteWa['url'] }}?text=Halo%20Surya%20Karya,%20saya%20ingin%20konsultasi%20mengenai%20proyek%20pembangunan/renovasi"
            target="_blank"
            rel="noopener noreferrer"
            aria-label="Konsultasi Tim Arsitek via WhatsApp"
@@ -210,6 +211,7 @@
         </a>
     </div>
     <!-- END: Realistic Minimalist Floating Consultation Avatar CTA -->
+    @endif
 
     <script>
         (function () {

@@ -8,7 +8,6 @@ use App\Models\Layanan;
 use App\Models\Order;
 use App\Models\Setting;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 
 class FormPesanController extends Controller
@@ -53,20 +52,24 @@ class FormPesanController extends Controller
         $layanan = Layanan::find($v['layanan_id']);
         $waUrl   = $this->buildWhatsappUrl($v, $layanan?->title, $order->order_code ?? null);
 
-        if (!empty($v['email'])) {
-            Cache::forget('otp_verified:' . sha1(strtolower(trim((string) $v['email']))));
+        $redirect = redirect()
+            ->route('frontend.form-pesanan')
+            ->with('success', true);
+
+        if ($waUrl) {
+            $redirect->with('wa_url', $waUrl);
         }
 
-        session()->forget(['verified_email', 'verified_email_at', 'pending_otp_email']);
-
-        return redirect()
-            ->route('frontend.form-pesanan')
-            ->with('success', true)
-            ->with('wa_url', $waUrl);
+        return $redirect;
     }
 
-    private function buildWhatsappUrl(array $v, ?string $layananTitle, ?string $orderCode): string
+    private function buildWhatsappUrl(array $v, ?string $layananTitle, ?string $orderCode): ?string
     {
+        $waNumber = Setting::whatsappNumber();
+        if (!$waNumber) {
+            return null;
+        }
+
         $dash = fn ($val, $suffix = '') => filled($val) ? $val . $suffix : '-';
         $companyName = strtoupper(Setting::first()?->company ?? 'SURYA KARYA');
         $lines = ['*PEMESANAN JASA - ' . $companyName . '*'];
@@ -103,6 +106,6 @@ class FormPesanController extends Controller
             'Mohon informasi dan tindak lanjutnya. Terima kasih.',
         ]);
 
-        return 'https://wa.me/' . Setting::whatsappNumber() . '?text=' . rawurlencode(implode("\n", $lines));
+        return 'https://wa.me/' . $waNumber . '?text=' . rawurlencode(implode("\n", $lines));
     }
 }

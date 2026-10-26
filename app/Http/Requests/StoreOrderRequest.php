@@ -3,9 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Models\Layanan;
-use App\Rules\RealEmail;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Validation\Rule;
 
 class StoreOrderRequest extends FormRequest
@@ -65,6 +63,11 @@ class StoreOrderRequest extends FormRequest
             }
         }
 
+        if ($this->has('email') && $this->input('email') !== null) {
+            $cleanEmail = strtolower(trim((string) $this->input('email')));
+            $data['email'] = $cleanEmail === '' ? null : $cleanEmail;
+        }
+
         $this->merge($data);
     }
 
@@ -79,19 +82,10 @@ class StoreOrderRequest extends FormRequest
 
             'nomor_whatsapp' => ['required', 'regex:/^(62|0)8[0-9]{8,12}$/', 'max:15'],
             'email'          => [
-                'nullable', 'email:rfc,dns', 'max:100', new RealEmail,
-                function (string $attr, $value, \Closure $fail) {
-                    if (!$value) return;
-
-                    $vEmail    = strtolower(trim((string) $value));
-                    $okSession = $vEmail === session('verified_email')
-                        && (now()->timestamp - (int) session('verified_email_at', 0)) <= 1800; // 30 menit
-                    $okCache   = Cache::has('otp_verified:' . sha1($vEmail));
-
-                    if (!$okSession && !$okCache) {
-                        $fail('Email belum diverifikasi. Klik "Kirim Kode", lalu masukkan kode yang dikirim ke email Anda.');
-                    }
-                },
+                'nullable',
+                'max:100',
+                'regex:/^[a-zA-Z0-9._\-+@]+$/',
+                'email:rfc',
             ],
 
             'alamat_proyek' => ['required', 'string', 'min:10', 'max:500', 'regex:' . self::RX_ADDRESS],
@@ -120,6 +114,14 @@ class StoreOrderRequest extends FormRequest
             'nama_lengkap.regex'    => 'Nama lengkap hanya boleh berisi huruf, spasi, titik, apostrof, dan tanda hubung (-).',
 
             'nama_perusahaan.regex' => 'Nama perusahaan hanya boleh berisi huruf, angka, spasi, titik, koma, apostrof, dan tanda hubung (-).',
+
+            'nomor_whatsapp.required' => 'Nomor WhatsApp wajib diisi.',
+            'nomor_whatsapp.regex'    => 'Format nomor WhatsApp tidak valid. Gunakan format nomor Indonesia diawali 08 atau 628 (10–15 digit, contoh: 08123456789 atau 628123456789).',
+            'nomor_whatsapp.max'      => 'Nomor WhatsApp maksimal 15 digit.',
+
+            'email.regex' => 'Email hanya boleh berisi huruf, angka, dan karakter . _ - + @.',
+            'email.email' => 'Format email tidak valid. Pastikan penulisan alamat email benar.',
+            'email.max'   => 'Email maksimal 100 karakter.',
 
             'alamat_proyek.required' => 'Alamat proyek wajib diisi.',
             'alamat_proyek.min'      => 'Alamat proyek minimal 10 karakter.',

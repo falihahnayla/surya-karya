@@ -176,14 +176,16 @@
             </h2>
 
             <div class="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
+                @if(!empty($siteWa['url']))
                 <a
                     class="w-full sm:w-auto px-8 py-3.5 bg-[#e5d5c5] hover:bg-[#d8c5b3] text-[#0b192c] text-xs font-semibold uppercase tracking-widest rounded shadow transition-all duration-200"
-                    href="https://wa.me/6281239401899"
+                    href="{{ $siteWa['url'] }}"
                     rel="noopener noreferrer"
                     target="_blank"
                 >
                     Mulai Konsultasi
                 </a>
+                @endif
             </div>
 
         </div>

@@ -135,59 +135,70 @@ function setupFormValidation() {
         return true;
     }
 
-    // 2. Email: trim, toLowerCase, dan cek format pada blur
-    if (emailInput) {
-        const validateEmail = () => {
-            if (!emailError) return true;
-            emailInput.value = emailInput.value.trim().toLowerCase();
-            const val = emailInput.value;
+    // 2. Email: filter karakter terlarang (hanya huruf, angka, dan . _ - + @), bersihkan saat input & paste
+    const cleanEmail = () => {
+        if (!emailInput) return;
+        const raw = emailInput.value;
+        // Hanya izinkan a-z, A-Z, 0-9, . , _ , - , + , @
+        let cleaned = raw.replace(/[^a-zA-Z0-9._\-+@]/g, "");
+        // Batasi hanya satu tanda @
+        const atIndex = cleaned.indexOf("@");
+        if (atIndex !== -1) {
+            cleaned = cleaned.slice(0, atIndex + 1) + cleaned.slice(atIndex + 1).replace(/@/g, "");
+        }
+        if (raw !== cleaned) {
+            emailInput.value = cleaned;
+        }
+    };
 
-            if (!val) {
-                emailError.textContent = "";
-                emailError.classList.add("hidden");
-                return true;
-            }
+    const validateEmail = () => {
+        if (!emailInput || !emailError) return true;
+        cleanEmail();
+        emailInput.value = emailInput.value.trim().toLowerCase();
+        const val = emailInput.value;
 
-            const emailRegex =
-                /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-            if (!emailRegex.test(val)) {
-                emailError.textContent =
-                    "Format email tidak valid. Mohon gunakan email yang aktif.";
-                emailError.classList.remove("hidden");
-                return false;
-            }
-
+        if (!val) {
             emailError.textContent = "";
             emailError.classList.add("hidden");
             return true;
-        };
+        }
 
-        emailInput.addEventListener("blur", validateEmail);
+        const emailRegex = /^[a-zA-Z0-9._\-+]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$/;
+        if (!emailRegex.test(val)) {
+            emailError.textContent = "Format email tidak valid. Gunakan huruf, angka, dan karakter . _ - + @.";
+            emailError.classList.remove("hidden");
+            return false;
+        }
+
+        emailError.textContent = "";
+        emailError.classList.add("hidden");
+        return true;
+    };
+
+    if (emailInput) {
         emailInput.addEventListener("input", () => {
-            if (!emailError.classList.contains("hidden")) {
+            cleanEmail();
+            if (emailError && !emailError.classList.contains("hidden")) {
                 validateEmail();
             }
         });
+
+        emailInput.addEventListener("paste", () => {
+            setTimeout(() => {
+                cleanEmail();
+                if (emailError && !emailError.classList.contains("hidden")) {
+                    validateEmail();
+                }
+            }, 0);
+        });
+
+        emailInput.addEventListener("blur", validateEmail);
     }
 
     // 3. Submit Validation
     form.addEventListener("submit", (e) => {
         const isWaValid = validateWa(true);
-        let isEmailValid = true;
-
-        if (emailInput && emailInput.value.trim() !== "") {
-            emailInput.value = emailInput.value.trim().toLowerCase();
-            const emailRegex =
-                /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-            if (!emailRegex.test(emailInput.value)) {
-                if (emailError) {
-                    emailError.textContent =
-                        "Format email tidak valid. Mohon gunakan email yang aktif.";
-                    emailError.classList.remove("hidden");
-                }
-                isEmailValid = false;
-            }
-        }
+        const isEmailValid = validateEmail();
 
         if (!isWaValid || !isEmailValid) {
             e.preventDefault();
@@ -487,222 +498,3 @@ if (document.readyState === "loading") {
     initTextValidation();
 }
 
-// 4. Modul Verifikasi Email OTP
-(function () {
-    const wrap = document.getElementById("email-wrap");
-    if (!wrap) return;
-
-    const form = document.getElementById("order-form");
-    const email = document.getElementById("email");
-    const btnSend = document.getElementById("btn-send-otp");
-    const btnVerify = document.getElementById("btn-verify-otp");
-    const otpBox = document.getElementById("otp-box");
-    const otpInput = document.getElementById("otp-code");
-    const errEl = document.getElementById("email-inline-error");
-    const okEl = document.getElementById("email-inline-ok");
-    const token = form ? form.querySelector('input[name="_token"]')?.value : "";
-
-    let verifiedEmail =
-        wrap.dataset.verified === "1" && email
-            ? email.value.trim().toLowerCase()
-            : null;
-    let lastSentEmail = null;
-
-    const showErr = (m) => {
-        errEl.textContent = m;
-        errEl.classList.remove("hidden");
-        okEl.classList.add("hidden");
-    };
-    const clearErr = () => {
-        errEl.textContent = "";
-        errEl.classList.add("hidden");
-    };
-    const isFormatOk = (v) =>
-        /^[a-zA-Z0-9._+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$/.test(v);
-
-    async function post(url, body) {
-        const res = await fetch(url, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                Accept: "application/json",
-                "X-CSRF-TOKEN": token,
-            },
-            body: JSON.stringify(body),
-        });
-        const data = await res.json().catch(() => ({}));
-        if (!res.ok) {
-            const first = data.errors ? Object.values(data.errors)[0][0] : null;
-            throw new Error(
-                first || data.message || "Terjadi kesalahan. Coba lagi.",
-            );
-        }
-        return data;
-    }
-
-    // Email diubah
-    email.addEventListener("input", () => {
-        // Hanya huruf, angka dan . _ - + @ ; karakter lain (!#$%^&*( dst) dihapus, maksimal satu @
-        email.value = email.value
-            .replace(/[^a-zA-Z0-9._+\-@]/g, "")
-            .replace(/@(?=.*@)/g, "");
-        const currentEmail = email.value.trim().toLowerCase();
-
-        if (verifiedEmail && currentEmail !== verifiedEmail) {
-            verifiedEmail = null;
-            okEl.classList.add("hidden");
-            wrap.dataset.verified = "0";
-        }
-
-        clearErr();
-
-        // Pertahankan kotak OTP tetap terbuka jika email sama dengan yang diminta kodenya
-        if (lastSentEmail && currentEmail === lastSentEmail && !verifiedEmail) {
-            otpBox.classList.remove("hidden");
-            otpBox.style.display = "flex";
-        } else if (lastSentEmail && currentEmail !== lastSentEmail) {
-            otpBox.classList.add("hidden");
-            otpBox.style.display = "none";
-            btnSend.disabled = false;
-            btnSend.textContent = "Kirim Kode";
-        }
-    });
-
-    email.addEventListener("blur", () => {
-        const v = email.value.trim().toLowerCase();
-        if (v && !isFormatOk(v)) {
-            showErr("Format email tidak valid.");
-        }
-    });
-
-    // Kirim kode verifikasi
-    btnSend.addEventListener("click", async () => {
-        const v = email.value.trim().toLowerCase();
-        if (!isFormatOk(v)) {
-            return showErr("Masukkan alamat email yang valid terlebih dahulu.");
-        }
-        clearErr();
-        btnSend.disabled = true;
-        btnSend.textContent = "Mengirim...";
-        try {
-            const data = await post(wrap.dataset.sendUrl, { email: v });
-            lastSentEmail = v;
-            otpBox.classList.remove("hidden");
-            otpBox.style.display = "flex";
-            otpInput.value = "";
-            otpInput.focus();
-            okEl.textContent = data.message;
-            okEl.classList.remove("hidden");
-
-            // Tombol Kirim Ulang aktif kembali dalam 2 detik tanpa jeda/peringatan 1 menit
-            setTimeout(() => {
-                btnSend.disabled = false;
-                btnSend.textContent = "Kirim Ulang";
-            }, 2000);
-        } catch (e) {
-            showErr(e.message);
-            btnSend.disabled = false;
-            btnSend.textContent = "Kirim Kode";
-        }
-    });
-
-    otpInput.addEventListener("input", () => {
-        otpInput.value = otpInput.value.replace(/\D/g, "").slice(0, 6);
-        clearErr();
-    });
-
-    // Tekan Enter pada kotak kode langsung memicu verifikasi
-    otpInput.addEventListener("keydown", (e) => {
-        if (e.key === "Enter") {
-            e.preventDefault();
-            e.stopPropagation();
-            executeVerification();
-        }
-    });
-
-    // Fungsi verifikasi OTP
-    async function executeVerification() {
-        const targetEmail = (lastSentEmail || email.value).trim().toLowerCase();
-        email.value = targetEmail;
-
-        if (otpInput.value.length !== 6) {
-            showErr("Masukkan 6 digit kode verifikasi.");
-            otpInput.focus();
-            return false;
-        }
-
-        clearErr();
-        btnVerify.disabled = true;
-        btnVerify.textContent = "Memeriksa...";
-
-        try {
-            const res = await post(wrap.dataset.verifyUrl, {
-                email: targetEmail,
-                code: otpInput.value,
-            });
-            verifiedEmail = targetEmail;
-            wrap.dataset.verified = "1";
-            otpBox.classList.add("hidden");
-            otpBox.style.display = "none";
-            otpInput.value = "";
-            okEl.textContent = res.message || "✓ Email terverifikasi";
-            okEl.classList.remove("hidden");
-            return true;
-        } catch (e) {
-            showErr(e.message);
-            return false;
-        } finally {
-            btnVerify.disabled = false;
-            btnVerify.textContent = "Verifikasi";
-        }
-    }
-
-    btnVerify.addEventListener("click", async () => {
-        await executeVerification();
-    });
-
-    // Blokir submit jika email diisi tapi belum diverifikasi (fase capture)
-    form.addEventListener(
-        "submit",
-        async (ev) => {
-            const v = email.value.trim().toLowerCase();
-            if (v && v !== verifiedEmail) {
-                // Jika user sudah memasukkan 6 digit kode di form, otomatis verifikasi sebelum submit
-                if (otpInput && otpInput.value.length === 6) {
-                    ev.preventDefault();
-                    ev.stopImmediatePropagation();
-                    const ok = await executeVerification();
-                    if (ok) {
-                        const submitBtn = document.getElementById("btn-submit");
-                        if (submitBtn) {
-                            submitBtn.disabled = true;
-                            submitBtn.classList.add(
-                                "opacity-60",
-                                "cursor-not-allowed",
-                            );
-                            const span = submitBtn.querySelector("span");
-                            if (span) span.textContent = "Mengirim...";
-                        }
-                        form.submit();
-                    }
-                    return false;
-                }
-
-                ev.preventDefault();
-                ev.stopImmediatePropagation();
-                showErr(
-                    'Email belum diverifikasi. Masukkan 6 digit kode dari email Anda lalu klik "Verifikasi".',
-                );
-                email.scrollIntoView({ behavior: "smooth", block: "center" });
-                const btn = document.getElementById("btn-submit");
-                if (btn) {
-                    btn.disabled = false;
-                    btn.classList.remove("opacity-60", "cursor-not-allowed");
-                    const span = btn.querySelector("span");
-                    if (span) span.textContent = "Ajukan / Pesan Jasa";
-                }
-            }
-        },
-        true,
-    );
-})();

@@ -11,9 +11,6 @@ class Setting extends Model
 
     protected $table = 'settings';
 
-    /** Nomor cadangan terakhir jika admin & config sama-sama kosong */
-    public const WA_FALLBACK = '62895635040947';
-
     protected $fillable = [
         'company',
         'address',
@@ -28,47 +25,79 @@ class Setting extends Model
     ];
 
     /**
-     * Nomor WhatsApp format internasional tanpa "+" (contoh: 62895635040947).
-     * Prioritas: Admin (tabel settings) -> config/.env -> konstanta di kode.
+     * Helper normalisasi nomor WhatsApp / telepon:
+     * - Hapus spasi, tanda +, tanda -, tanda kurung, dan karakter non-digit lainnya
+     * - Ubah awalan '0' menjadi '62' (misal: 0812... -> 62812...)
+     * - Ubah awalan '8' menjadi '628' (misal: 812... -> 62812...)
+     * - Mengembalikan null jika input kosong atau tidak ada digit
      */
-    public static function whatsappNumber(): string
+    public static function normalizeWhatsapp(?string $raw): ?string
     {
-        static $cache = null;
-        if ($cache !== null) {
-            return $cache;
+        if ($raw === null) {
+            return null;
         }
 
-        $raw = null;
-        try {
-            $raw = static::query()->value('whatsapp');
-        } catch (\Throwable $e) {
-            // tabel belum ada / belum migrate -> lanjut ke fallback
-        }
-
-        $number = preg_replace('/\D+/', '', (string) $raw);
+        $number = preg_replace('/\D+/', '', $raw);
 
         if ($number === '') {
-            $number = preg_replace('/\D+/', '', (string) config('services.whatsapp_admin', self::WA_FALLBACK));
+            return null;
         }
 
-        if ($number === '') {
-            $number = self::WA_FALLBACK;
-        }
-
-        // 08xxx -> 628xxx, 8xxx -> 628xxx
         if (str_starts_with($number, '0')) {
             $number = '62' . substr($number, 1);
         } elseif (str_starts_with($number, '8')) {
             $number = '62' . $number;
         }
 
-        return $cache = $number;
+        return $number;
     }
 
-    /** Format tampilan: 0895 6350 40947 */
-    public static function whatsappDisplay(): string
+    /**
+     * Nomor WhatsApp format internasional tanpa "+" (contoh: 628123456789).
+     * HANYA diambil dari tabel settings kolom whatsapp, TIDAK ADA fallback nomor di kode.
+     * Mengembalikan null jika di backoffice kosong.
+     */
+    public static function whatsappNumber(): ?string
+    {
+        $raw = null;
+        try {
+            $raw = static::query()->value('whatsapp');
+        } catch (\Throwable $e) {
+            // tabel belum ada atau error koneksi
+        }
+
+        return static::normalizeWhatsapp($raw);
+    }
+
+    /**
+     * Helper URL WhatsApp (https://wa.me/62...(?text=...)).
+     * Mengembalikan null jika nomor WhatsApp di backoffice kosong.
+     */
+    public static function whatsappUrl(?string $text = null): ?string
+    {
+        $number = static::whatsappNumber();
+        if (!$number) {
+            return null;
+        }
+
+        $url = 'https://wa.me/' . $number;
+        if ($text !== null && $text !== '') {
+            $url .= '?text=' . rawurlencode($text);
+        }
+
+        return $url;
+    }
+
+    /**
+     * Format tampilan: 0812 3456 7890 (atau null jika nomor kosong)
+     */
+    public static function whatsappDisplay(): ?string
     {
         $n = static::whatsappNumber();
+        if (!$n) {
+            return null;
+        }
+
         $local = str_starts_with($n, '62') ? '0' . substr($n, 2) : $n;
 
         return trim(chunk_split($local, 4, ' '));

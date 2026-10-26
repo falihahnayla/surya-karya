@@ -11,13 +11,8 @@
     $heroImage = ($hero && !empty($hero->image_url)) ? $hero->image_url : 'https://lh3.googleusercontent.com/aida-public/AB6AXuCeVbtNJiJuL00yT332BB87i6eGfIlEL-L_LdxKGSFd1Z1mfnTd3bZdOiyT88tu5L-T1dLtUlK2F8Sp8iWG-L1ZMCxzwC9bROyNihL-_pLkwPPeksOBvW6K8rNbXGLX0l7AhO4I8QZSAKgpizo8EcD7Ubl45jNNMN5IIhWdxqVVhl3xArBWUMccQsLabranZYvDMaEzvuaWRrqYM94q10omSYxM23s6vYlVswuYr8DQDHaRF0IHTIcK';
 
     // Kontak dari Setting
-    $waRaw   = $setting?->whatsapp ?? '';
-    $waDigit = preg_replace('/\D+/', '', $waRaw);
-    if (str_starts_with($waDigit, '0')) {
-        $waDigit = '62' . substr($waDigit, 1);
-    }
-    $waLink       = $waDigit ? 'https://wa.me/' . $waDigit : null;
-    $phoneDisplay = ($setting?->phone ?: $waRaw);
+    $waLink       = $siteWa['url'] ?? \App\Models\Setting::whatsappUrl();
+    $phoneDisplay = $setting?->phone ?: ($siteWa['display'] ?? null);
 @endphp
 <section class="relative border-b border-slate-800/80 py-28 md:py-36 lg:py-44 px-6 sm:px-10 lg:px-16 overflow-hidden bg-brand-dark bg-cover bg-center" style="background-image: linear-gradient(to right, rgba(7, 19, 36, 0.92), rgba(11, 25, 44, 0.85)), url('{{ $heroImage }}');">
     <div class="animate-left">
