@@ -74,9 +74,7 @@
 <p class="">
               {{ $home->content_about ?? ($companyName . ' hadir sebagai mitra terpercaya Anda dalam mewujudkan hunian impian. Kami menggabungkan keahlian teknis teruji dengan pendekatan estetika modern untuk menghasilkan struktur yang tidak hanya kokoh dan tahan lama, tetapi juga mencerminkan karakter serta gaya hidup Anda.') }}
             </p>
-<p class="">
-              Dedikasi kami pada detail, integritas struktural, transparansi manajemen biaya, dan craftsmanship terkurasi memastikan setiap proyek berjalan lancar dari konsepsi desain awal hingga serah terima kunci.
-            </p>
+
 </div>
 </div>
 </div>

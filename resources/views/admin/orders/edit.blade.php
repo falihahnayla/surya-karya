@@ -159,7 +159,7 @@
                     @endforeach
                 </div>
                 <p class="text-xs text-slate-500 mt-2">
-                    Isi nominal dalam Rupiah. Boleh memakai titik atau koma sebagai pemisah ribuan, contoh: 100.000 atau 100,000 (= Rp 100.000). Jangan tulis desimal.
+                    Isi nominal dalam Rupiah. Titik atau koma akan diisi otomatis sebagai pemisah ribuan. Kosongkan jika tidak ada nilai.
                 </p>
             </div>
 
