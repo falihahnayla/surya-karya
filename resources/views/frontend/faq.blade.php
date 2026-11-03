@@ -90,10 +90,6 @@
                         </div>
                     @endif
 
-                    <div class="flex items-center gap-2.5 text-slate-300">
-                        <i class="fa-regular fa-clock w-4 text-center text-amber-200/90"></i>
-                        <span>Senin – Sabtu: 08.00 – 17.00 WIB</span>
-                    </div>
 
                 </div>
             </div>
