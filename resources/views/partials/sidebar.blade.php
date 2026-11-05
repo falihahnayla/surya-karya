@@ -8,15 +8,21 @@
         }
     @endphp
     <!-- Sidebar -->
-    <aside class="fixed left-0 top-0 h-screen w-72 bg-surface-container-lowest shadow-[0_1px_8px_rgba(0,0,0,0.04)] z-50 flex flex-col justify-between overflow-y-auto">
+    <aside id="sk-admin-sidebar" class="fixed left-0 top-0 h-screen w-72 bg-surface-container-lowest shadow-[0_1px_8px_rgba(0,0,0,0.04)] z-50 flex flex-col justify-between overflow-y-auto transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out">
         <!-- Sidebar Brand Header -->
-        <div class="p-6 pb-4 flex items-center gap-3 border-b border-surface-container-high shrink-0">
-            <div class="w-10 h-10 rounded-full overflow-hidden shrink-0 border border-slate-200 shadow-sm flex items-center justify-center bg-white">
-                <img src="{{ $sidebarLogo }}" alt="{{ $sidebarCompany }} Logo" class="w-full h-full object-cover">
+        <div class="p-6 pb-4 flex items-center justify-between border-b border-surface-container-high shrink-0">
+            <div class="flex items-center gap-3 min-w-0">
+                <div class="w-10 h-10 rounded-full overflow-hidden shrink-0 border border-slate-200 shadow-sm flex items-center justify-center bg-white">
+                    <img src="{{ $sidebarLogo }}" alt="{{ $sidebarCompany }} Logo" class="w-full h-full object-cover">
+                </div>
+                <div class="flex flex-col min-w-0">
+                    <span class="text-base font-bold tracking-wider text-[#0a369d] leading-none uppercase truncate" style="font-family: 'Cormorant Garamond', serif;">{{ $sidebarCompany }}</span>
+                </div>
             </div>
-            <div class="flex flex-col">
-                <span class="text-base font-bold tracking-wider text-[#0a369d] leading-none uppercase" style="font-family: 'Cormorant Garamond', serif;">{{ $sidebarCompany }}</span>
-            </div>
+            <!-- Close Button (Mobile Only) -->
+            <button id="sk-sidebar-close" type="button" class="lg:hidden p-1.5 rounded-DEFAULT text-slate-500 hover:text-slate-900 hover:bg-slate-100 transition-colors" aria-label="Tutup Menu">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
         </div>
 
         <!-- Navigation Menu -->

@@ -9,25 +9,16 @@
             <h1 class="text-3xl font-normal text-primary tracking-tight" style="font-family: 'Cormorant Garamond', serif;">Manajemen Standar Mutu</h1>
             <p class="text-sm text-on-surface-variant font-normal" style="font-family: 'Inter', sans-serif;">Kelola card topik utama dan foto referensi standar mutu.</p>
         </div>
-        <div class="flex flex-wrap items-center gap-3" style="font-family: 'Inter', sans-serif;">
-            <a href="{{ route('admin.standar-mutu.create', ['type' => 'card']) }}" class="px-4 py-2.5 rounded-DEFAULT bg-[#0a2569] text-white text-sm font-medium hover:bg-[#081d52] transition-colors inline-flex items-center gap-2">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
-                + Tambah Card Topik Utama
-            </a>
-            <a href="{{ route('admin.standar-mutu.create', ['type' => 'photo']) }}" class="px-4 py-2.5 rounded-DEFAULT bg-amber-600 text-white text-sm font-medium hover:bg-amber-700 transition-colors inline-flex items-center gap-2">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-                + Tambah Foto Referensi
-            </a>
-        </div>
     </div>
 
     <!-- TABEL 1: Card Topik Utama -->
     <div class="bg-surface-container-lowest rounded-DEFAULT border border-surface-container-high shadow-sm overflow-hidden mb-6">
-        <div class="p-6 border-b border-surface-container-high flex justify-between items-center">
+        <div class="p-4 sm:p-6 border-b border-surface-container-high flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
             <div>
                 <h3 class="text-2xl font-normal text-primary tracking-tight" style="font-family: 'Cormorant Garamond', serif;">Card Topik Utama</h3>
                 <p class="text-sm text-on-surface-variant mt-0.5" style="font-family: 'Inter', sans-serif;">Kartu berisi judul, deskripsi, dan poin-poin (+) standar mutu.</p>
             </div>
+            <a href="{{ route('admin.standar-mutu.create', ['type' => 'card']) }}" class="text-xs font-semibold text-[#0a2569] hover:underline shrink-0 self-start sm:self-auto" style="font-family: 'Inter', sans-serif;">+ Tambah Card Topik Utama</a>
         </div>
         <div class="overflow-x-auto" style="font-family: 'Inter', sans-serif;">
             <table class="w-full text-left border-collapse">
@@ -78,11 +69,12 @@
 
     <!-- TABEL 2: Foto Referensi & Contoh Visual -->
     <div class="bg-surface-container-lowest rounded-DEFAULT border border-surface-container-high shadow-sm overflow-hidden">
-        <div class="p-6 border-b border-surface-container-high flex justify-between items-center">
+        <div class="p-4 sm:p-6 border-b border-surface-container-high flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
             <div>
                 <h3 class="text-2xl font-normal text-primary tracking-tight" style="font-family: 'Cormorant Garamond', serif;">Foto Referensi / Contoh Visual</h3>
                 <p class="text-sm text-on-surface-variant mt-0.5" style="font-family: 'Inter', sans-serif;">Galeri foto contoh pekerjaan lengkap dengan tag dan judul foto.</p>
             </div>
+            <a href="{{ route('admin.standar-mutu.create', ['type' => 'photo']) }}" class="text-xs font-semibold text-[#0a2569] hover:underline shrink-0 self-start sm:self-auto" style="font-family: 'Inter', sans-serif;">+ Tambah Foto Referensi</a>
         </div>
         <div class="overflow-x-auto" style="font-family: 'Inter', sans-serif;">
             <table class="w-full text-left border-collapse">

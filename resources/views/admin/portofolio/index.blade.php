@@ -13,12 +13,12 @@
 
     <!-- TABEL 1: Kategori Portofolio -->
     <div class="bg-surface-container-lowest rounded-DEFAULT border border-surface-container-high shadow-sm overflow-hidden">
-        <div class="p-6 border-b border-surface-container-high flex items-center justify-between">
+        <div class="p-4 sm:p-6 border-b border-surface-container-high flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
             <div>
                 <h3 class="text-2xl font-normal text-primary tracking-tight" style="font-family: 'Cormorant Garamond', serif;">Tabel Kategori Portofolio</h3>
                 <p class="text-sm text-on-surface-variant mt-0.5" style="font-family: 'Inter', sans-serif;">Pengelompokan kategori karya portofolio.</p>
             </div>
-            <a href="{{ route('admin.portofolio-category.create') }}" class="text-xs font-semibold text-[#0a2569] hover:underline" style="font-family: 'Inter', sans-serif;">+ Tambah Kategori Baru</a>
+            <a href="{{ route('admin.portofolio-category.create') }}" class="text-xs font-semibold text-[#0a2569] hover:underline shrink-0 self-start sm:self-auto" style="font-family: 'Inter', sans-serif;">+ Tambah Kategori Baru</a>
         </div>
         <div class="overflow-x-auto" style="font-family: 'Inter', sans-serif;">
             <table class="w-full text-left border-collapse">
@@ -65,12 +65,12 @@
 
     <!-- TABEL 2: Karya Portofolio -->
     <div class="bg-surface-container-lowest rounded-DEFAULT border border-surface-container-high shadow-sm overflow-hidden">
-        <div class="p-6 border-b border-surface-container-high flex items-center justify-between">
+        <div class="p-4 sm:p-6 border-b border-surface-container-high flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
             <div>
                 <h3 class="text-2xl font-normal text-primary tracking-tight" style="font-family: 'Cormorant Garamond', serif;">Tabel Karya Portofolio</h3>
                 <p class="text-sm text-on-surface-variant mt-0.5" style="font-family: 'Inter', sans-serif;">Daftar proyek dan karya portofolio yang terdaftar.</p>
             </div>
-            <a href="{{ route('admin.portofolio.create') }}" class="text-xs font-semibold text-[#0a2569] hover:underline" style="font-family: 'Inter', sans-serif;">+ Tambah Portofolio Baru</a>
+            <a href="{{ route('admin.portofolio.create') }}" class="text-xs font-semibold text-[#0a2569] hover:underline shrink-0 self-start sm:self-auto" style="font-family: 'Inter', sans-serif;">+ Tambah Portofolio Baru</a>
         </div>
         <div class="overflow-x-auto" style="font-family: 'Inter', sans-serif;">
             <table class="w-full text-left border-collapse">

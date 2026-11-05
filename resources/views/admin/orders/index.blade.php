@@ -15,7 +15,7 @@
             <span class="text-[11px] uppercase tracking-widest text-outline font-medium" style="font-family: 'Inter', sans-serif;">Admin Console</span>
             <h1 class="text-3xl font-normal text-primary tracking-tight" style="font-family: 'Cormorant Garamond', serif;">Tabel Pesanan Masuk</h1>
         </div>
-        <div class="flex items-center gap-3" style="font-family: 'Inter', sans-serif;">
+        <div class="flex flex-wrap items-center gap-2 sm:gap-3" style="font-family: 'Inter', sans-serif;">
             <div class="px-4 py-2 rounded-DEFAULT bg-surface-container-lowest border border-surface-container-high text-xs text-on-surface-variant">
                 Total <span class="font-semibold text-primary">{{ $totalAll }}</span> Pesanan
             </div>
@@ -71,7 +71,7 @@
         </div>
 
         {{-- ============ DETAIL (kanan) ============ --}}
-        <div class="lg:col-span-8 bg-surface-container-lowest rounded-DEFAULT border border-surface-container-high shadow-sm p-6 sm:p-8">
+        <div class="lg:col-span-8 bg-surface-container-lowest rounded-DEFAULT border border-surface-container-high shadow-sm p-4 sm:p-6 lg:p-8">
             @if($selected)
                 {{-- Header detail --}}
                 <div class="flex flex-col sm:flex-row sm:items-start justify-between gap-4">

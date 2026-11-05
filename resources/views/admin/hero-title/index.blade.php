@@ -9,16 +9,6 @@
             <h1 class="text-3xl font-normal text-primary tracking-tight" style="font-family: 'Cormorant Garamond', serif;">Manajemen Hero Title &amp; Panel Layanan</h1>
             <p class="text-sm text-on-surface-variant font-normal" style="font-family: 'Inter', sans-serif;">Kelola judul hero banner halaman serta tampilan split-panel layanan utama website.</p>
         </div>
-        <div class="flex items-center gap-3 flex-wrap" style="font-family: 'Inter', sans-serif;">
-            <a href="{{ route('admin.hero-title.create') }}" class="px-4 py-2.5 rounded-DEFAULT bg-[#0a2569] text-white text-xs font-medium hover:bg-[#081d52] transition-colors inline-flex items-center gap-1.5">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
-                + Tambah Hero Title
-            </a>
-            <a href="{{ route('admin.service-panel.create') }}" class="px-4 py-2.5 rounded-DEFAULT bg-amber-600 text-white text-xs font-medium hover:bg-amber-700 transition-colors inline-flex items-center gap-1.5">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
-                + Tambah Panel Layanan
-            </a>
-        </div>
     </div>
 
     <!-- Alert Success -->
@@ -30,14 +20,12 @@
 
     <!-- Data Table 1: Hero Banner Halaman -->
     <div class="bg-surface-container-lowest rounded-DEFAULT border border-surface-container-high shadow-sm overflow-hidden">
-        <div class="p-6 border-b border-surface-container-high flex items-center justify-between">
+        <div class="p-4 sm:p-6 border-b border-surface-container-high flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
             <div>
                 <h3 class="text-2xl font-normal text-primary tracking-tight" style="font-family: 'Cormorant Garamond', serif;">Hero Banner Halaman</h3>
                 <p class="text-sm text-on-surface-variant mt-0.5" style="font-family: 'Inter', sans-serif;">Menampilkan judul, deskripsi, dan banner utama untuk setiap halaman website.</p>
             </div>
-            <a href="{{ route('admin.hero-title.create') }}" class="px-3.5 py-1.5 rounded-DEFAULT bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold transition-colors">
-                + Tambah Hero Title
-            </a>
+            <a href="{{ route('admin.hero-title.create') }}" class="text-xs font-semibold text-[#0a2569] hover:underline shrink-0 self-start sm:self-auto" style="font-family: 'Inter', sans-serif;">+ Tambah Hero Title</a>
         </div>
         <div class="overflow-x-auto" style="font-family: 'Inter', sans-serif;">
             <table class="w-full text-left border-collapse">
@@ -86,14 +74,12 @@
 
     <!-- Data Table 2: Panel Layanan Utama (Split Panel Selection) -->
     <div class="bg-surface-container-lowest rounded-DEFAULT border border-surface-container-high shadow-sm overflow-hidden mt-6">
-        <div class="p-6 border-b border-surface-container-high flex items-center justify-between">
+        <div class="p-4 sm:p-6 border-b border-surface-container-high flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
             <div>
                 <h3 class="text-2xl font-normal text-primary tracking-tight" style="font-family: 'Cormorant Garamond', serif;">Panel Layanan Utama (Split Panel Selection)</h3>
                 <p class="text-sm text-on-surface-variant mt-0.5" style="font-family: 'Inter', sans-serif;">Menampilkan konfigurasi card split-panel (Pembangunan, Renovasi, Spesifikasi, &amp; Standar Mutu).</p>
             </div>
-            <a href="{{ route('admin.service-panel.create') }}" class="px-3.5 py-1.5 rounded-DEFAULT bg-amber-50 hover:bg-amber-100 text-amber-700 border border-amber-200 text-xs font-semibold transition-colors">
-                + Tambah Panel Layanan
-            </a>
+            <a href="{{ route('admin.service-panel.create') }}" class="text-xs font-semibold text-[#0a2569] hover:underline shrink-0 self-start sm:self-auto" style="font-family: 'Inter', sans-serif;">+ Tambah Panel Layanan</a>
         </div>
         <div class="overflow-x-auto" style="font-family: 'Inter', sans-serif;">
             <table class="w-full text-left border-collapse">

@@ -118,6 +118,47 @@
             main > :last-child { margin-bottom: 0 !important; }
         }
         ::-webkit-scrollbar { display: none; }
+
+        /* Seamless Responsive Mobile & Tablet Off-canvas Sidebar */
+        @media (max-width: 1023.98px) {
+            #sk-admin-sidebar {
+                position: fixed !important;
+                top: 0 !important;
+                left: 0 !important;
+                bottom: 0 !important;
+                width: 18rem !important;
+                max-width: 82vw !important;
+                transform: translateX(-100%) !important;
+                transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+                z-index: 50 !important;
+                box-shadow: none !important;
+            }
+            #sk-admin-sidebar.sidebar-open {
+                transform: translateX(0) !important;
+                box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 8px 10px -6px rgba(0, 0, 0, 0.2) !important;
+            }
+            .admin-layout-wrapper {
+                padding-left: 0 !important;
+            }
+            .admin-topbar {
+                left: 0 !important;
+            }
+        }
+        @media (min-width: 1024px) {
+            #sk-admin-sidebar {
+                position: fixed !important;
+                top: 0 !important;
+                left: 0 !important;
+                width: 18rem !important;
+                transform: translateX(0) !important;
+            }
+            .admin-layout-wrapper {
+                padding-left: 18rem !important;
+            }
+            .admin-topbar {
+                left: 18rem !important;
+            }
+        }
     </style>
     @stack('styles')
 </head>
@@ -163,18 +204,30 @@
     <!-- Sidebar Partial -->
     @include('partials.sidebar')
 
+    <!-- Sidebar Mobile Backdrop -->
+    <div id="sk-sidebar-backdrop" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-40 hidden lg:hidden opacity-0 transition-opacity duration-300 ease-in-out" aria-hidden="true"></div>
+
     <!-- Content Wrapper -->
-    <div class="pl-72">
-        <!-- Header Topbar (Clean layout without text/avatar) -->
-        <header class="fixed top-0 left-72 right-0 h-20 bg-surface/80 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)] z-40 flex items-center justify-between px-space-xl">
-            <div class="flex items-center gap-4">
+    <div class="admin-layout-wrapper pl-0 lg:pl-72 transition-[padding] duration-300 min-h-screen flex flex-col">
+        <!-- Header Topbar -->
+        <header class="admin-topbar fixed top-0 left-0 lg:left-72 right-0 h-16 sm:h-20 bg-surface/85 backdrop-blur-xl border-b border-surface-container-high/60 shadow-[0_1px_8px_rgba(0,0,0,0.03)] z-30 flex items-center justify-between px-4 sm:px-6 lg:px-space-xl transition-[left] duration-300">
+            <div class="flex items-center gap-3">
+                <!-- Hamburger Button (Mobile & Tablet) -->
+                <button id="sk-sidebar-toggle" type="button" class="lg:hidden p-2 rounded-DEFAULT text-slate-700 hover:text-primary hover:bg-slate-100 transition-colors focus:outline-none focus:ring-2 focus:ring-[#0a2569]" aria-label="Buka Menu Navigasi">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+                </button>
+                <div class="flex items-center gap-2.5 lg:hidden">
+                    <img src="{{ $adminLogoUrl }}" alt="{{ $adminCompany }}" class="w-7 h-7 rounded-full object-cover border border-slate-200">
+                    <span class="text-sm font-bold tracking-wider text-[#0a369d] uppercase truncate max-w-[160px] sm:max-w-xs" style="font-family: 'Cormorant Garamond', serif;">{{ $adminCompany }}</span>
+                </div>
             </div>
-            <div class="flex items-center gap-6" style="font-family: 'Inter', sans-serif;">
+            <div class="flex items-center gap-4" style="font-family: 'Inter', sans-serif;">
+                <span class="hidden sm:inline-block text-xs uppercase tracking-wider text-outline font-medium">Portal Admin</span>
             </div>
         </header>
 
         <!-- Main Content Area -->
-        <main class="w-full pt-20 px-space-xl pb-space-3xl min-h-screen bg-background">
+        <main class="w-full pt-20 sm:pt-24 px-4 sm:px-6 lg:px-space-xl pb-space-3xl min-h-screen bg-background">
             <!-- Flash Message Alerts -->
             @if(session('success'))
                 <div class="mb-6 p-4 rounded-DEFAULT bg-emerald-50 border border-emerald-200 text-emerald-800 text-sm flex items-center justify-between" style="font-family: 'Inter', sans-serif;">
@@ -255,6 +308,77 @@
             window.addEventListener('pageshow', function (event) {
                 if (event.persisted) {
                     finishLoader();
+                }
+            });
+        })();
+
+        // Seamless Responsive Mobile & Tablet Sidebar Toggle
+        (function () {
+            const sidebar = document.getElementById('sk-admin-sidebar');
+            const toggleBtn = document.getElementById('sk-sidebar-toggle');
+            const closeBtn = document.getElementById('sk-sidebar-close');
+            const backdrop = document.getElementById('sk-sidebar-backdrop');
+
+            if (!sidebar) return;
+
+            function openSidebar() {
+                sidebar.classList.add('sidebar-open');
+                sidebar.classList.remove('-translate-x-full');
+                sidebar.classList.add('translate-x-0');
+                if (backdrop) {
+                    backdrop.classList.remove('hidden');
+                    requestAnimationFrame(function () {
+                        backdrop.classList.remove('opacity-0');
+                        backdrop.classList.add('opacity-100');
+                    });
+                }
+                document.body.classList.add('overflow-hidden');
+            }
+
+            function closeSidebar() {
+                sidebar.classList.remove('sidebar-open');
+                sidebar.classList.add('-translate-x-full');
+                sidebar.classList.remove('translate-x-0');
+                if (backdrop) {
+                    backdrop.classList.remove('opacity-100');
+                    backdrop.classList.add('opacity-0');
+                    setTimeout(function () {
+                        backdrop.classList.add('hidden');
+                    }, 300);
+                }
+                document.body.classList.remove('overflow-hidden');
+            }
+
+            if (toggleBtn) toggleBtn.addEventListener('click', function (e) {
+                e.stopPropagation();
+                openSidebar();
+            });
+            if (closeBtn) closeBtn.addEventListener('click', function (e) {
+                e.stopPropagation();
+                closeSidebar();
+            });
+            if (backdrop) backdrop.addEventListener('click', closeSidebar);
+
+            // Close on escape key
+            document.addEventListener('keydown', function (e) {
+                if (e.key === 'Escape' && sidebar.classList.contains('sidebar-open')) {
+                    closeSidebar();
+                }
+            });
+
+            // Auto close when any link in sidebar is clicked on mobile/tablet
+            sidebar.querySelectorAll('a').forEach(function (link) {
+                link.addEventListener('click', function () {
+                    if (window.innerWidth < 1024) {
+                        closeSidebar();
+                    }
+                });
+            });
+
+            // Reset when resized to desktop (>= 1024px)
+            window.addEventListener('resize', function () {
+                if (window.innerWidth >= 1024) {
+                    closeSidebar();
                 }
             });
         })();
