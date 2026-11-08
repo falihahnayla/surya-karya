@@ -251,6 +251,34 @@
         </main>
     </div>
 
+    {{-- Modal Konfirmasi Hapus Surya Karya (Simple, Minimalis, & Rapi) --}}
+    <div id="sk-delete-modal" class="fixed inset-0 z-[9999] flex items-center justify-center p-4 opacity-0 pointer-events-none transition-all duration-200" role="dialog" aria-modal="true" aria-labelledby="sk-delete-modal-title">
+        <!-- Backdrop Blur Gelap Halus -->
+        <div id="sk-delete-modal-backdrop" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm transition-opacity"></div>
+        
+        <!-- Modal Dialog Card -->
+        <div id="sk-delete-modal-card" class="relative w-full max-w-sm bg-white rounded-xl shadow-2xl border border-slate-100 p-6 transform scale-95 opacity-0 transition-all duration-200 text-left" style="font-family: 'Inter', sans-serif;">
+            <div>
+                <span class="text-[10px] uppercase tracking-widest text-slate-400 font-semibold block mb-1">Konfirmasi</span>
+                <h3 id="sk-delete-modal-title" class="text-xl font-normal text-slate-900 tracking-tight" style="font-family: 'Cormorant Garamond', serif;">
+                    Hapus Data
+                </h3>
+                <p id="sk-delete-modal-message" class="text-xs text-slate-500 mt-1.5 leading-relaxed">
+                    Apakah Anda yakin ingin menghapus data ini? Tindakan ini tidak dapat dibatalkan.
+                </p>
+            </div>
+
+            <div class="mt-6 flex items-center justify-end gap-2.5 pt-3 border-t border-slate-100">
+                <button type="button" id="sk-delete-modal-cancel" class="px-4 py-2 text-xs font-medium text-slate-600 hover:text-slate-800 bg-slate-100 hover:bg-slate-200 rounded transition-colors cursor-pointer">
+                    Batal
+                </button>
+                <button type="button" id="sk-delete-modal-confirm" class="px-4 py-2 text-xs font-medium text-white bg-rose-600 hover:bg-rose-700 rounded transition-colors shadow-sm cursor-pointer">
+                    Hapus
+                </button>
+            </div>
+        </div>
+    </div>
+
     @stack('scripts')
 
     <script>
@@ -379,6 +407,92 @@
             window.addEventListener('resize', function () {
                 if (window.innerWidth >= 1024) {
                     closeSidebar();
+                }
+            });
+        })();
+
+        // Minimalist & Clean Delete Confirmation Modal for Surya Karya Admin
+        (function () {
+            const modal = document.getElementById('sk-delete-modal');
+            const card = document.getElementById('sk-delete-modal-card');
+            const backdrop = document.getElementById('sk-delete-modal-backdrop');
+            const cancelBtn = document.getElementById('sk-delete-modal-cancel');
+            const confirmBtn = document.getElementById('sk-delete-modal-confirm');
+            const msgEl = document.getElementById('sk-delete-modal-message');
+
+            if (!modal || !confirmBtn) return;
+
+            let pendingForm = null;
+
+            function openModal(message, form) {
+                pendingForm = form;
+                if (msgEl) {
+                    msgEl.textContent = message || 'Apakah Anda yakin ingin menghapus data ini? Tindakan ini tidak dapat dibatalkan.';
+                }
+                modal.classList.remove('opacity-0', 'pointer-events-none');
+                modal.classList.add('opacity-100', 'pointer-events-auto');
+                if (card) {
+                    card.classList.remove('scale-95', 'opacity-0');
+                    card.classList.add('scale-100', 'opacity-100');
+                }
+            }
+
+            function closeModal() {
+                modal.classList.remove('opacity-100', 'pointer-events-auto');
+                modal.classList.add('opacity-0', 'pointer-events-none');
+                if (card) {
+                    card.classList.remove('scale-100', 'opacity-100');
+                    card.classList.add('scale-95', 'opacity-0');
+                }
+                pendingForm = null;
+            }
+
+            // Intercept submit on any form with data-confirm
+            document.addEventListener('submit', function (e) {
+                const form = e.target.tagName === 'FORM' ? e.target : e.target.closest('form');
+                if (!form || !form.hasAttribute('data-confirm')) return;
+
+                if (form.dataset.confirmed === 'true') {
+                    return; // Sudah dikonfirmasi, lanjutkan submit
+                }
+
+                e.preventDefault();
+                e.stopImmediatePropagation();
+                const message = form.getAttribute('data-confirm');
+                openModal(message, form);
+                return false;
+            }, true);
+
+            // Tombol Konfirmasi Hapus
+            confirmBtn.addEventListener('click', function () {
+                if (pendingForm) {
+                    const formToSubmit = pendingForm;
+                    formToSubmit.dataset.confirmed = 'true';
+                    closeModal();
+
+                    // Tampilkan loader bar jika ada
+                    const loader = document.getElementById('sk-page-loader');
+                    const loaderBar = document.getElementById('sk-loader-bar');
+                    if (loaderBar) {
+                        loaderBar.style.transition = 'width 0.4s ease-out';
+                        loaderBar.style.width = '75%';
+                    }
+                    if (loader) {
+                        loader.classList.remove('opacity-0', 'pointer-events-none');
+                    }
+
+                    HTMLFormElement.prototype.submit.call(formToSubmit);
+                }
+            });
+
+            // Tombol Batal & Backdrop Click
+            if (cancelBtn) cancelBtn.addEventListener('click', closeModal);
+            if (backdrop) backdrop.addEventListener('click', closeModal);
+
+            // Escape key
+            document.addEventListener('keydown', function (e) {
+                if (e.key === 'Escape' && !modal.classList.contains('opacity-0')) {
+                    closeModal();
                 }
             });
         })();

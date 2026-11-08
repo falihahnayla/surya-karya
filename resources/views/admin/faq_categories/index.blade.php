@@ -59,7 +59,7 @@
                                     Edit
                                 </a>
 
-                                <form action="{{ route('admin.faq_categories.destroy', $item->id) }}" method="POST" class="inline-block" onsubmit="return confirm('Yakin ingin menghapus kategori ini? Semua FAQ di dalamnya ikut terhapus.')">
+                                <form action="{{ route('admin.faq_categories.destroy', $item->id) }}" method="POST" class="inline-block" data-confirm="Yakin ingin menghapus kategori ini? Semua FAQ di dalamnya ikut terhapus.">
                                     @csrf
                                     @method('DELETE')
 

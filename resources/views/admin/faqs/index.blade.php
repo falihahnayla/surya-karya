@@ -69,7 +69,7 @@
                                     Edit
                                 </a>
 
-                                <form action="{{ route('admin.faqs.destroy', $item->id) }}" method="POST" class="inline-block" onsubmit="return confirm('Apakah Anda yakin ingin menghapus FAQ ini?')">
+                                <form action="{{ route('admin.faqs.destroy', $item->id) }}" method="POST" class="inline-block" data-confirm="Apakah Anda yakin ingin menghapus FAQ ini?">
                                     @csrf
                                     @method('DELETE')
 

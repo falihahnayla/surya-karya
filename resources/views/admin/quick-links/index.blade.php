@@ -38,7 +38,7 @@
                             <td class="py-4 px-6">
                                 <div class="flex items-center justify-end gap-2">
                                     <a href="{{ route('admin.quick-links.edit', $item->id) }}" class="inline-flex items-center text-xs font-semibold text-amber-600 hover:text-amber-800 bg-amber-50 hover:bg-amber-100 px-4 py-2 rounded-DEFAULT transition-colors">Edit</a>
-                                    <form action="{{ route('admin.quick-links.destroy', $item->id) }}" method="POST" onsubmit="return confirm('Hapus quick link ini?')">
+                                    <form action="{{ route('admin.quick-links.destroy', $item->id) }}" method="POST" data-confirm="Apakah Anda yakin ingin menghapus quick link ini?">
                                         @csrf @method('DELETE')
                                         <button type="submit" class="inline-flex items-center text-xs font-semibold text-rose-600 hover:text-rose-800 bg-rose-50 hover:bg-rose-100 px-4 py-2 rounded-DEFAULT transition-colors">Hapus</button>
                                     </form>

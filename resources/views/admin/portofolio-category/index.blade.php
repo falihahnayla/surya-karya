@@ -47,7 +47,7 @@
                                 <a href="{{ route('admin.portofolio-category.edit', $cat->id) }}" class="inline-flex items-center gap-1 text-xs font-semibold text-amber-600 hover:text-amber-800 bg-amber-50 hover:bg-amber-100 px-3 py-1.5 rounded-DEFAULT transition-colors">
                                     Edit
                                 </a>
-                                <form action="{{ route('admin.portofolio-category.destroy', $cat->id) }}" method="POST" class="inline-block" onsubmit="return confirm('Apakah Anda yakin ingin menghapus kategori ini?')">
+                                <form action="{{ route('admin.portofolio-category.destroy', $cat->id) }}" method="POST" class="inline-block" data-confirm="Apakah Anda yakin ingin menghapus kategori ini?">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="inline-flex items-center gap-1 text-xs font-semibold text-rose-600 hover:text-rose-800 bg-rose-50 hover:bg-rose-100 px-3 py-1.5 rounded-DEFAULT transition-colors">
