@@ -14,7 +14,7 @@ return new class extends Migration
             $table->text('subtitle');
             $table->text('image_bg');
             $table->text('image_about');
-            $table->string('content_about');
+            $table->text('content_about');
             $table->string('img_desc', 255);
             $table->string('service_title', 100);
             $table->string('service_desc', 100);

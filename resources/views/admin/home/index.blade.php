@@ -81,7 +81,7 @@
             {{-- About --}}
             <div>
                 <label for="content_about" class="{{ $label }}">Konten About</label>
-                <textarea name="content_about" id="content_about" rows="3" maxlength="255" class="{{ $input }}">{{ old('content_about', $home->content_about) }}</textarea>
+                <textarea name="content_about" id="content_about" rows="3" minlength="350" maxlength="2000" required class="{{ $input }}">{{ old('content_about', $home->content_about) }}</textarea>
                 @error('content_about') <span class="text-xs text-rose-500 mt-1 block">{{ $message }}</span> @enderror
             </div>
 
