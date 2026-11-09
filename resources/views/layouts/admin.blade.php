@@ -228,23 +228,82 @@
 
         <!-- Main Content Area -->
         <main class="w-full pt-20 sm:pt-24 px-4 sm:px-6 lg:px-space-xl pb-space-3xl min-h-screen bg-background">
-            <!-- Flash Message Alerts -->
-            @if(session('success'))
-                <div class="mb-6 p-4 rounded-DEFAULT bg-emerald-50 border border-emerald-200 text-emerald-800 text-sm flex items-center justify-between" style="font-family: 'Inter', sans-serif;">
-                    <div class="flex items-center gap-2">
-                        <svg class="w-5 h-5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
-                        <span>{{ session('success') }}</span>
-                    </div>
-                </div>
-            @endif
+            {{-- Toast Notification Pop-up (Simple, Minimalis, & Clean) --}}
+            @if(session('success') || session('error'))
+                <div id="sk-toast-notification"
+                     class="fixed top-5 right-5 sm:right-7 z-[99999] flex items-center gap-3 bg-white px-4 py-3 rounded-lg border border-slate-200/90 shadow-xl shadow-slate-900/5 max-w-sm sm:max-w-md transform translate-y-[-12px] opacity-0 transition-all duration-300 pointer-events-auto"
+                     style="font-family: 'Inter', sans-serif;"
+                     role="alert">
+                    @if(session('success'))
+                        <div class="w-5 h-5 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0">
+                            <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                            </svg>
+                        </div>
+                        <div class="text-xs sm:text-sm font-normal text-slate-700 leading-snug pr-1">
+                            {{ session('success') }}
+                        </div>
+                    @else
+                        <div class="w-5 h-5 rounded-full bg-rose-50 text-rose-600 flex items-center justify-center shrink-0">
+                            <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </div>
+                        <div class="text-xs sm:text-sm font-normal text-slate-700 leading-snug pr-1">
+                            {{ session('error') }}
+                        </div>
+                    @endif
 
-            @if(session('error'))
-                <div class="mb-6 p-4 rounded-DEFAULT bg-rose-50 border border-rose-200 text-rose-800 text-sm flex items-center justify-between" style="font-family: 'Inter', sans-serif;">
-                    <div class="flex items-center gap-2">
-                        <svg class="w-5 h-5 text-rose-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
-                        <span>{{ session('error') }}</span>
-                    </div>
+                    <button type="button" 
+                            id="sk-toast-close"
+                            class="ml-auto text-slate-400 hover:text-slate-600 p-0.5 rounded transition-colors shrink-0" 
+                            aria-label="Tutup notifikasi">
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
                 </div>
+
+                <script>
+                    (function () {
+                        const toast = document.getElementById('sk-toast-notification');
+                        const closeBtn = document.getElementById('sk-toast-close');
+                        if (!toast) return;
+
+                        // Animate in smoothly
+                        requestAnimationFrame(function () {
+                            toast.classList.remove('translate-y-[-12px]', 'opacity-0');
+                            toast.classList.add('translate-y-0', 'opacity-100');
+                        });
+
+                        let dismissTimer;
+                        function scheduleDismiss() {
+                            dismissTimer = setTimeout(dismissToast, 3500);
+                        }
+
+                        function dismissToast() {
+                            if (!toast) return;
+                            toast.classList.remove('translate-y-0', 'opacity-100');
+                            toast.classList.add('translate-y-[-12px]', 'opacity-0');
+                            setTimeout(function () {
+                                if (toast && toast.parentNode) {
+                                    toast.parentNode.removeChild(toast);
+                                }
+                            }, 300);
+                        }
+
+                        if (closeBtn) {
+                            closeBtn.addEventListener('click', dismissToast);
+                        }
+
+                        toast.addEventListener('mouseenter', function () {
+                            clearTimeout(dismissTimer);
+                        });
+                        toast.addEventListener('mouseleave', scheduleDismiss);
+
+                        scheduleDismiss();
+                    })();
+                </script>
             @endif
 
             @yield('content')

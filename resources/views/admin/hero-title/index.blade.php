@@ -11,13 +11,6 @@
         </div>
     </div>
 
-    <!-- Alert Success -->
-    @if(session('success'))
-    <div class="p-4 rounded-DEFAULT bg-emerald-50 border border-emerald-200 text-emerald-800 text-sm font-medium">
-        {{ session('success') }}
-    </div>
-    @endif
-
     <!-- Data Table 1: Hero Banner Halaman -->
     <div class="bg-surface-container-lowest rounded-DEFAULT border border-surface-container-high shadow-sm overflow-hidden">
         <div class="p-4 sm:p-6 border-b border-surface-container-high flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">

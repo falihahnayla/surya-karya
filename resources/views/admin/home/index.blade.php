@@ -16,10 +16,6 @@
         <p class="text-sm text-on-surface-variant font-normal" style="font-family: 'Inter', sans-serif;">Kelola konten halaman beranda PT Surya Karya.</p>
     </div>
 
-    @if(session('success'))
-        <div class="px-4 py-3 rounded-DEFAULT bg-emerald-50 border border-emerald-200 text-emerald-700 text-sm" style="font-family: 'Inter', sans-serif;">{{ session('success') }}</div>
-    @endif
-
     @if($errors->any())
         <div class="px-4 py-3 rounded-DEFAULT bg-rose-50 border border-rose-200 text-rose-700 text-sm" style="font-family: 'Inter', sans-serif;">
             <ul class="list-disc pl-5 space-y-0.5">

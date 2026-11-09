@@ -26,10 +26,6 @@
         </div>
     </div>
 
-    @if(session('success'))
-        <div class="px-4 py-3 rounded-DEFAULT bg-emerald-50 border border-emerald-200 text-emerald-700 text-sm" style="font-family: 'Inter', sans-serif;">{{ session('success') }}</div>
-    @endif
-
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-6" style="font-family: 'Inter', sans-serif;">
         {{-- ============ LIST (kiri) ============ --}}
         <div class="lg:col-span-4 bg-surface-container-lowest rounded-DEFAULT border border-surface-container-high shadow-sm overflow-hidden self-start">

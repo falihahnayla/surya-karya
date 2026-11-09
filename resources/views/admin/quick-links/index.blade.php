@@ -10,14 +10,18 @@
             <h1 class="text-3xl font-normal text-primary tracking-tight" style="font-family: 'Cormorant Garamond', serif;">Quick Links</h1>
             <p class="text-sm text-on-surface-variant font-normal" style="font-family: 'Inter', sans-serif;">Daftar tautan cepat yang tampil di footer website.</p>
         </div>
-        <a href="{{ route('admin.quick-links.create') }}" class="px-5 py-2.5 rounded-DEFAULT bg-[#0a2569] text-white text-sm font-medium hover:bg-[#081d52] transition-colors inline-flex items-center gap-2" style="font-family: 'Inter', sans-serif;">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
-            Tambah Link
-        </a>
     </div>
 
-    <section class="bg-surface-container-lowest rounded-DEFAULT border border-surface-container-high shadow-sm overflow-hidden" style="font-family: 'Inter', sans-serif;">
-        <div class="overflow-x-auto">
+    <!-- Data Table Card -->
+    <div class="bg-surface-container-lowest rounded-DEFAULT border border-surface-container-high shadow-sm overflow-hidden">
+        <div class="p-4 sm:p-6 border-b border-surface-container-high flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
+            <div>
+                <h3 class="text-2xl font-normal text-primary tracking-tight" style="font-family: 'Cormorant Garamond', serif;">Daftar Quick Links</h3>
+                <p class="text-sm text-on-surface-variant mt-0.5" style="font-family: 'Inter', sans-serif;">Tautan navigasi cepat yang terhubung di footer website.</p>
+            </div>
+            <a href="{{ route('admin.quick-links.create') }}" class="text-xs font-semibold text-[#0a2569] hover:underline shrink-0 self-start sm:self-auto" style="font-family: 'Inter', sans-serif;">+ Tambah Quick Link</a>
+        </div>
+        <div class="overflow-x-auto" style="font-family: 'Inter', sans-serif;">
             <table class="w-full text-left border-collapse">
                 <thead>
                     <tr class="border-b border-surface-container-high text-outline text-xs uppercase tracking-wider bg-surface-container-low/30">
@@ -57,6 +61,6 @@
         @if($items->hasPages())
             <div class="p-5 border-t border-surface-container-high text-xs">{{ $items->links() }}</div>
         @endif
-    </section>
+    </div>
 </div>
 @endsection
